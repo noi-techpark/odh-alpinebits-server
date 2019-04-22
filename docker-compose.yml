@@ -1,0 +1,18 @@
+version: "3"
+services:
+  java:
+    build:
+      context: .
+      dockerfile: docker/dockerfile-java
+    volumes:
+       - ./:/code
+    working_dir: /code
+    command: tail -f /dev/null
+    tty: true
+    ports:
+      - "8080:8080"
+  sonar:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
