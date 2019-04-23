@@ -1,0 +1,372 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+
+    <!-- configure the "Checker", that it handle files with the UTF-8 charset -->
+    <property name="charset" value="UTF-8"/>
+
+    <!-- Checks for long src-Files -->
+    <module name="FileLength">
+        <property name="max" value="2500"/>
+        <property name="fileExtensions" value="java"/>
+        <property name="severity" value="info"/>
+    </module>
+    <!-- Checks for too long src-Files and enforce -->
+    <module name="FileLength">
+        <property name="max" value="3500"/>
+        <property name="fileExtensions" value="java"/>
+    </module>
+
+    <!-- Checks that there are no tab characters in the src-code -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- enable suppression via annotations-->
+    <module name="SuppressWarningsFilter"/>
+
+    <!-- Checks individual java src-Files and defines properties that are applicable -->
+    <!-- to checking such files                                                      -->
+    <module name="TreeWalker">
+        <!-- deactivted setting of the cacheFile property
+             so that import in IDEA works ... uses now default value for cacheFile -->
+        <!--<property name="cacheFile" value="${checkstyle.cache.file}"/>-->
+
+        <!-- Check location of annotation on language elements -->
+        <module name="AnnotationLocation"/>
+
+        <!-- Checks for long anonymous inner classes.-->
+        <module name="AnonInnerLength">
+            <property name="max" value="100"/>
+        </module>
+
+        <!-- Checks the style of array type definition in JavaStyle (ie String[] strings) -->
+        <module name="ArrayTypeStyle">
+            <property name="javaStyle" value="true"/>
+        </module>
+
+        <!-- Checks for block that are used freely in the code -->
+        <module name="AvoidNestedBlocks"/>
+
+        <!-- Checks for imports -->
+        <module name="AvoidStarImport">
+            <property name="excludes"
+                      value="java.io,java.net,java.util,javax.enterprise.inject.spi,javax.enterprise.context,javax.persistence"/>
+            <property name="allowStaticMemberImports" value="true"/>
+        </module>
+
+        <module name="BooleanExpressionComplexity">
+            <property name="max" value="7"/>
+        </module>
+        <!-- This metric measures the number of instantiations of other classes within the given class. -->
+        <module name="ClassDataAbstractionCoupling">
+            <property name="max" value="10"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- Checks the number of other classes a given class relies on. -->
+        <module name="ClassFanOutComplexity">
+            <property name="max" value="30"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- Checks that constant only contains UpperCase-letters (except log [ logger) -->
+        <module name="ConstantName"/>
+
+        <!--Checks that classes that define a covariant equals() method
+        also override method equals(java.lang.Object). Inspired by findbugs -->
+        <module name="CovariantEquals"/>
+
+        <!-- Checks cyclomatic complexity against a specified limit.
+        The complexity is measured by the number of if, while, do, for, ?:, catch, switch, case statements,
+        and operators && and || (plus one) in the body of a constructor, method, static initializer, or instance initializer.
+        It is a measure of the minimum number of possible paths through the source and therefore the number of required tests.
+        Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now! -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="10"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- enforce ordering of class members -->
+        <module name="DeclarationOrder"/>
+
+        <!-- Checks that the "default" is after all "case" in a "switch" -->
+        <module name="DefaultComesLast"/>
+
+        <!-- Checks for empty blocks -->
+        <module name="EmptyBlock"/>
+
+        <!--Detects empty statements (standalone ;). -->
+        <module name="EmptyStatement"/>
+
+        <!--Checks that any combination of String literals with optional assignment is on the left side of an equals() comparison -->
+        <module name="EqualsAvoidNull"/>
+
+        <!-- Checks, that classes that override equals also override hashCode -->
+        <module name="EqualsHashCode"/>
+
+        <!--Checks if any class or object member explicitly initialized to default for its type value
+(null for object references, zero for numeric types and char and false for boolean) -->
+        <module name="ExplicitInitialization"/>
+
+        <!-- Checks for fall through in switch -->
+        <module name="FallThrough">
+            <property name="reliefPattern" value="continue in next case"/>
+        </module>
+
+        <!-- Checks that a class which has only private constructors is declared as final.-->
+        <module name="FinalClass"/>
+
+        <!-- Checks that the whitespace around the Generic tokens (angle brackets) "<" and ">" are correct to the typical convention. -->
+        <module name="GenericWhitespace"/>
+
+        <!-- Checks that a local variable or a parameter does not shadow a field that is defined in the same class. -->
+        <module name="HiddenField">
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!-- Checks that certain exception types do not appear in a catch statement. -->
+        <module name="IllegalCatch"/>
+
+        <!-- Checks for imports from a set of illegal packages -->
+        <!-- <property name="illegalPkgs" value="java.sql" -->
+        <module name="IllegalImport"/>
+
+        <!-- This check can be used to ensure that types are not declared to be thrown.-->
+        <module name="IllegalThrows"/>
+
+        <!-- Checks correct indentation of Java code. -->
+        <module name="Indentation"/>
+
+        <!-- Checks for assignments in sub-expressions (ie String s = Integer.toString(i = 2) -->
+        <module name="InnerAssignment"/>
+
+        <!-- An interface should describe a type. It is therefore inappropriate to define an interface that does not contain any methods but only constants. -->
+        <module name="InterfaceIsType"/>
+
+        <module name="JavadocType"/>
+        <module name="JavadocStyle">
+            <property name="checkEmptyJavadoc" value="true"/>
+        </module>
+
+        <module name="JavaNCSS">
+            <property name="methodMaximum" value="150"/>
+            <property name="classMaximum" value="1500"/>
+            <property name="fileMaximum" value="2000"/>
+            <property name="severity" value="warning"/>
+
+        </module>
+
+        <!-- Checks for the placement of the left curly braces "{" -->
+        <module name="LeftCurly">
+            <property name="option" value="EOL"/>
+        </module>
+
+        <!-- Checks for long lines -->
+        <module name="LineLength">
+            <property name="max" value="160"/>
+            <property name="ignorePattern" value="@version|@see"/>
+        </module>
+
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName">
+            <property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <!-- Checks for long methods and constructors -->
+        <!-- countEmpty - whether to count empty lines and single line comments - default=false -->
+        <module name="MethodLength">
+            <property name="max" value="250"/>
+        </module>
+
+        <module name="MethodName">
+            <property name="format" value="[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <!-- Checks the padding between the identifier of a method definition. -->
+        <module name="MethodParamPad"/>
+
+        <!-- Verifies that both the java.lang.Deprecated annotation is present and the @deprecated Javadoc tag is present when either is present. -->
+        <module name="MissingDeprecated"/>
+
+        <!-- Checks that "switch" has a "default" -->
+        <module name="MissingSwitchDefault"/>
+
+        <!--Check for ensuring that for loop control variables are not modified inside the for block.-->
+        <module name="ModifiedControlVariable"/>
+
+        <!--Checks that the order of modifiers conforms to the suggestions in the Java Language specification -->
+        <module name="ModifierOrder"/>
+
+        <!--Checks for multiple occurrences of the same string literal within a single file.-->
+        <module name="MultipleStringLiterals">
+            <property name="severity" value="warning"/>
+            <property name="allowedDuplicates" value="5"/>
+            <property name="ignoreStringsRegexp" value='^(("")|(" ")|(", "))$'/>
+        </module>
+
+        <!-- Checks, that each variable declaration is in its own statement and on its own file -->
+        <module name="MultipleVariableDeclarations"/>
+
+        <!-- Checks for braces around code blocks (if, for, while, do) -->
+        <module name="NeedBraces"/>
+
+        <!--Restricts nested for blocks to a specified depth -->
+        <module name="NestedForDepth">
+            <property name="max" value="3"/>
+        </module>
+
+        <!--Restricts nested if-else blocks to a specified depth -->
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+        </module>
+
+        <!--Restricts nested try blocks to a specified depth -->
+        <module name="NestedTryDepth">
+            <property name="max" value="2"/>
+        </module>
+
+        <!--Checks that the clone method is not overridden from the Object class. -->
+        <module name="NoClone"/>
+
+        <!--Verifies there are no finalize() methods defined in a class.  -->
+        <module name="NoFinalizer"/>
+
+        <!--The NPATH metric computes the number of possible execution paths through a function.
+      It takes into account the nesting of conditional statements and multi-part boolean expressions (e.g., A && B, C || D, etc.).-->
+        <module name="NPathComplexity">
+            <property name="max" value="150"/>
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!--Checks there is only one statement per line. -->
+        <module name="OneStatementPerLine"/>
+
+        <!-- Checks that each top-level class, interface or enum resides in a source file of its own. -->
+        <module name="OneTopLevelClass"/>
+
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+
+        <!-- Checks the number of parameters of a method | constructor -->
+        <module name="ParameterNumber">
+            <property name="max" value="10"/>
+        </module>
+
+        <module name="RedundantImport"/>
+
+        <!--Checks for redundant modifiers in interface and annotation definitions. -->
+        <module name="RedundantModifier"/>
+
+        <!-- System.(out|err).print*, Exception#printStackTrace() -->
+        <module name="Regexp">
+            <property name="format" value="System\.(out|err)\.print(ln)?"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <module name="Regexp">
+            <property name="format" value="\.printStackTrace\(\)"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+
+        <!-- junit: use testng -->
+        <module name="Regexp">
+            <property name="format" value="import org\.junit\."/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <!-- commons.lang: use commons.lang3 -->
+        <module name="Regexp">
+            <property name="format" value="import org \.apache\.commons\.lang\."/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <!-- typo: loyality -->
+        <module name="Regexp">
+            <property name="format" value="[Ll]oyality"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <!-- @Autowired: use @Inject -->
+        <module name="Regexp">
+            <property name="format" value="@Autowired"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Use @Inject instead of @Autowired."/>
+        </module>
+
+        <!-- auto-generated file headers -->
+        <module name="Regexp">
+            <property name="format" value="\*[ ]+[Cc]reated by"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+        <module name="Regexp">
+            <property name="format" value="@author"/>
+            <property name="illegalPattern" value="true"/>
+        </module>
+
+        <!-- javaDoc comments only containing inheritDoc-->
+        <module name="Regexp">
+            <property name="format" value="/\*\*[\s\*]*\{@inheritDoc\}[\s\*]*\/"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message"
+                      value="JavaDoc that only consists of {@inheritDoc} is not allowed. Either remove this JavaDoc or state additional information that is specific to this API."/>
+        </module>
+
+        <!-- Checks for the placement of the right curly braces "}" -->
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+        </module>
+
+        <!--Checks for over-complicated boolean expressions. Currently finds code like if (b == true), b || true, !false, etc. -->
+        <module name="SimplifyBooleanExpression">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <!--Checks for over-complicated boolean return statements. -->
+        <module name="SimplifyBooleanReturn">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="StaticVariableName">
+            <property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <!--Checks that string literals are not used with == or != -->
+        <module name="StringLiteralEquality"/>
+
+        <!--Allow rule suppression via annotations-->
+        <module name="SuppressWarningsHolder"/>
+
+        <!--Restricts throws statements to a specified count (default = 1). -->
+        <module name="ThrowsCount">
+            <property name="max" value="4"/>
+        </module>
+
+        <!-- Checks that comments are alone in a line an not trailing after code -->
+        <module name="TrailingComment"/>
+
+        <module name="TypeName">
+            <property name="format" value="[A-Z][a-zA-Z0-9]*$"/>
+        </module>
+
+        <!--Checks for the use of unnecessary parentheses. -->
+        <module name="UnnecessaryParentheses"/>
+        <!-- Checks for unused imports -->
+        <module name="UnusedImports"/>
+
+        <!-- Checks, that "long" constants are defined with an "L" not "l" -->
+        <module name="UpperEll"/>
+
+        <!-- Checks visibility of class members -->
+        <!-- Only static final members may be public, other class members must be private or protected -->
+        <module name="VisibilityModifier">
+            <property name="packageAllowed" value="false"/>
+            <property name="protectedAllowed" value="true"/>
+            <property name="publicMemberPattern" value="^serialVersionUID$"/>
+        </module>
+
+        <!-- enable suppression via comments-->
+        <module name="SuppressionCommentFilter"/>
+    </module>
+
+</module>

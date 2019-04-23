@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.0//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+    <!-- Suppresses the rule MultipleStringLiterals for unit and integration tests -->
+    <suppress checks="MultipleStringLiterals" files="[a-zA-Z0-9]*[(Test)(IT)]{1}.java"/>
+</suppressions>
