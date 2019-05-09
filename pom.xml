@@ -253,6 +253,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>ROOT</finalName>
         <pluginManagement>
             <plugins>
                 <!-- Compile sources -->
