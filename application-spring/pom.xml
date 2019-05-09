@@ -18,7 +18,7 @@
     <name>Standalone Spring application, providing an AlpineBits Server with Open Data Hub (ODH) backend</name>
 
     <properties>
-        <odh-alpinebits.version>0.6.3</odh-alpinebits.version>
+        <odh-alpinebits.version>0.7.1</odh-alpinebits.version>
 
         <slf4j.version>1.7.25</slf4j.version>
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
