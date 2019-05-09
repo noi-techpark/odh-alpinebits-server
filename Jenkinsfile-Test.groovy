@@ -28,7 +28,10 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn -B -U clean package'
+                sh 'cd application-common && mvn -B -U clean install'
+                sh 'cd odh-backend && mvn -B -U clean install'
+                sh 'cd odh-inventory && mvn -B -U clean install'
+                sh 'cd application-war && mvn -B -U clean package'
             }
         }
         stage('Deploy') {
