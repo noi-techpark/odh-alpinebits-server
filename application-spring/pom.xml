@@ -17,6 +17,13 @@
     <packaging>jar</packaging>
     <name>Standalone Spring application, providing an AlpineBits Server with Open Data Hub (ODH) backend</name>
 
+    <repositories>
+        <repository>
+            <id>maven-repo.opendatahub.bz.it</id>
+            <url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+        </repository>
+    </repositories>
+
     <properties>
         <odh-alpinebits.version>0.7.1</odh-alpinebits.version>
 
