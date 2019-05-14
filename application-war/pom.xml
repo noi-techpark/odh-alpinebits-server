@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>application-war</artifactId>
+    <artifactId>ROOT</artifactId>
     <version>0.1.0</version>
 
     <packaging>war</packaging>
