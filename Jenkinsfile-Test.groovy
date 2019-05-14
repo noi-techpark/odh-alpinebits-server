@@ -27,7 +27,7 @@ pipeline {
                     <Environment name="ALPINEBITS_ODH_USERNAME" value="${ODH_USERNAME}" type="java.lang.String" override="true"/>
                     <Environment name="ALPINEBITS_ODH_PASSWORD" value="${ODH_PASSWORD}" type="java.lang.String" override="true"/>
                 </Context>
-                ' > application-war/src/META-INF/context.xml
+                ' > application-war/src/main/java/resources/META-INF/context.xml
                 """
             }
         }
