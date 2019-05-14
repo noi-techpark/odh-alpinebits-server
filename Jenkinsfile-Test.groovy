@@ -9,6 +9,8 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT = "http://alpinebits-server.tomcat02.testingmachine.eu:8080/manager/text"
         TESTSERVER_TOMCAT_CREDENTIALS = credentials('testserver-tomcat8-credentials')
+        ODH_USERNAME = credentials('alpinebits-server-test-odh-username')
+        ODH_PASSWORD = credentials('alpinebits-server-test-odh-password')
     }
 
     stages {
@@ -19,6 +21,14 @@ pipeline {
                 sh 'echo "        ${TESTSERVER_TOMCAT_CREDENTIALS}" >> ~/.m2/settings.xml'
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
+
+                sh """echo '
+                <Context>
+                    <Environment name="ALPINEBITS_ODH_USERNAME" value="${ODH_USERNAME}" type="java.lang.String" override="true"/>
+                    <Environment name="ALPINEBITS_ODH_PASSWORD" value="${ODH_PASSWORD}" type="java.lang.String" override="true"/>
+                </Context>
+                ' > application-war/src/META-INF/context.xml
+                """
             }
         }
         stage('Test') {
