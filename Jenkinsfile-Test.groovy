@@ -23,6 +23,7 @@ pipeline {
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
                 sh """echo '
+                <?xml version="1.0" encoding="UTF-8"?>
                 <Context>
                     <Environment name="ALPINEBITS_ODH_USERNAME" value="${ODH_USERNAME}" type="java.lang.String" override="true"/>
                     <Environment name="ALPINEBITS_ODH_PASSWORD" value="${ODH_PASSWORD}" type="java.lang.String" override="true"/>
