@@ -110,9 +110,9 @@
                                 <consoleOutput>true</consoleOutput>
                                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
                                 <!--check only src directory, ignore generated sources-->
-                                <sourceDirectrories>
+                                <sourceDirectories>
                                     <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-                                </sourceDirectrories>
+                                </sourceDirectories>
                             </configuration>
                             <goals>
                                 <goal>check</goal>
