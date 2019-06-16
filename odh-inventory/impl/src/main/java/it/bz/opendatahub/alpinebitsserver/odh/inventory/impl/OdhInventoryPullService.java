@@ -22,6 +22,8 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendServic
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ import java.util.stream.Collectors;
  * an AlpineBits Inventory/Basic pull request.
  */
 public class OdhInventoryPullService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(OdhInventoryPullService.class);
 
     private final OdhBackendService service;
 
@@ -113,30 +117,47 @@ public class OdhInventoryPullService {
         List<GuestRoom> guestRooms = rooms
                 .stream()
                 .map(room -> {
-                    GuestRoom guestRoom = new GuestRoom();
-                    guestRoom.setCode(room.getRoomcode());
-                    guestRoom.setMinOccupancy(room.getRoommin());
-                    guestRoom.setMaxOccupancy(room.getRoommax());
-                    guestRoom.setTypeRoom(this.buildTypeRoom(room));
-                    guestRoom.setLongNames(this.buildLongname(room));
-                    guestRoom.setDescriptions(this.buildDescriptions(room));
-                    guestRoom.setPictures(this.buildPictures(room));
+                    // Compute guest room description used as room category
+                    // description for AlpineBits GuestRooms
+                    GuestRoom guestRoomDescription = new GuestRoom();
+                    guestRoomDescription.setCode(room.getRoomcode());
+                    guestRoomDescription.setMinOccupancy(room.getRoommin());
+                    guestRoomDescription.setMaxOccupancy(room.getRoommax());
+                    guestRoomDescription.setTypeRoom(this.buildTypeRoom(room));
+                    guestRoomDescription.setLongNames(this.buildLongname(room));
+                    guestRoomDescription.setDescriptions(this.buildDescriptions(room));
+                    guestRoomDescription.setPictures(this.buildPictures(room));
+                    guestRoomDescription.setRoomAmenityCodes(this.buildRoomAmenityCodes(room));
 
-                    guestRoom.setRoomAmenityCodes(this.buildRoomAmenityCodes(room));
+                    // Compute list of real rooms
+                    List<GuestRoom> realRooms = new ArrayList<>();
+                    if (room.getRoomNumbers() != null) {
+                        // Room numbers are available
+                        for (String roomNumber : room.getRoomNumbers()) {
+                            GuestRoom realRoom = this.buildGuestRoom(room, roomNumber);
+                            realRooms.add(realRoom);
+                        }
+                    } else {
+                        // No room numbers defined. Fall back to simple counter implementation.
+                        // Note, that the generated room numbers usually are unknown top the hotel
+                        // Also note, that the Inventory AlpineBits response doesn't contain a warning
+                        // element. Otherwise it would be a good idea to add a warning to the response
+                        LOG.warn("No room numbers found for room with ID {}. Falling back to counter", room.getId());
 
-                    List<GuestRoom> resultingGuestRooms = new ArrayList<>();
-                    resultingGuestRooms.add(guestRoom);
-
-                    for (int i = 1; i < room.getRoomQuantity(); i++) {
-                        GuestRoom sameGuestRoom = new GuestRoom();
-                        sameGuestRoom.setCode(room.getRoomcode());
-                        TypeRoom typeRoom = new TypeRoom();
-                        // TODO: check what RoomID should be set for same rooms
-                        typeRoom.setRoomId(guestRoom.getCode() + "-" + i);
-                        sameGuestRoom.setTypeRoom(typeRoom);
-                        resultingGuestRooms.add(sameGuestRoom);
+                        for (int i = 0; i < room.getRoomQuantity(); i++) {
+                            String roomNumber = guestRoomDescription.getCode() + "-" + i;
+                            GuestRoom realRoom = this.buildGuestRoom(room, roomNumber);
+                            realRooms.add(realRoom);
+                        }
                     }
-                    return resultingGuestRooms;
+                    realRooms.sort(Comparator.comparing(o -> o.getTypeRoom().getRoomId()));
+
+                    // Concatenate room category information and all real rooms
+                    List<GuestRoom> allRooms = new ArrayList();
+                    allRooms.add(guestRoomDescription);
+                    allRooms.addAll(realRooms);
+
+                    return allRooms;
                 })
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
@@ -164,6 +185,14 @@ public class OdhInventoryPullService {
         return hotelDescriptiveContent;
     }
 
+    private GuestRoom buildGuestRoom(AccomodationRoom room, String roomId) {
+        GuestRoom guestRoom = new GuestRoom();
+        guestRoom.setCode(room.getRoomcode());
+        TypeRoom typeRoom = new TypeRoom();
+        typeRoom.setRoomId(roomId);
+        guestRoom.setTypeRoom(typeRoom);
+        return guestRoom;
+    }
 
     private TypeRoom buildTypeRoom(AccomodationRoom room) {
         TypeRoom typeRoom = new TypeRoom();
