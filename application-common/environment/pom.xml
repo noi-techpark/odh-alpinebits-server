@@ -6,21 +6,21 @@
 
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-        <artifactId>odh-backend</artifactId>
+        <artifactId>application-common</artifactId>
         <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>odh-backend-api</artifactId>
+    <artifactId>application-common-environment</artifactId>
     <version>0.1.0</version>
 
-    <name>ODH backend API</name>
+    <name>AlpineBits Server common environment</name>
 
     <dependencies>
         <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-middleware-api</artifactId>
-            <version>${odh-alpinebits.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- testing -->

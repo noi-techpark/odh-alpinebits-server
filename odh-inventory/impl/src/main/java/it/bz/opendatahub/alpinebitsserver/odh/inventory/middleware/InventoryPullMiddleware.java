@@ -15,6 +15,8 @@ import it.bz.opendatahub.alpinebits.middleware.Context;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.middleware.MiddlewareChain;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendContextKey;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.impl.OdhInventoryPullService;
 
 /**
@@ -25,16 +27,13 @@ public class InventoryPullMiddleware implements Middleware {
 
     private final Key<HotelDescriptiveInfoRequest> requestKey;
     private final Key<HotelDescriptiveInfoResponse> responseKey;
-    private final OdhInventoryPullService service;
 
     public InventoryPullMiddleware(
             Key<HotelDescriptiveInfoRequest> requestKey,
-            Key<HotelDescriptiveInfoResponse> responseKey,
-            OdhInventoryPullService service
+            Key<HotelDescriptiveInfoResponse> responseKey
     ) {
         this.requestKey = requestKey;
         this.responseKey = responseKey;
-        this.service = service;
     }
 
     @Override
@@ -50,12 +49,15 @@ public class InventoryPullMiddleware implements Middleware {
         // Get necessary objects from middleware context
         String action = ctx.getOrThrow(RequestContextKey.REQUEST_ACTION);
         HotelDescriptiveInfoRequest hotelDescriptiveInfoRequest = ctx.getOrThrow(this.requestKey);
+        OdhBackendService odhBackendService = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE);
+
+        OdhInventoryPullService service = new OdhInventoryPullService(odhBackendService);
 
         // Call service for persistence
         if (AlpineBitsAction.INVENTORY_BASIC_PULL.equals(action)) {
-            return this.service.readBasic(hotelDescriptiveInfoRequest);
+            return service.readBasic(hotelDescriptiveInfoRequest);
         } else if (AlpineBitsAction.INVENTORY_HOTEL_INFO_PULL.equals(action)) {
-            return this.service.readHotelInfo(hotelDescriptiveInfoRequest);
+            return service.readHotelInfo(hotelDescriptiveInfoRequest);
         }
 
         throw new AlpineBitsException("No implementation for action found", 500);

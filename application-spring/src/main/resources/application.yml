@@ -1,5 +1,0 @@
-alpinebits:
-    path: "/application/AlpineBits"
-
-odh:
-    url: "https://tourism.opendatahub.bz.it/api"

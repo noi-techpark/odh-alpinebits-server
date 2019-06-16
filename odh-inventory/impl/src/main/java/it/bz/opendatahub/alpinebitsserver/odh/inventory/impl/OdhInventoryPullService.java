@@ -6,7 +6,7 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory.impl;
 
-import it.bz.opendatahub.alpinebits.mapping.entity.Error;
+import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.GuestRoom;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveContent;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveInfoRequest;
@@ -22,12 +22,10 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendServic
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +34,6 @@ import java.util.stream.Collectors;
  * an AlpineBits Inventory/Basic pull request.
  */
 public class OdhInventoryPullService {
-
-    private static final int OTA_ERROR_CODE_VENDOR_RESPONSE_ERROR = 724;
-
-    private static final Logger LOG = LoggerFactory.getLogger(OdhInventoryPullService.class);
 
     private final OdhBackendService service;
 
@@ -61,9 +55,7 @@ public class OdhInventoryPullService {
             response.setHotelDescriptiveContent(hotelDescriptiveContent);
             response.setSuccess("");
         } catch (OdhBackendException e) {
-            LOG.error("ODH backend client error", e);
-            Error error = Error.withDefaultType(OTA_ERROR_CODE_VENDOR_RESPONSE_ERROR, e.getMessage());
-            response.setErrors(Collections.singletonList(error));
+            throw new AlpineBitsException("ODH backend client error", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e);
         }
 
         return response;
@@ -110,9 +102,7 @@ public class OdhInventoryPullService {
             response.setHotelDescriptiveContent(hotelDescriptiveContent);
             response.setSuccess("");
         } catch (OdhBackendException e) {
-            LOG.error("ODH backend client error", e);
-            Error error = Error.withDefaultType(OTA_ERROR_CODE_VENDOR_RESPONSE_ERROR, e.getMessage());
-            response.setErrors(Collections.singletonList(error));
+            throw new AlpineBitsException("ODH backend client error", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e);
         }
 
         return response;
