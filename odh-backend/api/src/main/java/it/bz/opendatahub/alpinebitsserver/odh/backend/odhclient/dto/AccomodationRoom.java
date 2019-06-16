@@ -42,6 +42,9 @@ public class AccomodationRoom {
     @JsonProperty("RoomQuantity")
     private Integer roomQuantity;
 
+    @JsonProperty("RoomClassificationCodes")
+    private Integer roomClassificationCode;
+
     @JsonProperty("Features")
     private List<Feature> features;
 
@@ -115,6 +118,14 @@ public class AccomodationRoom {
         this.roomQuantity = roomQuantity;
     }
 
+    public Integer getRoomClassificationCode() {
+        return roomClassificationCode;
+    }
+
+    public void setRoomClassificationCode(Integer roomClassificationCode) {
+        this.roomClassificationCode = roomClassificationCode;
+    }
+
     public List<Feature> getFeatures() {
         return features;
     }
@@ -149,7 +160,8 @@ public class AccomodationRoom {
                 ", roomstd=" + roomstd +
                 ", roomcode='" + roomcode + '\'' +
                 ", roomtype='" + roomtype + '\'' +
-                ", roomQuantity='" + roomQuantity + '\'' +
+                ", roomQuantity=" + roomQuantity +
+                ", roomClassificationCode=" + roomClassificationCode +
                 ", features=" + features +
                 ", accoRoomDetailMap=" + accoRoomDetailMap +
                 ", imageGalleryEntries=" + imageGalleryEntries +

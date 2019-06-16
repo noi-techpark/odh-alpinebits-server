@@ -171,36 +171,12 @@ public class OdhInventoryPullService {
         TypeRoom typeRoom = new TypeRoom();
         typeRoom.setStandardOccupancy(room.getRoomstd());
 
-        // See OTA GRI at https://modelviewers.pilotfishtechnology.com/modelviewers/OTA/index.html
-        // ?page=https%3A//modelviewers.pilotfishtechnology.com/modelviewers/OTA/model/Format
-        // .OTA_HotelDescriptiveContentNotifRQ.HotelDescriptiveContents.HotelDescriptiveContent.FacilityInfo
-        // .GuestRooms.GuestRoom.TypeRoom.html
-        // TODO: improve mapping (many room types unknown in AlpineBits)
-        switch (room.getRoomtype()) {
-            case "room":
-                typeRoom.setRoomClassificationCode(1);
-                break;
-            case "apartment":
-                typeRoom.setRoomClassificationCode(13);
-                break;
-            case "bungalow":
-                typeRoom.setRoomClassificationCode(44);
-                break;
-            case "campsite":
-                typeRoom.setRoomClassificationCode(-10);
-                break;
-            case "caravan":
-                typeRoom.setRoomClassificationCode(-20);
-                break;
-            case "tentarea":
-                typeRoom.setRoomClassificationCode(-30);
-                break;
-            case "camp":
-                typeRoom.setRoomClassificationCode(-40);
-                break;
-            case "undefined":
-            default:
-                typeRoom.setRoomClassificationCode(-1);
+        // Use ODH RoomClassificationCode if set,
+        // otherwise use default value
+        if (room.getRoomClassificationCode() != null) {
+            typeRoom.setRoomClassificationCode(room.getRoomClassificationCode());
+        } else {
+            typeRoom.setRoomClassificationCode(42);
         }
 
         return typeRoom;
