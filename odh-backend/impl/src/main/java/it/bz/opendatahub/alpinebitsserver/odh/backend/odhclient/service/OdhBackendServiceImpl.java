@@ -1,11 +1,12 @@
 package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service;
 
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendService;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhClient;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.OdhClient;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericType;
@@ -33,7 +34,7 @@ public class OdhBackendServiceImpl implements OdhBackendService {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("accoid", accoId);
         try {
-            return odhClient.fetch(path, queryParams, new GenericType<List<AccomodationRoom>>() {
+            return odhClient.fetch(path, HttpMethod.GET, queryParams, null, new GenericType<List<AccomodationRoom>>() {
             });
         } catch (ProcessingException | WebApplicationException e) {
             throw new OdhBackendException("ODH client encountered a problem", e);
@@ -45,7 +46,7 @@ public class OdhBackendServiceImpl implements OdhBackendService {
         String path = "api/Accommodation/" + accoId;
 
         try {
-            return odhClient.fetch(path, null, Accomodation.class);
+            return odhClient.fetch(path, HttpMethod.GET, null, null, Accomodation.class);
         } catch (ProcessingException | WebApplicationException e) {
             throw new OdhBackendException("ODH client encountered a problem", e);
         }

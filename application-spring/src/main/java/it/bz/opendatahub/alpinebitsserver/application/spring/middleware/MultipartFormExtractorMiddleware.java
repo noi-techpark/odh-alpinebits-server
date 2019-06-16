@@ -14,6 +14,9 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * This middleware extracts the multipart/form-data from the request.
+ */
 public class MultipartFormExtractorMiddleware implements Middleware {
 
     @Override

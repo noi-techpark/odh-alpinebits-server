@@ -6,70 +6,51 @@
 
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-        <artifactId>odh-inventory</artifactId>
+        <artifactId>application-common</artifactId>
         <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>odh-inventory-impl</artifactId>
+    <artifactId>application-common-routing</artifactId>
     <version>0.1.0</version>
 
-    <name>AlpineBits Inventory action with ODH backend impl</name>
+    <name>AlpineBits Server common routing</name>
 
     <dependencies>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-            <artifactId>odh-backend-impl</artifactId>
+            <artifactId>odh-inventory-impl</artifactId>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-common-utils</artifactId>
+            <artifactId>alpinebits-common-api</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-api</artifactId>
+            <artifactId>alpinebits-housekeeping-impl</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-impl</artifactId>
+            <artifactId>alpinebits-middleware-api</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-xml-impl</artifactId>
+            <artifactId>alpinebits-routing-impl</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>ota-extension-impl</artifactId>
+            <artifactId>alpinebits-servlet-impl</artifactId>
             <version>${odh-alpinebits.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <!-- testing -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.testng</groupId>
-            <artifactId>arquillian-testng-container</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

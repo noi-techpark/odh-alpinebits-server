@@ -1,4 +1,6 @@
-package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient;
+package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client;
+
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.ApiKeyResponse;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -20,7 +22,7 @@ import java.util.Map;
  * time. This may pose a security risk. Please take that into
  * consideration when using this class.
  */
-public class OdhClient {
+public class OdhClientImpl implements OdhClient {
 
     // The Sonar warning "'PASSWORD' detected in this expression" can be ignored
     @SuppressWarnings({"squid:S2068"})
@@ -38,7 +40,7 @@ public class OdhClient {
 
     private String apiKey = "UNDEFINED";
 
-    public OdhClient(String baseUrl, String username, String password) {
+    public OdhClientImpl(String baseUrl, String username, String password) {
         this.username = username;
         this.password = password;
 
@@ -47,8 +49,11 @@ public class OdhClient {
     }
 
     /**
-     * Fetch the resource of type <code>T</code> from ODH using the given <code>path</code>,
-     * appending <code>queryParams</code> to the request URL.
+     * Fetch the resource of type <code>T</code> from ODH.
+     * <p>
+     * The resource is fetched from the given <code>path</code> using the specified
+     * HTTP <code>method</code>. The <code>queryParams</code> are appended to the
+     * request URL, the <code>body</code> is used as request body.
      * <p>
      * If the request fails with a {@link Response.Status#UNAUTHORIZED} HTTP status code,
      * an automatic authentication is attempted exactly once. If the authentication succeeds,
@@ -56,21 +61,27 @@ public class OdhClient {
      * repeated request fails again, no matter the cause, it won't be retried.
      *
      * @param path        this path is used to fetch the resource
+     * @param method      use this HTTP request method, e.g. GET, POST, PUT, ...
      * @param queryParams queryParams are appended to the URL
+     * @param body        this {@link Entity} is send as request body
      * @param genericType the genericType is useful for more advanced use cases, e.g. when
      *                    the result is expected to be a List of type <code>T</code>. Take
-     *                    a look at {@link #fetch(String, Map, Class)} if you just want to
+     *                    a look at {@link #fetch(String, String, Map, Entity, Class)} if you just want to
      *                    provide a class as type parameter
      * @param <T>         result type
      * @return the response body as instance of <code>T</code> if successful
      */
-    public <T> T fetch(String path, Map<String, String> queryParams, GenericType<T> genericType) {
-        return this.fetchWithAutomaticAuthentication(path, queryParams).readEntity(genericType);
+    @Override
+    public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, GenericType<T> genericType) {
+        return this.fetchWithAutomaticAuthentication(path, method, queryParams, body).readEntity(genericType);
     }
 
     /**
-     * Fetch the resource of type <code>T</code> from ODH using the given <code>path</code>,
-     * appending <code>queryParams</code> to the request URL.
+     * Fetch the resource of type <code>T</code> from ODH.
+     * <p>
+     * The resource is fetched from the given <code>path</code> using the specified
+     * HTTP <code>method</code>. The <code>queryParams</code> are appended to the
+     * request URL, the <code>body</code> is used as request body.
      * <p>
      * If the request fails with a {@link Response.Status#UNAUTHORIZED} HTTP status code,
      * an automatic authentication is attempted exactly once. If the authentication succeeds,
@@ -78,15 +89,18 @@ public class OdhClient {
      * repeated request fails again, no matter the cause, it won't be retried.
      *
      * @param path        this path is used to fetch the resource
+     * @param method      use this HTTP request method, e.g. GET, POST, PUT, ...
      * @param queryParams queryParams are appended to the URL
+     * @param body        this {@link Entity} is send as request body
      * @param resultClass the resultClass defines the class of the result type. Take
-     *                    a look at {@link #fetch(String, Map, GenericType)} for more
+     *                    a look at {@link #fetch(String, String, Map, Entity, GenericType)} for more
      *                    complex cases e.g. List of type <code>T</code>
      * @param <T>         result type
      * @return the response body as instance of <code>T</code> if successful
      */
-    public <T> T fetch(String path, Map<String, String> queryParams, Class<T> resultClass) {
-        return this.fetchWithAutomaticAuthentication(path, queryParams).readEntity(resultClass);
+    @Override
+    public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, Class<T> resultClass) {
+        return this.fetchWithAutomaticAuthentication(path, method, queryParams, body).readEntity(resultClass);
     }
 
     /**
@@ -125,11 +139,11 @@ public class OdhClient {
      * @param queryParams are appended to the URL
      * @return {@link Response} that can be further handled
      */
-    private Response fetchWithAutomaticAuthentication(String path, Map<String, String> queryParams) {
+    private Response fetchWithAutomaticAuthentication(String path, String method, Map<String, String> queryParams, Entity<?> body) {
         Invocation.Builder builder = this.prepareFetch(path, queryParams);
 
         // Fetch resource
-        Response response = builder.get();
+        Response response = builder.method(method, body);
 
         if (response.getStatus() != Response.Status.UNAUTHORIZED.getStatusCode()) {
             return response;
@@ -141,7 +155,7 @@ public class OdhClient {
 
         // Retry request
         builder = this.prepareFetch(path, queryParams);
-        return builder.get();
+        return builder.method(method, body);
     }
 
     private Invocation.Builder prepareFetch(String path, Map<String, String> queryParams) {
