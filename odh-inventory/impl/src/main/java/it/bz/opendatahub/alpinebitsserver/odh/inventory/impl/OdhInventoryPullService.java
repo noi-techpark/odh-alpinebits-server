@@ -26,6 +26,7 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBac
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,10 +122,7 @@ public class OdhInventoryPullService {
                     guestRoom.setDescriptions(this.buildDescriptions(room));
                     guestRoom.setPictures(this.buildPictures(room));
 
-                    if ("hgv".equalsIgnoreCase(room.getSource())) {
-                        guestRoom.setRoomAmenityCodes(this.buildRoomAmenityCodes(room));
-                    }
-
+                    guestRoom.setRoomAmenityCodes(this.buildRoomAmenityCodes(room));
 
                     List<GuestRoom> resultingGuestRooms = new ArrayList<>();
                     resultingGuestRooms.add(guestRoom);
@@ -185,12 +183,10 @@ public class OdhInventoryPullService {
     private List<Integer> buildRoomAmenityCodes(AccomodationRoom room) {
         return room.getFeatures()
                 .stream()
-                .map(feature -> {
-                    if ("hgv".equalsIgnoreCase(room.getSource())) {
-                        return Integer.parseInt(feature.getId());
-                    }
-                    return -100;
-                })
+                .map(feature -> feature.getRoomAmenityCodes() != null ? feature.getRoomAmenityCodes() : new ArrayList<Integer>())
+                .flatMap(List::stream)
+                .sorted(Comparator.comparingInt(Integer::intValue))
+                .distinct()
                 .collect(Collectors.toList());
     }
 
