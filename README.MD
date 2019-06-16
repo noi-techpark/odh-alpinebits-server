@@ -112,7 +112,7 @@ specify the ODH credentials!
 Assuming you are in the projects root folder, run the following command: 
 
 ```bash
-ALPINEBITS_ODH_USERNAME=XXX ALPINEBITS_ODH_PASSWORD=YYY java -jar application-spring/target/application-spring-0.1.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
+ALPINEBITS_ODH_USERNAME=XXX ALPINEBITS_ODH_PASSWORD=YYY java -jar application-spring/target/application-spring-0.2.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
 ```
 
 ## Docker environment
