@@ -25,8 +25,6 @@ import java.util.Map;
  */
 public class OdhBackendServiceImpl implements OdhBackendService {
 
-    public static final String DEFAULT_ODH_BASE_URL = "https://tourism.opendatahub.bz.it";
-
     private final OdhClient odhClient;
 
     public OdhBackendServiceImpl(OdhClient odhClient) {
