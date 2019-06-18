@@ -37,5 +37,10 @@
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>${jersey-client.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey-client.version}</version>
+        </dependency>
     </dependencies>
 </project>
