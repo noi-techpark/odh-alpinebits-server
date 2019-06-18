@@ -42,7 +42,7 @@
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-xml-impl</artifactId>
-            <version>0.6.0</version>
+            <version>${odh-alpinebits.version}</version>
         </dependency>
 
         <dependency>

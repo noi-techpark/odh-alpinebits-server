@@ -11,8 +11,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>application-war</artifactId>
-    <version>0.2.0</version>
+    <artifactId>ROOT</artifactId>
+    <version>0.1.0</version>
 
     <packaging>war</packaging>
     <name>AlpineBits Server WAR with Open Data Hub (ODH) backend</name>
@@ -66,6 +66,7 @@
     </dependencies>
 
     <build>
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

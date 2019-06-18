@@ -20,6 +20,13 @@
         <module>odh-inventory</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>maven-repo.opendatahub.bz.it</id>
+            <url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
+        </repository>
+    </repositories>
+
     <properties>
         <odh-alpinebits.version>0.7.2</odh-alpinebits.version>
         <slf4j.version>1.7.25</slf4j.version>
