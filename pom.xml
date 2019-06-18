@@ -6,7 +6,7 @@
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>alpinebitsserver-odh-root</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits Server with ODH as backend</name>
@@ -37,8 +37,8 @@
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <checkstyle-maven.version>2.17</checkstyle-maven.version>
-        <checkstyle.version>8.5</checkstyle.version>
+        <checkstyle-maven.version>3.1.0</checkstyle-maven.version>
+        <checkstyle.version>8.18</checkstyle.version>
         <maven-pmd-plugin.version>3.10.0</maven-pmd-plugin.version>
         <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
         <jacoco.version>0.8.2</jacoco.version>
@@ -159,33 +159,33 @@
         <dependencies>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-                <artifactId>application-common</artifactId>
-                <version>0.1.0</version>
+                <artifactId>application-common-environment</artifactId>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-                <artifactId>application-common</artifactId>
-                <version>0.1.0</version>
+                <artifactId>application-common-routing</artifactId>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-api</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-impl</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -315,7 +315,9 @@
                                 <consoleOutput>true</consoleOutput>
                                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
                                 <!--check only src directory, ignore generated sources-->
-                                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                                <sourceDirectories>
+                                    <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                                </sourceDirectories>
                             </configuration>
                             <goals>
                                 <goal>check</goal>

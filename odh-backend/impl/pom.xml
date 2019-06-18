@@ -7,27 +7,44 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-backend</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-backend-impl</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <name>ODH backend impl</name>
+
+    <properties>
+        <caffeine.version>2.7.0</caffeine.version>
+    </properties>
+
 
     <dependencies>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
             <artifactId>odh-backend-api</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.version}</version>
+        </dependency>
+
 
         <!-- testing -->
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-xml-impl</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>

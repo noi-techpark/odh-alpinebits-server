@@ -14,7 +14,6 @@ import it.bz.opendatahub.alpinebits.mapping.middleware.RequestMappingMiddleware;
 import it.bz.opendatahub.alpinebits.mapping.middleware.ResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
-import it.bz.opendatahub.alpinebitsserver.odh.inventory.impl.OdhInventoryPullService;
 import it.bz.opendatahub.alpinebits.xml.schema.v_2017_10.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.v_2017_10.OTAHotelDescriptiveInfoRS;
 
@@ -40,7 +39,7 @@ public final class InventoryPullMiddlewareBuilder {
         // Empty
     }
 
-    public static Middleware buildInventoryPullMiddleware(OdhInventoryPullService service) throws JAXBException {
+    public static Middleware buildInventoryPullMiddleware() throws JAXBException {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE),
@@ -48,8 +47,7 @@ public final class InventoryPullMiddlewareBuilder {
                 InventoryPullMiddlewareBuilder.buildInventoryPullResponseMappingMiddleware(),
                 new InventoryPullMiddleware(
                         HOTEL_DESCRIPTIVE_INFO_REQUEST_KEY,
-                        HOTEL_DESCRIPTIVE_INFO_RESPONSE_KEY,
-                        service
+                        HOTEL_DESCRIPTIVE_INFO_RESPONSE_KEY
                 )
         ));
     }

@@ -8,11 +8,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.3.RELEASE</version>
+        <relativePath/>
     </parent>
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>application-spring</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 
     <packaging>jar</packaging>
     <name>Standalone Spring application, providing an AlpineBits Server with Open Data Hub (ODH) backend</name>
@@ -26,9 +27,15 @@
 
     <properties>
         <odh-alpinebits.version>0.7.2</odh-alpinebits.version>
+        <odh-alpinebits-server.version>0.2.0</odh-alpinebits-server.version>
 
+        <janino.version>3.0.12</janino.version>
+        <jersey.version>2.26</jersey.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
+
+        <checkstyle-maven.version>3.1.0</checkstyle-maven.version>
+        <checkstyle.version>8.18</checkstyle.version>
 
         <testng.version>6.14.3</testng.version>
     </properties>
@@ -40,50 +47,25 @@
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-            <artifactId>odh-inventory-impl</artifactId>
-            <version>0.1.0</version>
+            <artifactId>application-common-routing</artifactId>
+            <version>${odh-alpinebits-server.version}</version>
         </dependency>
         <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-housekeeping-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-api</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-routing-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
+            <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+            <artifactId>odh-backend-impl</artifactId>
+            <version>${odh-alpinebits-server.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-servlet-impl</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-xml-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
 
-        <!-- The following to dependencies are necessary for Jersey to work -->
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-            <version>2.26</version>
-        </dependency>
+        <!-- The following to dependencies is necessary for Jersey to work in Spring -->
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>2.26</version>
+            <version>${jersey.version}</version>
         </dependency>
 
         <dependency>
@@ -94,7 +76,7 @@
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
-            <version>3.0.12</version>
+            <version>${janino.version}</version>
         </dependency>
 
         <!-- testing -->
@@ -118,10 +100,55 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Check code style -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle-maven.version}</version>
+                    <executions>
+                        <execution>
+                            <id>verify-style</id>
+                            <phase>validate</phase>
+                            <configuration>
+                                <configLocation>checkstyle.xml</configLocation>
+                                <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                                <consoleOutput>true</consoleOutput>
+                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                                <!--check only src directory, ignore generated sources-->
+                                <sourceDirectories>
+                                    <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                                </sourceDirectories>
+                            </configuration>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+                            <artifactId>build-tools</artifactId>
+                            <version>0.2.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

@@ -9,6 +9,8 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /**
  * DTO for Open Data Hub "AccommodationRoom" Feature element.
  */
@@ -20,6 +22,9 @@ public class Feature {
 
     @JsonProperty("Name")
     private String name;
+
+    @JsonProperty("RoomAmenityCodes")
+    private List<Integer> roomAmenityCodes;
 
     public String getId() {
         return id;
@@ -37,11 +42,20 @@ public class Feature {
         this.name = name;
     }
 
+    public List<Integer> getRoomAmenityCodes() {
+        return roomAmenityCodes;
+    }
+
+    public void setRoomAmenityCodes(List<Integer> roomAmenityCodes) {
+        this.roomAmenityCodes = roomAmenityCodes;
+    }
+
     @Override
     public String toString() {
         return "Feature{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", roomAmenityCodes=" + roomAmenityCodes +
                 '}';
     }
 }

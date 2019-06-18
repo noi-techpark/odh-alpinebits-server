@@ -1,5 +1,5 @@
 /*
- * This source Code Form is subject to the terms of the Mozilla Public
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
@@ -41,6 +41,12 @@ public class AccomodationRoom {
 
     @JsonProperty("RoomQuantity")
     private Integer roomQuantity;
+
+    @JsonProperty("RoomClassificationCodes")
+    private Integer roomClassificationCode;
+
+    @JsonProperty("RoomNumbers")
+    private List<String> roomNumbers;
 
     @JsonProperty("Features")
     private List<Feature> features;
@@ -115,6 +121,22 @@ public class AccomodationRoom {
         this.roomQuantity = roomQuantity;
     }
 
+    public Integer getRoomClassificationCode() {
+        return roomClassificationCode;
+    }
+
+    public void setRoomClassificationCode(Integer roomClassificationCode) {
+        this.roomClassificationCode = roomClassificationCode;
+    }
+
+    public List<String> getRoomNumbers() {
+        return roomNumbers;
+    }
+
+    public void setRoomNumbers(List<String> roomNumbers) {
+        this.roomNumbers = roomNumbers;
+    }
+
     public List<Feature> getFeatures() {
         return features;
     }
@@ -149,7 +171,9 @@ public class AccomodationRoom {
                 ", roomstd=" + roomstd +
                 ", roomcode='" + roomcode + '\'' +
                 ", roomtype='" + roomtype + '\'' +
-                ", roomQuantity='" + roomQuantity + '\'' +
+                ", roomQuantity=" + roomQuantity +
+                ", roomClassificationCode=" + roomClassificationCode +
+                ", roomNumbers=" + roomNumbers +
                 ", features=" + features +
                 ", accoRoomDetailMap=" + accoRoomDetailMap +
                 ", imageGalleryEntries=" + imageGalleryEntries +

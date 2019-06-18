@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+        <artifactId>application-common</artifactId>
+        <version>0.2.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>application-common-routing</artifactId>
+    <version>0.2.0</version>
+
+    <name>AlpineBits Server common routing</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+            <artifactId>odh-inventory-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-common-api</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-housekeeping-impl</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-middleware-api</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-routing-impl</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-servlet-impl</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+
+        <!-- testing -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
