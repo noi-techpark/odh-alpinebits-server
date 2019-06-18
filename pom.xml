@@ -48,8 +48,6 @@
         <gitflow-maven-plugin.version>1.10.0</gitflow-maven-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 
-        <servlet.version>3.0.1</servlet.version>
-
         <testng.version>6.14.3</testng.version>
         <mockito.version>2.22.0</mockito.version>
         <arquillian.version>1.4.0.Final</arquillian.version>
@@ -202,12 +200,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${servlet.version}</version>
-                <scope>provided</scope>
             </dependency>
 
             <!-- Test dependencies -->
