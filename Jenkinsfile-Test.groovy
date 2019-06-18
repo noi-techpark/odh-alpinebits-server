@@ -9,8 +9,7 @@ pipeline {
     environment {
         TESTSERVER_TOMCAT_ENDPOINT = "http://alpinebits-server.tomcat02.testingmachine.eu:8080/manager/text"
         TESTSERVER_TOMCAT_CREDENTIALS = credentials('testserver-tomcat8-credentials')
-        ODH_USERNAME = credentials('alpinebits-server-test-odh-username')
-        ODH_PASSWORD = credentials('alpinebits-server-test-odh-password')
+        ODH_URL = "https://tourism.opendatahub.bz.it"
     }
 
     stages {
@@ -22,14 +21,8 @@ pipeline {
                 sh 'echo "    </servers>" >> ~/.m2/settings.xml'
                 sh 'echo "</settings>" >> ~/.m2/settings.xml'
 
-                sh """echo '
-                <?xml version="1.0" encoding="UTF-8"?>
-                <Context path="/">
-                    <Environment name="ALPINEBITS_ODH_USERNAME" value="${ODH_USERNAME}" type="java.lang.String" override="true"/>
-                    <Environment name="ALPINEBITS_ODH_PASSWORD" value="${ODH_PASSWORD}" type="java.lang.String" override="true"/>
-                </Context>
-                ' > application-war/src/main/resources/META-INF/context.xml
-                """
+                sh 'sed -i -e "s%\\(odh.url\\s*=\\).*\\$%\\1${ODH_URL}%" application-spring/src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(odh.url\\s*=\\).*\\$%\\1${ODH_URL}%" application-war/src/main/resources/application.properties'
             }
         }
         stage('Test') {

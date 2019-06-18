@@ -6,10 +6,15 @@ pipeline {
         }
     }
 
+    environment {
+        ODH_URL = "https://tourism.opendatahub.bz.it"
+    }
+
     stages {
         stage('Configure') {
             steps {
-                sh 'echo "Configure"'
+                sh 'sed -i -e "s%\\(odh.url\\s*=\\).*\\$%\\1${ODH_URL}%" application-spring/src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(odh.url\\s*=\\).*\\$%\\1${ODH_URL}%" application-war/src/main/resources/application.properties'
             }
         }
         stage('Test') {
