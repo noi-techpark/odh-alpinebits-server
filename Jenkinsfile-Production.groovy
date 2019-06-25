@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'target/ROOT.war', onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'application-war/target/ROOT.war', onlyIfSuccessful: true
             }
         }
     }
