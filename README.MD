@@ -35,6 +35,11 @@ To build the project, the following prerequisites must be met:
 
 For a ready to use Docker environment with all prerequisites already installed and prepared, you can check out the [Docker environment](#docker-environment) section.
 
+> Hint: this project relies on the [AlpineBits library](https://github.com/noi-techpark/odh-alpinebits).
+We are currently in the process of releasing that library to the Maven central repository.
+Until then, you have to build the necessary AlpineBits library on your own. Please take a
+look at the corresponding [README.me](https://github.com/noi-techpark/odh-alpinebits/blob/master/README.MD) file.
+
 ### Installing
 
 Get a copy of the repository, e.g. by cloning it from the following location:
@@ -81,38 +86,26 @@ mvn clean verify sonar:sonar -P it,report
  
 ## Deployment
 
-Since the server uses ODH as its backend, each server must provide ODH credentials
-for the execution. The credentials are expected to be defined as following environment
-variables:
-
-- `ALPINEBITS_ODH_USERNAME`: the ODH username
-- `ALPINEBITS_ODH_PASSWORD`: the ODH password
-
-If the credentials are missing, the server won't start up (Spring version) or it
-returns an error message on every invocation (WAR version). 
-
 ### WAR
 
 The project provides an AlpineBits server in module `application-war`. If you want,
 to use it, the following additional prerequisites must be met:
 
-- Servlet Container 3.x (e.g. [Tomcat 8](https://tomcat.apache.org/download-80.cgi))
+- Servlet Container >= 3.1 (e.g. [Tomcat 8.5](https://tomcat.apache.org/download-80.cgi))
 
-The generated WAR file can be deployed to the servlet container. Don't forget to
-specify the ODH credentials!
+The generated WAR file can be deployed to the servlet container.
 
 ### Spring
 
 The project provides an AlpineBits server as Spring application in module
 `application-spring`. The generated JAR file is a complete AlpineBits Server with no
 further dependencies. To start it, just run the JAR file with the correct main
-class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`. Don't forget to
-specify the ODH credentials!
+class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`.
 
 Assuming you are in the projects root folder, run the following command: 
 
 ```bash
-ALPINEBITS_ODH_USERNAME=XXX ALPINEBITS_ODH_PASSWORD=YYY java -jar application-spring/target/application-spring-0.2.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
+java -jar application-spring/target/application-spring-0.2.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
 ```
 
 ## Docker environment
@@ -188,7 +181,7 @@ branch. Pull requests are warmly welcome.
 ### Versioning
 
 This project uses [SemVer](https://semver.org/) for versioning. For the versions available,
-see the [tags on this repository](https://github.com/idm-suedtirol/odh-alpinebits/tags). 
+see the [tags on this repository](https://github.com/noi-techpark/odh-alpinebits-server/tags). 
 
 ### License
 
