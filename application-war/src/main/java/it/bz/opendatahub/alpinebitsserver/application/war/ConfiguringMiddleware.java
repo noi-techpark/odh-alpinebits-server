@@ -51,7 +51,7 @@ public class ConfiguringMiddleware implements Middleware {
                 new GzipUnsupportedMiddleware(),
                 new MultipartFormDataParserMiddleware(),
                 new OdhBackendServiceProvidingMiddleware(odhUrl, 100, Duration.ofMinutes(10)),
-                RoutingMiddlewareProvider.buildInventoryRoutingMiddleware()
+                RoutingMiddlewareProvider.buildRoutingMiddleware()
         ));
     }
 

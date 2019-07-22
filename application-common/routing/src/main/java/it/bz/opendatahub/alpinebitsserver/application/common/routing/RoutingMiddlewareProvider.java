@@ -37,7 +37,7 @@ public final class RoutingMiddlewareProvider {
      * @throws JAXBException if there was an error while building
      * the necessary XML parts
      */
-    public static Middleware buildInventoryRoutingMiddleware() throws JAXBException {
+    public static Middleware buildRoutingMiddleware() throws JAXBException {
         Router router = new DefaultRouter.Builder()
                 .version(AlpineBitsVersion.V_2017_10)
                 .supportsAction(AlpineBitsAction.GET_VERSION)
