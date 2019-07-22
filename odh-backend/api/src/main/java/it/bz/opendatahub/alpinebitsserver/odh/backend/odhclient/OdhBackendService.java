@@ -8,6 +8,7 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient;
 
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 
 import java.util.List;
@@ -36,4 +37,11 @@ public interface OdhBackendService {
      */
     Accomodation fetchAccomodation(String accoId) throws OdhBackendException;
 
+    /**
+     * Push FreeRooms data to ODH.
+     *
+     * @param pushWrapper contains the message and other useful information for the push
+     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     */
+    void pushFreeRooms(PushWrapper pushWrapper) throws OdhBackendException;
 }

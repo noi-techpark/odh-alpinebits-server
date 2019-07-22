@@ -10,11 +10,13 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendServic
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.OdhClient;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.Map;
  * Implements {@link OdhBackendService}.
  */
 public class OdhBackendServiceImpl implements OdhBackendService {
+
+    private static final String ODH_ERROR_MESSAGE = "ODH client encountered a problem";
 
     private final OdhClient odhClient;
 
@@ -41,7 +45,7 @@ public class OdhBackendServiceImpl implements OdhBackendService {
             return odhClient.fetch(path, HttpMethod.GET, queryParams, null, new GenericType<List<AccomodationRoom>>() {
             });
         } catch (ProcessingException | WebApplicationException e) {
-            throw new OdhBackendException("ODH client encountered a problem", e);
+            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
         }
     }
 
@@ -52,7 +56,18 @@ public class OdhBackendServiceImpl implements OdhBackendService {
         try {
             return odhClient.fetch(path, HttpMethod.GET, null, null, Accomodation.class);
         } catch (ProcessingException | WebApplicationException e) {
-            throw new OdhBackendException("ODH client encountered a problem", e);
+            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
+        }
+    }
+
+    @Override
+    public void pushFreeRooms(PushWrapper pushWrapper) throws OdhBackendException {
+        String path = "api/FreeRooms/";
+
+        try {
+            odhClient.fetch(path, HttpMethod.POST, null, Entity.json(pushWrapper), String.class);
+        } catch (ProcessingException | WebApplicationException e) {
+            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
         }
     }
 }
