@@ -22,6 +22,7 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendServic
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPullService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,13 +37,13 @@ import java.util.stream.Collectors;
  * This service uses the ODH tourism data to provide a response to
  * an AlpineBits Inventory/Basic pull request.
  */
-public class OdhInventoryPullService {
+public class InventoryPullServiceImpl implements InventoryPullService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OdhInventoryPullService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InventoryPullServiceImpl.class);
 
     private final OdhBackendService service;
 
-    public OdhInventoryPullService(OdhBackendService service) {
+    public InventoryPullServiceImpl(OdhBackendService service) {
         this.service = service;
     }
 
