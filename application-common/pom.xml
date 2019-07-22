@@ -19,6 +19,7 @@
 
     <modules>
         <module>environment</module>
+        <module>middleware-config</module>
         <module>routing</module>
     </modules>
 </project>
