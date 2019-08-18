@@ -6,14 +6,24 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class wraps a message, that should be written to ODH,
  * and adds useful information.
  */
 public class PushWrapper {
 
+    @JsonProperty("AlpineBitsVersion")
     private String alpineBitsVersion;
+
+    @JsonProperty("AccommodationId")
+    private String accommodationId;
+
+    @JsonProperty("RequestId")
     private String requestId;
+
+    @JsonProperty("Message")
     private Object message;
 
     public String getAlpineBitsVersion() {
@@ -22,6 +32,14 @@ public class PushWrapper {
 
     public void setAlpineBitsVersion(String alpineBitsVersion) {
         this.alpineBitsVersion = alpineBitsVersion;
+    }
+
+    public String getAccommodationId() {
+        return accommodationId;
+    }
+
+    public void setAccommodationId(String accommodationId) {
+        this.accommodationId = accommodationId;
     }
 
     public String getRequestId() {
@@ -44,6 +62,7 @@ public class PushWrapper {
     public String toString() {
         return "PushWrapper{" +
                 "alpineBitsVersion='" + alpineBitsVersion + '\'' +
+                ", accommodationId='" + accommodationId + '\'' +
                 ", requestId='" + requestId + '\'' +
                 ", message=" + message +
                 '}';

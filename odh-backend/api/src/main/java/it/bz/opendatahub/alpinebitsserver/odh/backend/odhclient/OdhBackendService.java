@@ -44,4 +44,20 @@ public interface OdhBackendService {
      * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
      */
     void pushFreeRooms(PushWrapper pushWrapper) throws OdhBackendException;
+
+    /**
+     * Push Inventory/Basic data to ODH.
+     *
+     * @param pushWrapper contains the message and other useful information for the push
+     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     */
+    void pushInventoryBasic(PushWrapper pushWrapper) throws OdhBackendException;
+
+    /**
+     * Push Inventory/HotelInfo data to ODH.
+     *
+     * @param pushWrapper contains the message and other useful information for the push
+     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     */
+    void pushInventoryHotelInfo(PushWrapper pushWrapper) throws OdhBackendException;
 }

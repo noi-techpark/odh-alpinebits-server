@@ -62,8 +62,20 @@ public class OdhBackendServiceImpl implements OdhBackendService {
 
     @Override
     public void pushFreeRooms(PushWrapper pushWrapper) throws OdhBackendException {
-        String path = "api/FreeRooms/";
+        this.push("api/AlpineBits/FreeRooms", pushWrapper);
+    }
 
+    @Override
+    public void pushInventoryBasic(PushWrapper pushWrapper) throws OdhBackendException {
+        this.push("api/AlpineBits/InventoryBasic", pushWrapper);
+    }
+
+    @Override
+    public void pushInventoryHotelInfo(PushWrapper pushWrapper) throws OdhBackendException {
+        this.push("api/AlpineBits/InventoryHotelInfo", pushWrapper);
+    }
+
+    private void push(String path, PushWrapper pushWrapper) throws OdhBackendException {
         try {
             odhClient.fetch(path, HttpMethod.POST, null, Entity.json(pushWrapper), String.class);
         } catch (ProcessingException | WebApplicationException e) {
