@@ -15,7 +15,9 @@ import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.routing.DefaultRouter;
 import it.bz.opendatahub.alpinebits.routing.Router;
 import it.bz.opendatahub.alpinebits.routing.middleware.RoutingMiddleware;
+import it.bz.opendatahub.alpinebitsserver.odh.freerooms.middleware.FreeRoomsPushMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.middleware.InventoryPullMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.middleware.InventoryPushMiddlewareBuilder;
 
 import javax.xml.bind.JAXBException;
 
@@ -30,7 +32,7 @@ public final class RoutingMiddlewareProvider {
 
     /**
      * Build and return the a routing middleware that supports the
-     * AlpineBits Housekeeping and Inventory actions.
+     * AlpineBits Housekeeping, FreeRooms and Inventory actions.
      *
      * @return a routing middleware supporting the AlpineBits
      * Housekeeping and Inventory actions
@@ -49,12 +51,30 @@ public final class RoutingMiddlewareProvider {
                 .using(new HousekeepingGetCapabilitiesMiddleware())
                 .and()
                 .supportsAction(AlpineBitsAction.INVENTORY_BASIC_PULL)
-                .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INFO)
+                .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_INFO_INVENTORY)
                 .using(InventoryPullMiddlewareBuilder.buildInventoryPullMiddleware())
                 .and()
                 .supportsAction(AlpineBitsAction.INVENTORY_HOTEL_INFO_PULL)
                 .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_INFO_INFO)
                 .using(InventoryPullMiddlewareBuilder.buildInventoryPullMiddleware())
+                .and()
+                .supportsAction(AlpineBitsAction.INVENTORY_BASIC_PUSH)
+                .withCapabilities(
+                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY,
+                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY_USE_ROOMS
+                )
+                .using(InventoryPushMiddlewareBuilder.buildInventoryPushMiddleware())
+                .and()
+                .supportsAction(AlpineBitsAction.INVENTORY_HOTEL_INFO_PUSH)
+                .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INFO)
+                .using(InventoryPushMiddlewareBuilder.buildInventoryPushMiddleware())
+                .and()
+                .supportsAction(AlpineBitsAction.FREE_ROOMS_HOTEL_AVAIL_NOTIF_FREE_ROOMS)
+                .withCapabilities(
+                        AlpineBitsCapability.FREE_ROOMS_HOTEL_AVAIL_NOTIF,
+                        AlpineBitsCapability.FREE_ROOMS_HOTEL_AVAIL_NOTIF_ACCEPT_ROOMS
+                )
+                .using(FreeRoomsPushMiddlewareBuilder.buildFreeRoomsPushMiddleware())
                 .versionComplete()
                 .buildRouter();
         return new RoutingMiddleware(router);
