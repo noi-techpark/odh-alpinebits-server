@@ -31,13 +31,14 @@ public class MultipartFormExtractorMiddleware implements Middleware {
             HttpServletRequest httpServletRequest = ctx.getOrThrow(ServletContextKey.SERVLET_REQUEST);
 
             Part actionPart = httpServletRequest.getPart("action");
-            Part requestPart = httpServletRequest.getPart("request");
-
             String action = IOUtils.toString(actionPart.getInputStream());
-            InputStream request = requestPart.getInputStream();
-
             ctx.put(RequestContextKey.REQUEST_ACTION, action);
-            ctx.put(RequestContextKey.REQUEST_CONTENT_STREAM, request);
+
+            Part requestPart = httpServletRequest.getPart("request");
+            if (requestPart != null) {
+                InputStream request = requestPart.getInputStream();
+                ctx.put(RequestContextKey.REQUEST_CONTENT_STREAM, request);
+            }
 
             chain.next();
         } catch (IOException | ServletException e) {

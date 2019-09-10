@@ -6,7 +6,13 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.ApiKeyResponse;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -50,7 +56,7 @@ public class OdhClientImpl implements OdhClient {
         this.username = username;
         this.password = password;
 
-        Client client = ClientBuilder.newClient();
+        Client client = this.buildClient();
         this.webTarget = client.target(baseUrl);
     }
 
@@ -107,6 +113,20 @@ public class OdhClientImpl implements OdhClient {
     @Override
     public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, Class<T> resultClass) {
         return this.fetchWithAutomaticAuthentication(path, method, queryParams, body).readEntity(resultClass);
+    }
+
+    private Client buildClient() {
+        ObjectMapper om = new ObjectMapper();
+        om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        om.registerModule(new JavaTimeModule());
+        om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
+        provider.setMapper(om);
+
+        ClientConfig config = new ClientConfig(provider);
+
+        return ClientBuilder.newClient(config);
     }
 
     /**

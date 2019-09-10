@@ -57,7 +57,7 @@ public class AlpineBitsResource {
                 new GzipUnsupportedMiddleware(),
                 new MultipartFormExtractorMiddleware(),
                 new OdhBackendServiceProvidingMiddleware(this.odhUrl, 100, Duration.ofMinutes(10)),
-                RoutingMiddlewareProvider.buildInventoryRoutingMiddleware()
+                RoutingMiddlewareProvider.buildRoutingMiddleware()
         ));
     }
 
