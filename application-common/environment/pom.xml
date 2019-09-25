@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>application-common</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>application-common-environment</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 
     <name>AlpineBits Server common environment</name>
 

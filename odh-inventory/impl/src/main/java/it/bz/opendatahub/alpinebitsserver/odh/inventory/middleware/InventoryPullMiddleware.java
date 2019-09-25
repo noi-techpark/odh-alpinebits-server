@@ -17,7 +17,7 @@ import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.middleware.MiddlewareChain;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendContextKey;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendService;
-import it.bz.opendatahub.alpinebitsserver.odh.inventory.impl.OdhInventoryPullService;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.impl.InventoryPullServiceImpl;
 
 /**
  * A simple {@link Middleware} to handle Inventory pull
@@ -51,7 +51,7 @@ public class InventoryPullMiddleware implements Middleware {
         HotelDescriptiveInfoRequest hotelDescriptiveInfoRequest = ctx.getOrThrow(this.requestKey);
         OdhBackendService odhBackendService = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE);
 
-        OdhInventoryPullService service = new OdhInventoryPullService(odhBackendService);
+        InventoryPullServiceImpl service = new InventoryPullServiceImpl(odhBackendService);
 
         // Call service for persistence
         if (AlpineBitsAction.INVENTORY_BASIC_PULL.equals(action)) {

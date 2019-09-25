@@ -7,18 +7,19 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>alpinebitsserver-odh-root</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>application-common</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits Server common</name>
 
     <modules>
         <module>environment</module>
+        <module>middleware-config</module>
         <module>routing</module>
     </modules>
 </project>

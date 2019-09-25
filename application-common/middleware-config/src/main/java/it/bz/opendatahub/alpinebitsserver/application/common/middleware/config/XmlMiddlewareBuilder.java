@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.inventory.middleware;
+package it.bz.opendatahub.alpinebitsserver.application.common.middleware.config;
 
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
@@ -29,13 +29,13 @@ public final class XmlMiddlewareBuilder {
     }
 
     public static <T> Middleware buildXmlToObjectConvertingMiddleware(Key<T> key) throws JAXBException {
-        Schema schema = XmlValidationSchemaProvider.buildRngSchemaForAlpineBitsVersion("2017-10");
+        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion("2017-10");
         XmlToObjectConverter<T> converter = new JAXBXmlToObjectConverter.Builder<>(key.getType()).schema(schema).build();
         return new XmlRequestMappingMiddleware<>(converter, key);
     }
 
     public static <T> Middleware buildObjectToXmlConvertingMiddleware(Key<T> key) throws JAXBException {
-        Schema schema = XmlValidationSchemaProvider.buildRngSchemaForAlpineBitsVersion("2017-10");
+        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion("2017-10");
         ObjectToXmlConverter<T> converter = new JAXBObjectToXmlConverter.Builder<>(key.getType())
                 .schema(schema)
                 .prettyPrint(true)
