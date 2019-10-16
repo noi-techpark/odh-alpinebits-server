@@ -8,6 +8,7 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient;
 
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PullWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 
@@ -17,6 +18,16 @@ import java.util.List;
  * This service provides methods to access the ODH backend.
  */
 public interface OdhBackendService {
+
+    /**
+     * Return if the current instance of the service is authorized against ODH.
+     * <p>
+     * Based on the result, e.g. different endpoints may be called.
+     *
+     * @return <code>true</code> if the service is authorized against the ODH,
+     * <code>false</code> otherwise.
+     */
+    boolean isAuthenticated();
 
     /**
      * Fetch entries from <code>AccommodationRoom</code> endpoint for the given room ID.
@@ -36,6 +47,10 @@ public interface OdhBackendService {
      * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
      */
     Accomodation fetchAccomodation(String accoId) throws OdhBackendException;
+
+    <T> PullWrapper<T> pullInventoryBasic(String hotelCode) throws OdhBackendException;
+
+    <T> PullWrapper<T> pullInventoryHotelInfo(String hotelCode) throws OdhBackendException;
 
     /**
      * Push FreeRooms data to ODH.
