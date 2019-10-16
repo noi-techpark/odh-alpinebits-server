@@ -21,10 +21,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapping utility class for inventory pull actions.
+ */
 public class InventoryPullMapper {
 
     private static final Logger LOG = LoggerFactory.getLogger(InventoryPullServiceImpl.class);
 
+    /**
+     * Map a list of {@link AccomodationRoom} elements to a
+     * {@link HotelDescriptiveContent} element for the Inventory HotelInfo.
+     *
+     * @param rooms Map this list to a HotelDescriptiveContent element.
+     * @return The mapped HotelDescriptiveContent element.
+     */
     public HotelDescriptiveContent mapToHotelDescriptiveContentForBasic(List<AccomodationRoom> rooms) {
         List<GuestRoom> guestRooms = rooms
                 .stream()
@@ -80,6 +90,13 @@ public class InventoryPullMapper {
         return hotelDescriptiveContent;
     }
 
+    /**
+     * Map a list of {@link AccomodationRoom} elements to a
+     * {@link HotelDescriptiveContent} element for the Inventory HotelInfo.
+     *
+     * @param rooms Map this list to a HotelDescriptiveContent element.
+     * @return The mapped HotelDescriptiveContent element.
+     */
     public HotelDescriptiveContent mapToHotelDescriptiveContentForHotelInfo(List<AccomodationRoom> rooms) {
         List<GuestRoom> guestRooms = rooms
                 .stream()
