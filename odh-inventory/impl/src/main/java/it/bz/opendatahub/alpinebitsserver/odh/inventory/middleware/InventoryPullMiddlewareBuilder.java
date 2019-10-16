@@ -41,6 +41,26 @@ public final class InventoryPullMiddlewareBuilder {
     }
 
     public static Middleware buildInventoryPullMiddleware() throws JAXBException {
+        // Return a middleware, that invokes a different middleware, based
+        // on the validity of the credentials provided with the AlpineBits request.
+        return new AuthenticationBasedRoutingMiddleware(
+                buildInventoryPullMiddlewareWithAuthentication(),
+                buildInventoryPullMiddlewareWithNoAuthentication()
+        );
+    }
+
+    private static Middleware buildInventoryPullMiddlewareWithAuthentication() throws JAXBException {
+        return ComposingMiddlewareBuilder.compose(Arrays.asList(
+                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE),
+                new AuthenticatedInventoryPullMiddleware(
+                        OTA_INVENTORY_PULL_REQUEST,
+                        OTA_INVENTORY_PULL_RESPONSE
+                )
+        ));
+    }
+
+    private static Middleware buildInventoryPullMiddlewareWithNoAuthentication() throws JAXBException {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE),

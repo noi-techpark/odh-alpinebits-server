@@ -6,13 +6,14 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient;
 
+import it.bz.opendatahub.alpinebits.xml.schema.v_2017_10.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PullWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This service provides methods to access the ODH backend.
@@ -28,6 +29,24 @@ public interface OdhBackendService {
      * <code>false</code> otherwise.
      */
     boolean isAuthenticated();
+
+    /**
+     * Fetch Inventory Basic {@link OTAHotelDescriptiveInfoRS} data from ODH for the given hotelCode.
+     *
+     * @param hotelCode Fetch the data for this hotel code.
+     * @return An {@link Optional} containing the list of OTAHotelDescriptiveInfoRS elements
+     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     */
+    List<OTAHotelDescriptiveInfoRS> fetchInventoryBasic(String hotelCode) throws OdhBackendException;
+
+    /**
+     * Fetch Inventory HotelInfo {@link OTAHotelDescriptiveInfoRS} data from ODH for the given hotelCode.
+     *
+     * @param hotelCode Fetch the data for this hotel code.
+     * @return An {@link Optional} containing the list of OTAHotelDescriptiveInfoRS elements
+     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     */
+    List<OTAHotelDescriptiveInfoRS> fetchInventoryHotelInfo(String hotelCode) throws OdhBackendException;
 
     /**
      * Fetch entries from <code>AccommodationRoom</code> endpoint for the given room ID.
@@ -47,10 +66,6 @@ public interface OdhBackendService {
      * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
      */
     Accomodation fetchAccomodation(String accoId) throws OdhBackendException;
-
-    <T> PullWrapper<T> pullInventoryBasic(String hotelCode) throws OdhBackendException;
-
-    <T> PullWrapper<T> pullInventoryHotelInfo(String hotelCode) throws OdhBackendException;
 
     /**
      * Push FreeRooms data to ODH.
