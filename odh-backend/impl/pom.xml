@@ -44,12 +44,6 @@
 
         <!-- testing -->
         <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-xml-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <scope>test</scope>

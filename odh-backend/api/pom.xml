@@ -22,6 +22,11 @@
             <artifactId>alpinebits-middleware-api</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-xml-impl</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
 
         <!-- testing -->
         <dependency>
