@@ -14,6 +14,8 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.ApiKeyResponse;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -34,7 +36,7 @@ import java.util.Map;
  * time. This may pose a security risk. Please take that into
  * consideration when using this class.
  */
-public class OdhClientImpl implements OdhClient {
+public class OdhClientImpl implements AuthenticatedOdhClient {
 
     // The Sonar warning "'PASSWORD' detected in this expression" can be ignored
     @SuppressWarnings({"squid:S2068"})
@@ -46,18 +48,26 @@ public class OdhClientImpl implements OdhClient {
 
     private static final String AUTHENTICATION_PATH = "token";
 
-    private final String username;
-    private final String password;
     private final WebTarget webTarget;
 
     private String apiKey = "UNDEFINED";
+    private boolean isAuthenticated;
 
     public OdhClientImpl(String baseUrl, String username, String password) {
-        this.username = username;
-        this.password = password;
-
         Client client = this.buildClient();
         this.webTarget = client.target(baseUrl);
+
+        try {
+            this.apiKey = this.fetchApiKey(username, password);
+            this.isAuthenticated = true;
+        } catch (ProcessingException | WebApplicationException e) {
+            this.isAuthenticated = false;
+        }
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return this.isAuthenticated;
     }
 
     /**
@@ -169,18 +179,6 @@ public class OdhClientImpl implements OdhClient {
         Invocation.Builder builder = this.prepareFetch(path, queryParams);
 
         // Fetch resource
-        Response response = builder.method(method, body);
-
-        if (response.getStatus() != Response.Status.UNAUTHORIZED.getStatusCode()) {
-            return response;
-        }
-
-        // If response status code is 401 (UNAUTHORIZED), attempt to fetch new API key
-        // and retry the request with that key
-        this.apiKey = this.fetchApiKey(this.username, this.password);
-
-        // Retry request
-        builder = this.prepareFetch(path, queryParams);
         return builder.method(method, body);
     }
 
