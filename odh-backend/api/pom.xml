@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-backend</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-backend-api</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 
     <name>ODH backend API</name>
 
@@ -20,6 +20,11 @@
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-middleware-api</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-xml-impl</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
 
