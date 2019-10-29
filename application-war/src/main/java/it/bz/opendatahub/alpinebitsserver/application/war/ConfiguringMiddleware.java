@@ -22,7 +22,6 @@ import it.bz.opendatahub.alpinebitsserver.application.common.routing.RoutingMidd
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.middleware.OdhBackendServiceProvidingMiddleware;
 
 import javax.xml.bind.JAXBException;
-import java.time.Duration;
 import java.util.Arrays;
 
 /**
@@ -50,7 +49,7 @@ public class ConfiguringMiddleware implements Middleware {
                 new BasicAuthenticationMiddleware(),
                 new GzipUnsupportedMiddleware(),
                 new MultipartFormDataParserMiddleware(),
-                new OdhBackendServiceProvidingMiddleware(odhUrl, 100, Duration.ofMinutes(10)),
+                new OdhBackendServiceProvidingMiddleware(odhUrl),
                 RoutingMiddlewareProvider.buildRoutingMiddleware()
         ));
     }

@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -56,7 +55,7 @@ public class AlpineBitsResource {
                 new BasicAuthenticationMiddleware(),
                 new GzipUnsupportedMiddleware(),
                 new MultipartFormExtractorMiddleware(),
-                new OdhBackendServiceProvidingMiddleware(this.odhUrl, 100, Duration.ofMinutes(10)),
+                new OdhBackendServiceProvidingMiddleware(this.odhUrl),
                 RoutingMiddlewareProvider.buildRoutingMiddleware()
         ));
     }
