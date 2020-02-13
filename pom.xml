@@ -29,7 +29,7 @@
     </repositories>
 
     <properties>
-        <odh-alpinebits.version>0.9.0</odh-alpinebits.version>
+        <odh-alpinebits.version>0.10.0-SNAPSHOT</odh-alpinebits.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
 
@@ -52,7 +52,7 @@
         <testng.version>6.14.3</testng.version>
         <mockito.version>2.22.0</mockito.version>
         <arquillian.version>1.4.0.Final</arquillian.version>
-        <tomcat-embedded.version>9.0.30</tomcat-embedded.version>
+        <tomcat-embedded.version>9.0.31</tomcat-embedded.version>
         <rest-assured.version>3.1.1</rest-assured.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

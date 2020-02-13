@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.inventory.impl;
+package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10;
 
 import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveContent;
@@ -14,11 +14,12 @@ import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfoRoot
 import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfoType;
 import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfosType;
 import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.HotelInfoType;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendService;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2017_10.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPullService;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.InventoryPullMapper;
 
 import javax.ws.rs.core.Response;
 import java.util.List;

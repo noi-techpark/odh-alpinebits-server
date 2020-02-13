@@ -16,11 +16,6 @@
 
     <name>ODH backend impl</name>
 
-    <properties>
-        <caffeine.version>2.7.0</caffeine.version>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
@@ -32,14 +27,9 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-            <version>${caffeine.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.9.9</version>
+            <version>2.10.0</version>
         </dependency>
 
         <!-- testing -->

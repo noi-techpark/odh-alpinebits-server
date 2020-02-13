@@ -4,18 +4,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.inventory.middleware;
+package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2018_10;
 
+import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsVersion;
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveInfoRequest;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveInfoResponse;
-import it.bz.opendatahub.alpinebits.mapping.mapper.InventoryMapperInstances;
+import it.bz.opendatahub.alpinebits.mapping.mapper.v_2018_10.InventoryMapperInstances;
 import it.bz.opendatahub.alpinebits.mapping.middleware.RequestMappingMiddleware;
 import it.bz.opendatahub.alpinebits.mapping.middleware.ResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
-import it.bz.opendatahub.alpinebits.xml.schema.v_2017_10.OTAHotelDescriptiveInfoRQ;
-import it.bz.opendatahub.alpinebits.xml.schema.v_2017_10.OTAHotelDescriptiveInfoRS;
+import it.bz.opendatahub.alpinebits.xml.schema.v_2018_10.OTAHotelDescriptiveInfoRQ;
+import it.bz.opendatahub.alpinebits.xml.schema.v_2018_10.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebitsserver.application.common.middleware.config.XmlMiddlewareBuilder;
 
 import javax.xml.bind.JAXBException;
@@ -51,8 +52,8 @@ public final class InventoryPullMiddlewareBuilder {
 
     private static Middleware buildInventoryPullMiddlewareWithAuthentication() throws JAXBException {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
-                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST),
-                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE),
+                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2018_10),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2018_10),
                 new AuthenticatedInventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
                         OTA_INVENTORY_PULL_RESPONSE
@@ -62,8 +63,8 @@ public final class InventoryPullMiddlewareBuilder {
 
     private static Middleware buildInventoryPullMiddlewareWithNoAuthentication() throws JAXBException {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
-                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST),
-                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE),
+                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2018_10),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2018_10),
                 InventoryPullMiddlewareBuilder.buildInventoryPullRequestMappingMiddleware(),
                 InventoryPullMiddlewareBuilder.buildInventoryPullResponseMappingMiddleware(),
                 new InventoryPullMiddleware(

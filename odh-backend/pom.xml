@@ -23,7 +23,7 @@
     </modules>
 
     <properties>
-        <jersey-client.version>2.28</jersey-client.version>
+        <jersey-client.version>2.30</jersey-client.version>
     </properties>
 
     <dependencies>
