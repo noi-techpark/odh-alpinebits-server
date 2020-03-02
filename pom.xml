@@ -29,7 +29,7 @@
     </repositories>
 
     <properties>
-        <odh-alpinebits.version>0.10.0</odh-alpinebits.version>
+        <odh-alpinebits.version>1.0.0</odh-alpinebits.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
 
