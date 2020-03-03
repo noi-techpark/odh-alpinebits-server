@@ -6,7 +6,7 @@
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>alpinebitsserver-odh-root</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits Server with ODH as backend</name>
@@ -29,7 +29,7 @@
     </repositories>
 
     <properties>
-        <odh-alpinebits.version>0.9.0</odh-alpinebits.version>
+        <odh-alpinebits.version>1.0.0</odh-alpinebits.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
 
@@ -38,8 +38,8 @@
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-        <checkstyle-maven.version>3.1.0</checkstyle-maven.version>
-        <checkstyle.version>8.18</checkstyle.version>
+        <checkstyle-maven.version>3.1.1</checkstyle-maven.version>
+        <checkstyle.version>8.29</checkstyle.version>
         <maven-pmd-plugin.version>3.10.0</maven-pmd-plugin.version>
         <sonar-maven-plugin.version>3.4.0.905</sonar-maven-plugin.version>
         <jacoco.version>0.8.2</jacoco.version>
@@ -52,13 +52,13 @@
         <testng.version>6.14.3</testng.version>
         <mockito.version>2.22.0</mockito.version>
         <arquillian.version>1.4.0.Final</arquillian.version>
-        <tomcat-embedded.version>8.5.42</tomcat-embedded.version>
+        <tomcat-embedded.version>9.0.31</tomcat-embedded.version>
         <rest-assured.version>3.1.1</rest-assured.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipTests>false</skipTests>
-        <argLine>-Dfile.encoding=UTF-8</argLine>
+        <argLine>-Dfile.encoding=UTF-8to</argLine>
     </properties>
 
     <organization>
@@ -170,47 +170,47 @@
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-environment</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-middleware-config</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-routing</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-api</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-impl</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-api</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-impl</artifactId>
-                <version>0.4.0</version>
+                <version>0.5.0</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>

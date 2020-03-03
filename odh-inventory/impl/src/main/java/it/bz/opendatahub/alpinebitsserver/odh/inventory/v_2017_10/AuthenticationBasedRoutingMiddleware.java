@@ -4,13 +4,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.inventory.middleware;
+package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10;
 
 import it.bz.opendatahub.alpinebits.middleware.Context;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.middleware.MiddlewareChain;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendContextKey;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendService;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2017_10.OdhBackendService;
 
 /**
  * This middleware invokes one of the two constructor provided
@@ -24,7 +24,7 @@ public class AuthenticationBasedRoutingMiddleware implements Middleware {
     private final Middleware middlewareToRunWhenAuthenticated;
     private final Middleware middlewareToRunWhenNotAuthenticated;
 
-    AuthenticationBasedRoutingMiddleware(
+    public AuthenticationBasedRoutingMiddleware(
             Middleware middlewareToRunWhenAuthenticated,
             Middleware middlewareToRunWhenNotAuthenticated
     ) {
@@ -34,7 +34,7 @@ public class AuthenticationBasedRoutingMiddleware implements Middleware {
 
     @Override
     public void handleContext(Context ctx, MiddlewareChain middlewareChain) {
-        OdhBackendService service = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE);
+        OdhBackendService service = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE_2017_10);
         if (service.isAuthenticated()) {
             this.middlewareToRunWhenAuthenticated.handleContext(ctx, middlewareChain);
         } else {

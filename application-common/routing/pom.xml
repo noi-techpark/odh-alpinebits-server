@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>application-common</artifactId>
-        <version>0.4.0</version>
+        <version>0.5.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>application-common-routing</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 
     <name>AlpineBits Server common routing</name>
 
@@ -28,6 +28,11 @@
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-common-api</artifactId>
+            <version>${odh-alpinebits.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-handshaking-impl</artifactId>
             <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>

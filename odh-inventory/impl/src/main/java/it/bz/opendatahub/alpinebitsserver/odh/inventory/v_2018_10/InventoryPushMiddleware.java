@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.inventory.middleware;
+package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2018_10;
 
 import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsAction;
 import it.bz.opendatahub.alpinebits.common.context.RequestContextKey;
@@ -14,11 +14,10 @@ import it.bz.opendatahub.alpinebits.middleware.Context;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.middleware.MiddlewareChain;
-import it.bz.opendatahub.alpinebits.xml.schema.v_2017_10.OTAHotelDescriptiveContentNotifRQ;
+import it.bz.opendatahub.alpinebits.xml.schema.v_2018_10.OTAHotelDescriptiveContentNotifRQ;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendContextKey;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
-import it.bz.opendatahub.alpinebitsserver.odh.inventory.impl.InventoryPushServiceImpl;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2018_10.OdhBackendService;
 
 /**
  * A simple {@link Middleware} to handle FreeRooms push requests.
@@ -48,7 +47,7 @@ public class InventoryPushMiddleware implements Middleware {
     private GenericResponse invokeService(Context ctx) {
         // Get necessary objects from middleware context
         String action = ctx.getOrThrow(RequestContextKey.REQUEST_ACTION);
-        OdhBackendService odhBackendService = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE);
+        OdhBackendService odhBackendService = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE_2018_10);
         String alpineBitsVersion = ctx.getOrThrow(RequestContextKey.REQUEST_VERSION);
         String requestId = ctx.getOrThrow(RequestContextKey.REQUEST_ID);
         OTAHotelDescriptiveContentNotifRQ inventoryPushRequest = ctx.getOrThrow(this.requestKey);

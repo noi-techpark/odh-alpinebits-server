@@ -4,11 +4,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.freerooms.middleware;
+package it.bz.opendatahub.alpinebitsserver.odh.freerooms.v_2017_10;
 
+import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsVersion;
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
 import it.bz.opendatahub.alpinebits.mapping.entity.GenericResponse;
-import it.bz.opendatahub.alpinebits.mapping.mapper.FreeRoomsMapperInstances;
+import it.bz.opendatahub.alpinebits.mapping.mapper.v_2017_10.FreeRoomsMapperInstances;
 import it.bz.opendatahub.alpinebits.mapping.middleware.ResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
@@ -45,8 +46,8 @@ public final class FreeRoomsPushMiddlewareBuilder {
 
     public static Middleware buildFreeRoomsPushMiddleware() throws JAXBException {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
-                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_FREE_ROOMS_PUSH_REQUEST),
-                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_FREE_ROOMS_PUSH_RESPONSE),
+                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_FREE_ROOMS_PUSH_REQUEST, AlpineBitsVersion.V_2017_10),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_FREE_ROOMS_PUSH_RESPONSE, AlpineBitsVersion.V_2017_10),
                 buildValidationMiddleware(),
                 buildFreeRoomsPushResponseMappingMiddleware(),
                 new FreeRoomsPushMiddleware(
