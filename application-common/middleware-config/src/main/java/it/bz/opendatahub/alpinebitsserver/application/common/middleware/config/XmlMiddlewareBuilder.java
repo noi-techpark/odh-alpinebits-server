@@ -28,14 +28,14 @@ public final class XmlMiddlewareBuilder {
         // Empty
     }
 
-    public static <T> Middleware buildXmlToObjectConvertingMiddleware(Key<T> key) throws JAXBException {
-        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion("2017-10");
+    public static <T> Middleware buildXmlToObjectConvertingMiddleware(Key<T> key, String version) throws JAXBException {
+        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion(version);
         XmlToObjectConverter<T> converter = new JAXBXmlToObjectConverter.Builder<>(key.getType()).schema(schema).build();
         return new XmlRequestMappingMiddleware<>(converter, key);
     }
 
-    public static <T> Middleware buildObjectToXmlConvertingMiddleware(Key<T> key) throws JAXBException {
-        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion("2017-10");
+    public static <T> Middleware buildObjectToXmlConvertingMiddleware(Key<T> key, String version) throws JAXBException {
+        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion(version);
         ObjectToXmlConverter<T> converter = new JAXBObjectToXmlConverter.Builder<>(key.getType())
                 .schema(schema)
                 .prettyPrint(true)

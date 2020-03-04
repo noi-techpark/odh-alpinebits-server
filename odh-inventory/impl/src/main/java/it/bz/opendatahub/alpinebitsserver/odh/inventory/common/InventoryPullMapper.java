@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.odh.inventory.impl;
+package it.bz.opendatahub.alpinebitsserver.odh.inventory.common;
 
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.GuestRoom;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveContent;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class InventoryPullMapper {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InventoryPullServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InventoryPullMapper.class);
 
     /**
      * Map a list of {@link AccomodationRoom} elements to a

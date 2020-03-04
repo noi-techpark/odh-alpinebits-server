@@ -29,7 +29,7 @@ import java.util.Arrays;
  * the resulting server is able to respond to AlpineBits Inventory requests.
  * <p>
  * The resulting server supports the {@link AlpineBitsVersion#V_2017_10}
- * version only.
+ * and {@link AlpineBitsVersion#V_2018_10} versions.
  * <p>
  * A basic authentication check is enforced, although any username and
  * password combination is valid. In other words: a request MUST contain
