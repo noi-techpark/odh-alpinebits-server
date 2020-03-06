@@ -16,6 +16,7 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2018_10.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPullService;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.InventoryPullMapper;
 
 import javax.ws.rs.core.Response;
@@ -54,7 +55,7 @@ public class InventoryPullServiceImpl implements InventoryPullService {
 
             // Set hotel name
             hotelDescriptiveContent.setHotelName(accomodation.getShortname());
-            
+
             response.setHotelDescriptiveContent(hotelDescriptiveContent);
             response.setSuccess("");
         } catch (OdhBackendException e) {
@@ -83,6 +84,9 @@ public class InventoryPullServiceImpl implements InventoryPullService {
 
             // Set hotel name
             hotelDescriptiveContent.setHotelName(accomodation.getShortname());
+
+            // Add ContactInfos if appropriate
+            ContactInfosTypeBuilder.extractContactInfosType(accomodation).ifPresent(hotelDescriptiveContent::setContactInfos);
 
             // Add some hotel info
 
