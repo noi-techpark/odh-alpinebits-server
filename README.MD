@@ -18,6 +18,7 @@ as a backend.
 - [Deployment](#deployment)
 - [Docker environment](#docker-environment)
 - [Information](#information)
+- [Howto request data?](#Howto-request-data)
 
 ## Getting started
 
@@ -195,3 +196,65 @@ See the LICENSE file for more information.
 ### Acknowledgements
 
 - [NOI Techpark](https://noi.bz.it/en)
+
+## Howto request data?
+
+You can use the [AlpineBits Protocol Test Client](https://alpinebits.testingmachine.eu/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
+
+In the test client insert the following configuration:
+
+```
+end point (URL): https://alpinebits.opendatahub.bz.it/AlpineBits
+user name: someuser
+password: somesecret
+X-AlpineBits-ClientProtocolVersion: 2018-10
+X-AlpineBits-ClientID (optional): development.alpinebits.org-test-client
+action: OTA_Ping:Handshaking (since 2018-10)
+request (optional): handshaking.xml
+```
+
+You need to create a XML file, which we call handshaking.xml This file contains some request parameter requested by an AlpineBits request.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_PingRQ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.opentravel.org/OTA/2003/05" xsi:schemaLocation="http://www.opentravel.org/OTA/2003/05 OTA_PingRQ.xsd" Version="8.000">
+
+    <EchoData>
+    {
+      "versions": [{
+        "version": "2017-10"
+      },
+      {
+        "version": "2018-10",
+        "actions": [
+          {
+            "action": "action_OTA_Ping"
+          },{
+            "action": "action_OTA_HotelDescriptiveInfo_Inventory",
+            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
+          },{
+            "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
+            "supports": ["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]
+          },{
+            "action": "action_OTA_HotelRatePlan_BaseRates",
+            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
+          },{
+            "action": "action_OTA_HotelRatePlanNotif_RatePlans",
+            "supports": [
+              "OTA_HotelRatePlanNotif_accept_overlay",
+              "OTA_HotelRatePlanNotif_accept_Supplements",
+              "OTA_HotelRatePlanNotif_accept_RatePlan_BookingRule",
+              "OTA_HotelRatePlanNotif_accept_FreeNightsOffers",
+              "OTA_HotelRatePlanNotif_accept_FamilyOffers"
+            ]
+          }
+        ]
+      }]
+    }
+    </EchoData>
+
+</OTA_PingRQ>
+```
+
+
