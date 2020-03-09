@@ -201,7 +201,7 @@ See the LICENSE file for more information.
 
 You can use the [AlpineBits Protocol Test Client](https://alpinebits.testingmachine.eu/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
 
-In the test client insert the following configuration:
+In the test client you have to specify the request settings:
 
 ```
 end point (URL): https://alpinebits.opendatahub.bz.it/AlpineBits
@@ -213,7 +213,7 @@ action: OTA_Ping:Handshaking (since 2018-10)
 request (optional): handshaking.xml
 ```
 
-You need to create a XML file, which we call handshaking.xml This file contains some request parameter requested by an AlpineBits request.
+The *action* setting requires you to upload an XML file. You can create a plain text file called *handshaking.xml* on your machine and fill in the following XML content: 
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -257,4 +257,56 @@ You need to create a XML file, which we call handshaking.xml This file contains 
 </OTA_PingRQ>
 ```
 
+The response whould look like this:
+
+```xml
+end point response (status = 200)
+=================================
+
+headers
+-------
+
+Date: Mon, 09 Mar 2020 07:33:39 GMT
+Server: Apache/2.4.39 (Amazon) OpenSSL/1.0.2k-fips
+Content-Length: 1640
+Connection: close
+
+
+body
+----
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><OTA_PingRS xmlns="http://www.opentravel.org/OTA/2003/05" Version="8.000"><Success></Success><Warnings><Warning Type="11" Status="ALPINEBITS_HANDSHAKE">{"versions":[{"version":"2018-10","actions":[{"action":"action_OTA_HotelDescriptiveContentNotif_Inventory","supports":["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]},{"action":"action_OTA_Ping"},{"action":"action_OTA_HotelDescriptiveInfo_Inventory"}]},{"version":"2017-10"}]}</Warning></Warnings><EchoData>
+    {
+      "versions": [{
+        "version": "2017-10"
+      },
+      {
+        "version": "2018-10",
+        "actions": [
+          {
+            "action": "action_OTA_Ping"
+          },{
+            "action": "action_OTA_HotelDescriptiveInfo_Inventory",
+            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
+          },{
+            "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
+            "supports": ["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]
+          },{
+            "action": "action_OTA_HotelRatePlan_BaseRates",
+            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
+          },{
+            "action": "action_OTA_HotelRatePlanNotif_RatePlans",
+            "supports": [
+              "OTA_HotelRatePlanNotif_accept_overlay",
+              "OTA_HotelRatePlanNotif_accept_Supplements",
+              "OTA_HotelRatePlanNotif_accept_RatePlan_BookingRule",
+              "OTA_HotelRatePlanNotif_accept_FreeNightsOffers",
+              "OTA_HotelRatePlanNotif_accept_FamilyOffers"
+            ]
+          }
+        ]
+      }]
+    }
+    </EchoData></OTA_PingRS>
+```
 
