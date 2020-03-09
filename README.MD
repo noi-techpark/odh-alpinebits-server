@@ -18,7 +18,7 @@ as a backend.
 - [Deployment](#deployment)
 - [Docker environment](#docker-environment)
 - [Information](#information)
-- [Howto request data?](#Howto-request-data)
+- [How to request data?](#How-to-request-data)
 
 ## Getting started
 
@@ -197,7 +197,7 @@ See the LICENSE file for more information.
 
 - [NOI Techpark](https://noi.bz.it/en)
 
-## Howto request data?
+## How to request data?
 
 You can use the [AlpineBits Protocol Test Client](https://alpinebits.testingmachine.eu/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
 
@@ -257,7 +257,7 @@ The *action* setting requires you to upload an XML file. You can create a plain 
 </OTA_PingRQ>
 ```
 
-The response whould look like this:
+The response should look like this:
 
 ```xml
 end point response (status = 200)
