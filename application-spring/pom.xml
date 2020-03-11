@@ -13,7 +13,7 @@
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>application-spring</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.6.0</version>
 
     <packaging>jar</packaging>
     <name>Standalone Spring application, providing an AlpineBits Server with Open Data Hub (ODH) backend</name>
@@ -26,8 +26,8 @@
     </repositories>
 
     <properties>
-        <odh-alpinebits.version>1.0.1-SNAPSHOT</odh-alpinebits.version>
-        <odh-alpinebits-server.version>0.6.0-SNAPSHOT</odh-alpinebits-server.version>
+        <odh-alpinebits.version>1.0.2</odh-alpinebits.version>
+        <odh-alpinebits-server.version>0.6.0</odh-alpinebits-server.version>
 
         <janino.version>3.0.12</janino.version>
         <jersey.version>2.30</jersey.version>
@@ -139,7 +139,7 @@
                         <dependency>
                             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>0.6.0-SNAPSHOT</version>
+                            <version>0.6.0</version>
                         </dependency>
                     </dependencies>
                 </plugin>
