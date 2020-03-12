@@ -10,15 +10,13 @@ import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveContent;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveInfoRequest;
 import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveInfoResponse;
-import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfoRootType;
-import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfoType;
-import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfosType;
 import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.HotelInfoType;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2017_10.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2017_10.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPullService;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.InventoryPullMapper;
 
 import javax.ws.rs.core.Response;
@@ -52,6 +50,12 @@ public class InventoryPullServiceImpl implements InventoryPullService {
 
             hotelDescriptiveContent.setHotelCode(hotelCode);
 
+            // Fetch accommodation info
+            Accomodation accomodation = this.service.fetchAccomodation(hotelCode);
+
+            // Set hotel name
+            hotelDescriptiveContent.setHotelName(accomodation.getShortname());
+
             response.setHotelDescriptiveContent(hotelDescriptiveContent);
             response.setSuccess("");
         } catch (OdhBackendException e) {
@@ -78,17 +82,11 @@ public class InventoryPullServiceImpl implements InventoryPullService {
             // Fetch accommodation info
             Accomodation accomodation = this.service.fetchAccomodation(hotelCode);
 
-            // Add some contact infos
+            // Set hotel name
+            hotelDescriptiveContent.setHotelName(accomodation.getShortname());
 
-            ContactInfosType contactInfosType = new ContactInfosType();
-            ContactInfoRootType contactInfoType = new ContactInfoRootType();
-
-            ContactInfoType.CompanyName companyName = new ContactInfoType.CompanyName();
-            companyName.setValue(accomodation.getShortname());
-            contactInfoType.setCompanyName(companyName);
-            contactInfosType.getContactInfos().add(contactInfoType);
-
-            hotelDescriptiveContent.setContactInfos(contactInfosType);
+            // Add ContactInfos if appropriate
+            ContactInfosTypeBuilder.extractContactInfosType(accomodation).ifPresent(hotelDescriptiveContent::setContactInfos);
 
             // Add some hotel info
 

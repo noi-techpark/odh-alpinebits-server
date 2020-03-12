@@ -11,7 +11,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.ApiKeyResponse;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2017_10.serialization.OtaExtensionModule201710;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2018_10.serialization.OtaExtensionModule201810;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
@@ -128,10 +131,21 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
 
     private Client buildClient() {
         ObjectMapper om = new ObjectMapper();
-        om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        om.registerModule(new JavaTimeModule());
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        // Add module to support the Java Date/Time API
+        om.registerModule(new JavaTimeModule());
+
+        // Add module for better JAXB support
+        om.registerModule(new JaxbAnnotationModule());
+
+        // Add serialization module for AlpineBits 2017-10 OTA extensions
+        om.registerModule(new OtaExtensionModule201710());
+
+        // Add serialization module for AlpineBits 2018-10 OTA extensions
+        om.registerModule(new OtaExtensionModule201810());
 
         JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
         provider.setMapper(om);

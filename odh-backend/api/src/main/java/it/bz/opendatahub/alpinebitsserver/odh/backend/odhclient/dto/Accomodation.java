@@ -34,6 +34,15 @@ public class Accomodation {
     @JsonProperty("Shortname")
     private String shortname;
 
+    @JsonProperty("TrustYouID")
+    private String trustYouId;
+
+    @JsonProperty("TrustYouActive")
+    private Boolean trustYouActive;
+
+    @JsonProperty("TrustYouState")
+    private Integer trustYouState;
+
     @JsonProperty("Features")
     private List<Feature> features;
 
@@ -86,6 +95,30 @@ public class Accomodation {
         this.shortname = shortname;
     }
 
+    public String getTrustYouId() {
+        return trustYouId;
+    }
+
+    public void setTrustYouId(String trustYouId) {
+        this.trustYouId = trustYouId;
+    }
+
+    public Boolean getTrustYouActive() {
+        return trustYouActive;
+    }
+
+    public void setTrustYouActive(Boolean trustYouActive) {
+        this.trustYouActive = trustYouActive;
+    }
+
+    public Integer getTrustYouState() {
+        return trustYouState;
+    }
+
+    public void setTrustYouState(Integer trustYouState) {
+        this.trustYouState = trustYouState;
+    }
+
     public List<Feature> getFeatures() {
         return features;
     }
@@ -122,9 +155,13 @@ public class Accomodation {
     public String toString() {
         return "Accomodation{" +
                 "id='" + id + '\'' +
-                ", latitude='" + latitude + '\'' +
+                ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", altitude=" + altitude +
+                ", shortname='" + shortname + '\'' +
+                ", trustYouId='" + trustYouId + '\'' +
+                ", trustYouActive=" + trustYouActive +
+                ", trustYouState=" + trustYouState +
                 ", features=" + features +
                 ", accoDetailMap=" + accoDetailMap +
                 ", imageGalleries=" + imageGalleries +
