@@ -26,7 +26,7 @@
     </repositories>
 
     <properties>
-        <odh-alpinebits.version>1.0.2</odh-alpinebits.version>
+        <odh-alpinebits.version>1.0.3</odh-alpinebits.version>
         <odh-alpinebits-server.version>0.7.0-SNAPSHOT</odh-alpinebits-server.version>
 
         <janino.version>3.0.12</janino.version>
