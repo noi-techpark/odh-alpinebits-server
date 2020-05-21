@@ -105,7 +105,7 @@ class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`.
 Assuming you are in the projects root folder, run the following command: 
 
 ```bash
-java -jar application-spring/target/application-spring-0.6.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
+java -jar application-spring/target/application-spring-0.7.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
 ```
 
 ## Docker environment

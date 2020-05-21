@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>application-common</artifactId>
-        <version>0.6.0</version>
+        <version>0.7.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>application-common-middleware-config</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0-SNAPSHOT</version>
 
     <name>AlpineBits Server common middleware config</name>
 
