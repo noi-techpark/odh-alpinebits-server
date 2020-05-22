@@ -15,6 +15,7 @@ import it.bz.opendatahub.alpinebits.servlet.impl.DefaultContextBuilder;
 import it.bz.opendatahub.alpinebits.servlet.impl.DefaultRequestExceptionHandler;
 import it.bz.opendatahub.alpinebits.servlet.middleware.AlpineBitsClientProtocolMiddleware;
 import it.bz.opendatahub.alpinebits.servlet.middleware.BasicAuthenticationMiddleware;
+import it.bz.opendatahub.alpinebits.servlet.middleware.ContentTypeHintMiddleware;
 import it.bz.opendatahub.alpinebits.servlet.middleware.GzipUnsupportedMiddleware;
 import it.bz.opendatahub.alpinebits.servlet.middleware.StatisticsMiddleware;
 import it.bz.opendatahub.alpinebitsserver.application.common.routing.RoutingMiddlewareProvider;
@@ -51,6 +52,7 @@ public class AlpineBitsResource {
     public void initMiddleware() throws JAXBException {
         this.middleware = ComposingMiddlewareBuilder.compose(Arrays.asList(
                 new StatisticsMiddleware(),
+                new ContentTypeHintMiddleware(),
                 new AlpineBitsClientProtocolMiddleware(),
                 new BasicAuthenticationMiddleware(),
                 new GzipUnsupportedMiddleware(),
