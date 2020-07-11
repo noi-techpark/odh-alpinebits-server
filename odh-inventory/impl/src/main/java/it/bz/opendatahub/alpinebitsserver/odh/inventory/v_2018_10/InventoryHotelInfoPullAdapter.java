@@ -48,8 +48,8 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
 
     @Override
     public void handleContext(Context ctx, MiddlewareChain chain) {
-        // This middleware is invoked upstreams only (in response phase)
-        // Therefor the downstream chain (request phase) is invoked first
+        // This middleware is invoked during the response-phase only
+        // Therefor the request-phase chain (request phase) is invoked first
         chain.next();
 
         OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = ctx.getOrThrow(OTA_INVENTORY_PULL_RESPONSE);
