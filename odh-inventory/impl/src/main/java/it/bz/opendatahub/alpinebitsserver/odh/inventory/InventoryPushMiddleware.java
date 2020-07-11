@@ -53,11 +53,11 @@ public class InventoryPushMiddleware implements Middleware {
         String requestId = ctx.getOrThrow(RequestContextKey.REQUEST_ID);
         OTAHotelDescriptiveContentNotifRQ inventoryPushRequest = ctx.getOrThrow(this.requestKey);
 
-        String accomodationId = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(inventoryPushRequest);
+        String accommodationId = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(inventoryPushRequest);
 
         PushWrapper pushWrapper = new PushWrapper();
         pushWrapper.setAlpineBitsVersion(alpineBitsVersion);
-        pushWrapper.setAccommodationId(accomodationId);
+        pushWrapper.setAccommodationId(accommodationId);
         pushWrapper.setRequestId(requestId);
         pushWrapper.setMessage(inventoryPushRequest);
 

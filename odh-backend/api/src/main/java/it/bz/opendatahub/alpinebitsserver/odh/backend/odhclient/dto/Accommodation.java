@@ -17,7 +17,7 @@ import java.util.Map;
  * DTO for Open Data Hub "Accommodation" element.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Accomodation {
+public class Accommodation {
 
     @JsonProperty("Id")
     private String id;
@@ -53,7 +53,7 @@ public class Accomodation {
     private List<ImageGalleryEntry> imageGalleries;
 
     @JsonIgnore
-    private List<AccomodationRoom> accomodationRooms;
+    private List<AccommodationRoom> accommodationRooms;
 
     public String getId() {
         return id;
@@ -143,17 +143,17 @@ public class Accomodation {
         this.imageGalleries = imageGalleries;
     }
 
-    public List<AccomodationRoom> getAccomodationRooms() {
-        return accomodationRooms;
+    public List<AccommodationRoom> getAccommodationRooms() {
+        return accommodationRooms;
     }
 
-    public void setAccomodationRooms(List<AccomodationRoom> accomodationRooms) {
-        this.accomodationRooms = accomodationRooms;
+    public void setAccommodationRooms(List<AccommodationRoom> accommodationRooms) {
+        this.accommodationRooms = accommodationRooms;
     }
 
     @Override
     public String toString() {
-        return "Accomodation{" +
+        return "Accommodation{" +
                 "id='" + id + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
@@ -165,7 +165,7 @@ public class Accomodation {
                 ", features=" + features +
                 ", accoDetailMap=" + accoDetailMap +
                 ", imageGalleries=" + imageGalleries +
-                ", accomodationRooms=" + accomodationRooms +
+                ", accommodationRooms=" + accommodationRooms +
                 '}';
     }
 }

@@ -9,7 +9,7 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory.common;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfoRootType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfosType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.URLsType;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accommodation;
 
 import java.util.Optional;
 
@@ -23,20 +23,20 @@ public final class ContactInfosTypeBuilder {
     }
 
     /**
-     * Try to extract a {@link ContactInfosType} from the given {@link Accomodation}.
+     * Try to extract a {@link ContactInfosType} from the given {@link Accommodation}.
      *
-     * @param accomodation The accomodation data is used to extract a ContactInfosType instance.
+     * @param accommodation The accommodation data is used to extract a ContactInfosType instance.
      * @return An {@link Optional} wrapping the ContactInfosType if such an instance could be
-     * extracted from the given accomodation, {@link Optional#empty()} otherwise.
+     * extracted from the given accommodation, {@link Optional#empty()} otherwise.
      */
-    public static Optional<ContactInfosType> extractContactInfosType(Accomodation accomodation) {
-        if (accomodation != null
-                && accomodation.getTrustYouId() != null
-                && Boolean.TRUE.equals(accomodation.getTrustYouActive())
-                && accomodation.getTrustYouState() == 2
+    public static Optional<ContactInfosType> extractContactInfosType(Accommodation accommodation) {
+        if (accommodation != null
+                && accommodation.getTrustYouId() != null
+                && Boolean.TRUE.equals(accommodation.getTrustYouActive())
+                && accommodation.getTrustYouState() == 2
         ) {
             URLsType.URL url = new URLsType.URL();
-            url.setValue(accomodation.getTrustYouId());
+            url.setValue(accommodation.getTrustYouId());
             url.setID("TRUSTYOU");
 
             URLsType urLsType = new URLsType();

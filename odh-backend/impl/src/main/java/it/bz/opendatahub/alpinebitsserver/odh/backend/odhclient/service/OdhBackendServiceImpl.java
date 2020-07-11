@@ -8,8 +8,8 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service;
 
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.AuthenticatedOdhClient;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accommodation;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccommodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PullWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
@@ -58,13 +58,13 @@ public class OdhBackendServiceImpl implements OdhBackendService {
     }
 
     @Override
-    public List<AccomodationRoom> fetchAccomodationRooms(String accoId) throws OdhBackendException {
+    public List<AccommodationRoom> fetchAccommodationRooms(String accoId) throws OdhBackendException {
         String path = "api/AccommodationRoom";
 
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("accoid", accoId);
         try {
-            return odhClient.fetch(path, HttpMethod.GET, queryParams, null, new GenericType<List<AccomodationRoom>>() {
+            return odhClient.fetch(path, HttpMethod.GET, queryParams, null, new GenericType<List<AccommodationRoom>>() {
             });
         } catch (ProcessingException | WebApplicationException e) {
             throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
@@ -72,11 +72,11 @@ public class OdhBackendServiceImpl implements OdhBackendService {
     }
 
     @Override
-    public Accomodation fetchAccomodation(String accoId) throws OdhBackendException {
+    public Accommodation fetchAccommodation(String accoId) throws OdhBackendException {
         String path = "api/Accommodation/" + accoId;
 
         try {
-            return odhClient.fetch(path, HttpMethod.GET, null, null, Accomodation.class);
+            return odhClient.fetch(path, HttpMethod.GET, null, null, Accommodation.class);
         } catch (ProcessingException | WebApplicationException e) {
             throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
         }

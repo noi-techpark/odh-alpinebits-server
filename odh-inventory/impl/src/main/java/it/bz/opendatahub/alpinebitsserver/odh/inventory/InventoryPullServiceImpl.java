@@ -12,8 +12,8 @@ import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents.HotelDescriptiveContent;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.SuccessType;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accommodation;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccommodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
@@ -43,19 +43,19 @@ public class InventoryPullServiceImpl implements InventoryPullService {
         try {
             String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
 
-            List<AccomodationRoom> accomodationRooms = this.service.fetchAccomodationRooms(hotelCode);
+            List<AccommodationRoom> accommodationRooms = this.service.fetchAccommodationRooms(hotelCode);
 
             // Map to HotelDescriptiveContent
-            OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = inventoryPullMapper.mapToHotelDescriptiveInfoForBasic(accomodationRooms);
+            OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = inventoryPullMapper.mapToHotelDescriptiveInfoForBasic(accommodationRooms);
 
             HotelDescriptiveContent hotelDescriptiveContent = otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0);
             hotelDescriptiveContent.setHotelCode(hotelCode);
 
             // Fetch accommodation info
-            Accomodation accomodation = this.service.fetchAccomodation(hotelCode);
+            Accommodation accommodation = this.service.fetchAccommodation(hotelCode);
 
             // Set hotel name
-            hotelDescriptiveContent.setHotelName(accomodation.getShortname());
+            hotelDescriptiveContent.setHotelName(accommodation.getShortname());
 
             otaHotelDescriptiveInfoRS.setSuccess(new SuccessType());
             otaHotelDescriptiveInfoRS.setVersion(BigDecimal.valueOf(8.000));
@@ -71,29 +71,29 @@ public class InventoryPullServiceImpl implements InventoryPullService {
             String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
 
             // Fetch room info
-            List<AccomodationRoom> accomodationRooms = this.service.fetchAccomodationRooms(hotelCode);
+            List<AccommodationRoom> accommodationRooms = this.service.fetchAccommodationRooms(hotelCode);
 
             // Map to HotelDescriptiveContent
-            OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = inventoryPullMapper.mapToHotelDescriptiveInfoForHotelInfo(accomodationRooms);
+            OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = inventoryPullMapper.mapToHotelDescriptiveInfoForHotelInfo(accommodationRooms);
 
             HotelDescriptiveContent hotelDescriptiveContent = otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0);
             hotelDescriptiveContent.setHotelCode(hotelCode);
 
             // Fetch accommodation info
-            Accomodation accomodation = this.service.fetchAccomodation(hotelCode);
+            Accommodation accommodation = this.service.fetchAccommodation(hotelCode);
 
             // Set hotel name
-            hotelDescriptiveContent.setHotelName(accomodation.getShortname());
+            hotelDescriptiveContent.setHotelName(accommodation.getShortname());
 
             // Add ContactInfos if appropriate
-            ContactInfosTypeBuilder.extractContactInfosType(accomodation).ifPresent(hotelDescriptiveContent::setContactInfos);
+            ContactInfosTypeBuilder.extractContactInfosType(accommodation).ifPresent(hotelDescriptiveContent::setContactInfos);
 
             // Add some hotel info
 
             HotelInfoType.Position position = new HotelInfoType.Position();
-            position.setAltitude(accomodation.getAltitude() != null ? accomodation.getAltitude().toString() : "");
-            position.setLatitude(accomodation.getLatitude() != null ? accomodation.getLatitude().toString() : "");
-            position.setLongitude(accomodation.getLongitude() != null ? accomodation.getLongitude().toString() : "");
+            position.setAltitude(accommodation.getAltitude() != null ? accommodation.getAltitude().toString() : "");
+            position.setLatitude(accommodation.getLatitude() != null ? accommodation.getLatitude().toString() : "");
+            position.setLongitude(accommodation.getLongitude() != null ? accommodation.getLongitude().toString() : "");
 
             HotelInfoType hotelInfoType = new HotelInfoType();
             hotelInfoType.setPosition(position);

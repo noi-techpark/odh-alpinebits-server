@@ -16,7 +16,7 @@ import java.util.Map;
  * DTO for Open Data Hub "AccommodationRoom" element.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccomodationRoom {
+public class AccommodationRoom {
 
     @JsonProperty("Id")
     private String id;
@@ -163,7 +163,7 @@ public class AccomodationRoom {
 
     @Override
     public String toString() {
-        return "AccomodationRoom{" +
+        return "AccommodationRoom{" +
                 "id='" + id + '\'' +
                 ", source='" + source + '\'' +
                 ", roommax=" + roommax +

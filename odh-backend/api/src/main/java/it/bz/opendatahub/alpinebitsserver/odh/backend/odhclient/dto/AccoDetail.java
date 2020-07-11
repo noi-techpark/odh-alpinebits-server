@@ -182,7 +182,7 @@ public class AccoDetail {
 
     @Override
     public String toString() {
-        return "Accomodation{" +
+        return "Accommodation{" +
                 "fax='" + fax + '\'' +
                 ", zip='" + zip + '\'' +
                 ", city='" + city + '\'' +

@@ -50,11 +50,11 @@ public class FreeRoomsPushMiddleware implements Middleware {
         String alpineBitsVersion = ctx.getOrThrow(RequestContextKey.REQUEST_VERSION);
         String requestId = ctx.getOrThrow(RequestContextKey.REQUEST_ID);
         OTAHotelAvailNotifRQ freeRoomsRequest = ctx.getOrThrow(this.requestKey);
-        String accomodationId = this.getHotelCodeOrThrowOnEmpty(freeRoomsRequest);
+        String accommodationId = this.getHotelCodeOrThrowOnEmpty(freeRoomsRequest);
 
         PushWrapper pushWrapper = new PushWrapper();
         pushWrapper.setAlpineBitsVersion(alpineBitsVersion);
-        pushWrapper.setAccommodationId(accomodationId);
+        pushWrapper.setAccommodationId(accommodationId);
         pushWrapper.setRequestId(requestId);
         pushWrapper.setMessage(freeRoomsRequest);
 

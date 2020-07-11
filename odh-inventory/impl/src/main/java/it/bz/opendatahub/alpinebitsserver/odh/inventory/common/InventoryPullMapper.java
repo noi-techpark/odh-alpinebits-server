@@ -26,7 +26,7 @@ import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.Hot
 import it.bz.opendatahub.alpinebits.xml.schema.ota.TextDescriptionType.Description;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.TextItemsType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.TextItemsType.TextItem;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccommodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,14 +47,14 @@ public class InventoryPullMapper {
     private static final Logger LOG = LoggerFactory.getLogger(InventoryPullMapper.class);
 
     /**
-     * Map a list of {@link AccomodationRoom} elements to a
+     * Map a list of {@link AccommodationRoom} elements to a
      * {@link OTAHotelDescriptiveInfoRS} element for the Inventory Basic
      * pull action.
      *
      * @param rooms Map this list to a OTAHotelDescriptiveInfoRS element.
      * @return The mapped OTAHotelDescriptiveInfoRS element.
      */
-    public OTAHotelDescriptiveInfoRS mapToHotelDescriptiveInfoForBasic(List<AccomodationRoom> rooms) {
+    public OTAHotelDescriptiveInfoRS mapToHotelDescriptiveInfoForBasic(List<AccommodationRoom> rooms) {
         List<GuestRoom> guestRooms = rooms
                 .stream()
                 .map(room -> {
@@ -100,14 +100,14 @@ public class InventoryPullMapper {
     }
 
     /**
-     * Map a list of {@link AccomodationRoom} elements to a
+     * Map a list of {@link AccommodationRoom} elements to a
      * {@link OTAHotelDescriptiveInfoRS} element for the Inventory HotelInfo
      * pull action.
      *
      * @param rooms Map this list to a OTAHotelDescriptiveInfoRS element.
      * @return The mapped OTAHotelDescriptiveInfoRS element.
      */
-    public OTAHotelDescriptiveInfoRS mapToHotelDescriptiveInfoForHotelInfo(List<AccomodationRoom> rooms) {
+    public OTAHotelDescriptiveInfoRS mapToHotelDescriptiveInfoForHotelInfo(List<AccommodationRoom> rooms) {
         List<GuestRoom> guestRooms = rooms
                 .stream()
                 .map(room -> {
@@ -143,7 +143,7 @@ public class InventoryPullMapper {
         return otaHotelDescriptiveInfoRS;
     }
 
-    private GuestRoom buildDescriptionGuestRoom(AccomodationRoom room) {
+    private GuestRoom buildDescriptionGuestRoom(AccommodationRoom room) {
         GuestRoom guestRoom = new GuestRoom();
         guestRoom.setCode(room.getRoomcode());
         guestRoom.setMinOccupancy(toBigInt(room.getRoommin()));
@@ -154,7 +154,7 @@ public class InventoryPullMapper {
         return guestRoom;
     }
 
-    private GuestRoom buildRealGuestRoom(AccomodationRoom room, String roomId) {
+    private GuestRoom buildRealGuestRoom(AccommodationRoom room, String roomId) {
         GuestRoom guestRoom = new GuestRoom();
         guestRoom.setCode(room.getRoomcode());
         TypeRoom typeRoom = new TypeRoom();
@@ -163,7 +163,7 @@ public class InventoryPullMapper {
         return guestRoom;
     }
 
-    private TypeRoom buildTypeRoom(AccomodationRoom room) {
+    private TypeRoom buildTypeRoom(AccommodationRoom room) {
         TypeRoom typeRoom = new TypeRoom();
         typeRoom.setStandardOccupancy(toBigInt(room.getRoomstd()));
 
@@ -178,7 +178,7 @@ public class InventoryPullMapper {
         return typeRoom;
     }
 
-    private MultimediaDescriptionsType buildMultimediaDescriptions(AccomodationRoom room) {
+    private MultimediaDescriptionsType buildMultimediaDescriptions(AccommodationRoom room) {
         MultimediaDescriptionsType multimediaDescriptionsType = new MultimediaDescriptionsType();
 
         buildLongNames(room).ifPresent(multimediaDescriptionsType.getMultimediaDescriptions()::add);
@@ -189,7 +189,7 @@ public class InventoryPullMapper {
     }
 
 
-    private Amenities buildAmenities(AccomodationRoom room) {
+    private Amenities buildAmenities(AccommodationRoom room) {
         List<Amenity> amenitiesWithCode = room.getFeatures()
                 .stream()
                 .filter(feature -> feature.getRoomAmenityCodes() != null)
@@ -209,7 +209,7 @@ public class InventoryPullMapper {
         return amenities;
     }
 
-    private Optional<MultimediaDescriptionType> buildLongNames(AccomodationRoom room) {
+    private Optional<MultimediaDescriptionType> buildLongNames(AccommodationRoom room) {
         if (room.getAccoRoomDetailMap().isEmpty()) {
             return Optional.empty();
         }
@@ -236,7 +236,7 @@ public class InventoryPullMapper {
         return Optional.of(multimediaDescriptionType);
     }
 
-    private Optional<MultimediaDescriptionType> buildDescriptions(AccomodationRoom room) {
+    private Optional<MultimediaDescriptionType> buildDescriptions(AccommodationRoom room) {
         if (room.getAccoRoomDetailMap().isEmpty()) {
             return Optional.empty();
         }
@@ -264,7 +264,7 @@ public class InventoryPullMapper {
     }
 
 
-    private Optional<MultimediaDescriptionType> buildPictures(AccomodationRoom room) {
+    private Optional<MultimediaDescriptionType> buildPictures(AccommodationRoom room) {
         if (room.getImageGalleryEntries().isEmpty()) {
             return Optional.empty();
         }
