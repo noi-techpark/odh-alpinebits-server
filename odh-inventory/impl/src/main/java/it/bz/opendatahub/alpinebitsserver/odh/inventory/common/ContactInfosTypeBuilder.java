@@ -6,9 +6,9 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory.common;
 
-import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfoRootType;
-import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.ContactInfosType;
-import it.bz.opendatahub.alpinebits.otaextension.schema.ota2015a.URLsType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfoRootType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfosType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.URLsType;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accomodation;
 
 import java.util.Optional;

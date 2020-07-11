@@ -29,7 +29,7 @@ public class FilePropertySource implements PropertySource {
 
     public static final String DEFAULT_PROPERTIES_FILENAME = "application.properties";
 
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyProvider.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FilePropertySource.class);
 
     private Properties properties;
 

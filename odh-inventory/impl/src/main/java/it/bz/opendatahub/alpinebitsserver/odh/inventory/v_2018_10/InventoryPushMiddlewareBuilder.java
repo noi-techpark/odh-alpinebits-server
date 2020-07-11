@@ -8,9 +8,6 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2018_10;
 
 import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsVersion;
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
-import it.bz.opendatahub.alpinebits.mapping.entity.GenericResponse;
-import it.bz.opendatahub.alpinebits.mapping.mapper.v_2018_10.InventoryMapperInstances;
-import it.bz.opendatahub.alpinebits.mapping.middleware.ResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.validation.Validator;
@@ -19,11 +16,11 @@ import it.bz.opendatahub.alpinebits.validation.context.inventory.InventoryContex
 import it.bz.opendatahub.alpinebits.validation.context.inventory.InventoryContextProvider;
 import it.bz.opendatahub.alpinebits.validation.middleware.ValidationMiddleware;
 import it.bz.opendatahub.alpinebits.validation.schema.v_2018_10.inventory.OTAHotelDescriptiveContentNotifRQValidator;
-import it.bz.opendatahub.alpinebits.xml.schema.v_2018_10.OTAHotelDescriptiveContentNotifRQ;
-import it.bz.opendatahub.alpinebits.xml.schema.v_2018_10.OTAHotelDescriptiveContentNotifRS;
-import it.bz.opendatahub.alpinebitsserver.application.common.middleware.config.XmlMiddlewareBuilder;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRQ;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPushMiddleware;
 
-import javax.xml.bind.JAXBException;
 import java.util.Arrays;
 
 /**
@@ -37,22 +34,18 @@ public final class InventoryPushMiddlewareBuilder {
     private static final Key<OTAHotelDescriptiveContentNotifRS> OTA_INVENTORY_PUSH_RESPONSE
             = Key.key("inventory push request", OTAHotelDescriptiveContentNotifRS.class);
 
-    private static final Key<GenericResponse> MAPPED_INVENTORY_PUSH_RESPONSE_KEY =
-            Key.key("mapped inventory push response", GenericResponse.class);
-
     private InventoryPushMiddlewareBuilder() {
         // Empty
     }
 
-    public static Middleware buildInventoryPushMiddleware() throws JAXBException {
+    public static Middleware buildInventoryPushMiddleware() {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PUSH_REQUEST, AlpineBitsVersion.V_2018_10),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PUSH_RESPONSE, AlpineBitsVersion.V_2018_10),
                 buildValidationMiddleware(),
-                buildInventoryPushResponseMappingMiddleware(),
                 new InventoryPushMiddleware(
                         OTA_INVENTORY_PUSH_REQUEST,
-                        MAPPED_INVENTORY_PUSH_RESPONSE_KEY
+                        OTA_INVENTORY_PUSH_RESPONSE
                 )
         ));
     }
@@ -63,12 +56,5 @@ public final class InventoryPushMiddlewareBuilder {
         return new ValidationMiddleware<>(OTA_INVENTORY_PUSH_REQUEST, validator, validationContextProvider);
     }
 
-    private static Middleware buildInventoryPushResponseMappingMiddleware() {
-        return new ResponseMappingMiddleware<>(
-                MAPPED_INVENTORY_PUSH_RESPONSE_KEY,
-                OTA_INVENTORY_PUSH_RESPONSE,
-                InventoryMapperInstances.HOTEL_DESCRIPTIVE_CONTENT_NOTIF_RESPONSE_MAPPER::toOTAHotelDescriptiveContentNotifRS
-        );
-    }
 
 }

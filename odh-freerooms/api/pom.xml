@@ -21,10 +21,10 @@
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
             <artifactId>odh-backend-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-api</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>it.bz.opendatahub.alpinebits</groupId>-->
+<!--            <artifactId>alpinebits-mapping-api</artifactId>-->
+<!--        </dependency>-->
 
         <!-- testing -->
         <dependency>

@@ -13,11 +13,9 @@ import it.bz.opendatahub.alpinebits.housekeeping.middleware.HousekeepingGetVersi
 import it.bz.opendatahub.alpinebits.routing.DefaultRouter;
 import it.bz.opendatahub.alpinebits.routing.RoutingBuilder;
 import it.bz.opendatahub.alpinebits.routing.constants.Action;
-import it.bz.opendatahub.alpinebitsserver.odh.freerooms.v_2017_10.FreeRoomsPushMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.freerooms.FreeRoomsPushMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10.InventoryPullMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10.InventoryPushMiddlewareBuilder;
-
-import javax.xml.bind.JAXBException;
 
 /**
  * Route definitions for AlpineBits 2017-10.
@@ -33,10 +31,8 @@ public final class RoutesFor201710 {
      *
      * @param builder The routes will be added to this builder.
      * @return A {@link RoutingBuilder.FinalBuilder} that can be used for further route building.
-     * @throws JAXBException If there was an error creating any of the routes that rely on
-     *                       XML processing.
      */
-    public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) throws JAXBException {
+    public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) {
         return builder.version(AlpineBitsVersion.V_2017_10)
                 .supportsAction(Action.GET_VERSION)
                 .withCapabilities(AlpineBitsCapability.GET_VERSION)

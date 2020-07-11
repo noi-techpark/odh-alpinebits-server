@@ -22,7 +22,6 @@ import it.bz.opendatahub.alpinebitsserver.application.common.environment.Propert
 import it.bz.opendatahub.alpinebitsserver.application.common.routing.RoutingMiddlewareProvider;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.middleware.OdhBackendServiceProvidingMiddleware;
 
-import javax.xml.bind.JAXBException;
 import java.util.Arrays;
 
 /**
@@ -41,7 +40,7 @@ public class ConfiguringMiddleware implements Middleware {
 
     private Middleware middleware;
 
-    public ConfiguringMiddleware() throws JAXBException {
+    public ConfiguringMiddleware() {
         String odhUrl = this.getOdhUrl();
 
         this.middleware = ComposingMiddlewareBuilder.compose(Arrays.asList(

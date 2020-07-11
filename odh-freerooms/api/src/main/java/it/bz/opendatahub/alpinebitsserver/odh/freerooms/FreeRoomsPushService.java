@@ -6,7 +6,7 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.freerooms;
 
-import it.bz.opendatahub.alpinebits.mapping.entity.GenericResponse;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRS;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 
 /**
@@ -21,8 +21,8 @@ public interface FreeRoomsPushService {
      *
      * @param pushWrapper this element contains the FreeRooms information
      *                    that should be written to ODH
-     * @return a {@link GenericResponse} containing the response
+     * @return a {@link OTAHotelAvailNotifRS} containing the response
      */
-    GenericResponse write(PushWrapper pushWrapper);
+    OTAHotelAvailNotifRS write(PushWrapper pushWrapper);
 
 }
