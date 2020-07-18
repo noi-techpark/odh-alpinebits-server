@@ -25,6 +25,11 @@ public final class MessageAcknowledgementTypeBuilder {
         // Empty
     }
 
+    /**
+     * Build a {@link MessageAcknowledgementType} that represents a successful outcome.
+     *
+     * @return A MessageAcknowledgementType for successful outcome.
+     */
     public static MessageAcknowledgementType forSuccess() {
         MessageAcknowledgementType mat = new MessageAcknowledgementType();
         mat.setSuccess(new SuccessType());
@@ -32,11 +37,32 @@ public final class MessageAcknowledgementTypeBuilder {
         return mat;
     }
 
+    /**
+     * Build a {@link MessageAcknowledgementType} that represents an error outcome.
+     * <p>
+     * The <code>message</code> is taken from the provided parameter, <code>code</code>
+     * is set to {@link #CODE_UNABLE_TO_PROCESS} and <code>type</code> is set to
+     * {@link #TYPE_DEFAULT}.
+     *
+     * @param message The error message.
+     * @return A MessageAcknowledgementType representing an error outcome.
+     */
     public static MessageAcknowledgementType forError(String message) {
-        return forError(CODE_UNABLE_TO_PROCESS, TYPE_DEFAULT, message);
+        return forError(message, CODE_UNABLE_TO_PROCESS, TYPE_DEFAULT);
     }
 
-    public static MessageAcknowledgementType forError(String code, String type, String message) {
+    /**
+     * Build a {@link MessageAcknowledgementType} that represents an error outcome.
+     * <p>
+     * The <code>message</code>, <code>code</code> and <code>type</code> values are
+     * provided by the method parameters.
+     *
+     * @param message The error message.
+     * @param code    The error code.
+     * @param type    The error type.
+     * @return A MessageAcknowledgementType representing an error outcome.
+     */
+    public static MessageAcknowledgementType forError(String message, String code, String type) {
         ErrorType errorType = new ErrorType();
         errorType.setValue(message);
         errorType.setCode(code);
