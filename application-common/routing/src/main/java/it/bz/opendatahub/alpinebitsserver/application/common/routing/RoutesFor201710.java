@@ -13,7 +13,7 @@ import it.bz.opendatahub.alpinebits.housekeeping.middleware.HousekeepingGetVersi
 import it.bz.opendatahub.alpinebits.routing.DefaultRouter;
 import it.bz.opendatahub.alpinebits.routing.RoutingBuilder;
 import it.bz.opendatahub.alpinebits.routing.constants.Action;
-import it.bz.opendatahub.alpinebitsserver.odh.freerooms.FreeRoomsPushMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.freerooms.HotelAvailNotifPushMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10.InventoryPullMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10.InventoryPushMiddlewareBuilder;
 
@@ -66,7 +66,7 @@ public final class RoutesFor201710 {
                         AlpineBitsCapability.FREE_ROOMS_HOTEL_AVAIL_NOTIF,
                         AlpineBitsCapability.FREE_ROOMS_HOTEL_AVAIL_NOTIF_ACCEPT_ROOMS
                 )
-                .using(FreeRoomsPushMiddlewareBuilder.buildFreeRoomsPushMiddleware())
+                .using(HotelAvailNotifPushMiddlewareBuilder.buildFreeRoomsPushMiddleware(AlpineBitsVersion.V_2017_10))
                 .versionComplete();
     }
 }

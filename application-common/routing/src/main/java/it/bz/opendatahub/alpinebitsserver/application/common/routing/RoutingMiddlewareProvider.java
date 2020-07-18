@@ -29,7 +29,8 @@ public final class RoutingMiddlewareProvider {
      */
     public static Middleware buildRoutingMiddleware() {
         DefaultRouter.Builder builder = new DefaultRouter.Builder();
-        RoutingBuilder.FinalBuilder fb = RoutesFor201810.routes(builder);
+        RoutingBuilder.FinalBuilder fb = RoutesFor202010.routes(builder);
+        fb = RoutesFor201810.routes(fb.and());
         fb = RoutesFor201710.routes(fb.and());
         return new RoutingMiddleware(fb.buildRouter());
     }

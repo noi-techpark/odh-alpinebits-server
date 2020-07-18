@@ -7,7 +7,7 @@
 package it.bz.opendatahub.alpinebitsserver.odh.freerooms;
 
 import it.bz.opendatahub.alpinebits.xml.schema.ota.MessageAcknowledgementType;
-import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRS;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelInvCountNotifRS;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.MessageAcknowledgementTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
@@ -16,30 +16,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This service uses the ODH tourism data to store AlpineBits FreeRooms data.
+ * This service uses the ODH tourism data to store AlpineBits FreeRooms data
+ * for AlpineBits versions 2020-10 and going on.
  */
-public class FreeRoomsPushServiceImpl implements FreeRoomsPushService {
+public class HotelInvCountNotifPushServiceImpl implements FreeRoomsPushService<OTAHotelInvCountNotifRS> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FreeRoomsPushServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HotelInvCountNotifPushServiceImpl.class);
 
     private final OdhBackendService service;
 
-    public FreeRoomsPushServiceImpl(OdhBackendService service) {
+    public HotelInvCountNotifPushServiceImpl(OdhBackendService service) {
         this.service = service;
     }
 
     @Override
-    public OTAHotelAvailNotifRS write(PushWrapper pushWrapper) {
+    public OTAHotelInvCountNotifRS write(PushWrapper pushWrapper) {
         try {
             service.pushFreeRooms(pushWrapper);
 
             MessageAcknowledgementType mat = MessageAcknowledgementTypeBuilder.forSuccess();
-            return new OTAHotelAvailNotifRS(mat);
+            return toOTAHotelInvCountNotifRS(mat);
         } catch (OdhBackendException e) {
             LOG.error("ODH backend client error", e);
             String message = this.buildErrorMessage(e.getMessage(), pushWrapper.getRequestId());
             MessageAcknowledgementType mat = MessageAcknowledgementTypeBuilder.forError(message);
-            return new OTAHotelAvailNotifRS(mat);
+            return toOTAHotelInvCountNotifRS(mat);
         }
     }
 
@@ -47,4 +48,11 @@ public class FreeRoomsPushServiceImpl implements FreeRoomsPushService {
         return message + " (rid = " + requestId + ")";
     }
 
+    private OTAHotelInvCountNotifRS toOTAHotelInvCountNotifRS(MessageAcknowledgementType mat) {
+        OTAHotelInvCountNotifRS otaHotelInvCountNotifRS = new OTAHotelInvCountNotifRS();
+        otaHotelInvCountNotifRS.setErrors(mat.getErrors());
+        otaHotelInvCountNotifRS.setSuccess(mat.getSuccess());
+        otaHotelInvCountNotifRS.setVersion(mat.getVersion());
+        return otaHotelInvCountNotifRS;
+    }
 }

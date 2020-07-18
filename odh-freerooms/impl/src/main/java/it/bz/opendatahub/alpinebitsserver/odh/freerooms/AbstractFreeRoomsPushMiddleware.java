@@ -7,28 +7,34 @@
 package it.bz.opendatahub.alpinebitsserver.odh.freerooms;
 
 import it.bz.opendatahub.alpinebits.common.context.RequestContextKey;
-import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.middleware.Context;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.middleware.MiddlewareChain;
-import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRQ;
-import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRS;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendContextKey;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 
 /**
- * A simple {@link Middleware} to handle FreeRooms push requests.
+ * An abstract {@link Middleware} that implements common functionality
+ * to handle FreeRooms push requests.
+ *
+ * This base implementation can be used for AlpineBits FreeRooms requests
+ * prior up to 2018-10 (OTAHotelAvailNotifRQ and OTAHotelAvailNotifRS) and
+ * FreeRooms requests from 2020-10 going on (OTAHotelInvCountNotifRQ and
+ * OTAHotelInvCountNotifRS).
+ *
+ * @param <T> The type of FreeRooms request data (OTAHotelAvailNotifRQ or OTAHotelInvCountNotifRQ).
+ * @param <S> The type of FreeRooms response data (OTAHotelAvailNotifRS or OTAHotelInvCountNotifRS).
  */
-public class FreeRoomsPushMiddleware implements Middleware {
+public abstract class AbstractFreeRoomsPushMiddleware<T, S> implements Middleware {
 
-    private final Key<OTAHotelAvailNotifRQ> requestKey;
-    private final Key<OTAHotelAvailNotifRS> responseKey;
+    private final Key<T> requestKey;
+    private final Key<S> responseKey;
 
-    public FreeRoomsPushMiddleware(
-            Key<OTAHotelAvailNotifRQ> requestKey,
-            Key<OTAHotelAvailNotifRS> responseKey
+    public AbstractFreeRoomsPushMiddleware(
+            Key<T> requestKey,
+            Key<S> responseKey
     ) {
         this.requestKey = requestKey;
         this.responseKey = responseKey;
@@ -37,19 +43,23 @@ public class FreeRoomsPushMiddleware implements Middleware {
     @Override
     public void handleContext(Context ctx, MiddlewareChain chain) {
         // Call service for persistence
-        OTAHotelAvailNotifRS response = this.invokeService(ctx);
+        S response = this.invokeService(ctx);
 
         // Put result back into middleware context
         ctx.put(this.responseKey, response);
     }
 
-    private OTAHotelAvailNotifRS invokeService(Context ctx) {
+    protected abstract FreeRoomsPushService<S> getFreeRoomsPushService(OdhBackendService odhBackendService);
+
+    protected abstract String getHotelCodeOrThrowOnEmpty(T request);
+
+    private S invokeService(Context ctx) {
         // Get necessary objects from middleware context
         OdhBackendService odhBackendService = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE);
 
         String alpineBitsVersion = ctx.getOrThrow(RequestContextKey.REQUEST_VERSION);
         String requestId = ctx.getOrThrow(RequestContextKey.REQUEST_ID);
-        OTAHotelAvailNotifRQ freeRoomsRequest = ctx.getOrThrow(this.requestKey);
+        T freeRoomsRequest = ctx.getOrThrow(this.requestKey);
         String accommodationId = this.getHotelCodeOrThrowOnEmpty(freeRoomsRequest);
 
         PushWrapper pushWrapper = new PushWrapper();
@@ -58,21 +68,8 @@ public class FreeRoomsPushMiddleware implements Middleware {
         pushWrapper.setRequestId(requestId);
         pushWrapper.setMessage(freeRoomsRequest);
 
-        FreeRoomsPushService service = new FreeRoomsPushServiceImpl(odhBackendService);
+        FreeRoomsPushService<S> service = getFreeRoomsPushService(odhBackendService);
         return service.write(pushWrapper);
     }
 
-    private String getHotelCodeOrThrowOnEmpty(OTAHotelAvailNotifRQ otaHotelAvailNotifRQ) {
-        if (otaHotelAvailNotifRQ == null) {
-            throw new AlpineBitsException("Element OTAHotelAvailNotifRQ is required", 400);
-        }
-        if (otaHotelAvailNotifRQ.getAvailStatusMessages() == null) {
-            throw new AlpineBitsException("Element AvailStatusMessages is required", 400);
-        }
-        if (otaHotelAvailNotifRQ.getAvailStatusMessages().getHotelCode() == null) {
-            throw new AlpineBitsException("Attribute HotelCode is required", 400);
-        }
-
-        return otaHotelAvailNotifRQ.getAvailStatusMessages().getHotelCode();
-    }
 }
