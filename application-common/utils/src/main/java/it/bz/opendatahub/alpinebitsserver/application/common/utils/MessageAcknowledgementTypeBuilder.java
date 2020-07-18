@@ -33,7 +33,7 @@ public final class MessageAcknowledgementTypeBuilder {
     }
 
     public static MessageAcknowledgementType forError(String message) {
-        return forError(TYPE_DEFAULT, CODE_UNABLE_TO_PROCESS, message);
+        return forError(CODE_UNABLE_TO_PROCESS, TYPE_DEFAULT, message);
     }
 
     public static MessageAcknowledgementType forError(String code, String type, String message) {
