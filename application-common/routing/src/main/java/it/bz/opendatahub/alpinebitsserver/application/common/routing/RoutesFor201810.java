@@ -33,9 +33,12 @@ public final class RoutesFor201810 {
      * @return A {@link RoutingBuilder.FinalBuilder} that can be used for further route building.
      */
     public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) {
+        if (builder == null) {
+            throw new IllegalArgumentException("The builder must not be null");
+        }
         return builder.version(AlpineBitsVersion.V_2018_10)
                 .supportsAction(Action.HANDSHAKING)
-                .withCapabilities()
+                .withCapabilities(AlpineBitsCapability.HANDSHAKING)
                 .using(new HandshakingMiddleware(new DefaultContextSerializer(AlpineBitsVersion.V_2018_10)))
                 .and()
                 .supportsAction(Action.INVENTORY_BASIC_PULL)

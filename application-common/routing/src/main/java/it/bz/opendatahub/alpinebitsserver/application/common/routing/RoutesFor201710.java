@@ -33,6 +33,9 @@ public final class RoutesFor201710 {
      * @return A {@link RoutingBuilder.FinalBuilder} that can be used for further route building.
      */
     public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) {
+        if (builder == null) {
+            throw new IllegalArgumentException("The builder must not be null");
+        }
         return builder.version(AlpineBitsVersion.V_2017_10)
                 .supportsAction(Action.GET_VERSION)
                 .withCapabilities(AlpineBitsCapability.GET_VERSION)

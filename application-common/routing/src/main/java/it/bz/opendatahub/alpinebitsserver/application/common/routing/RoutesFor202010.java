@@ -31,9 +31,12 @@ public final class RoutesFor202010 {
      * @return A {@link RoutingBuilder.FinalBuilder} that can be used for further route building.
      */
     public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) {
+        if (builder == null) {
+            throw new IllegalArgumentException("The builder must not be null");
+        }
         return builder.version(AlpineBitsVersion.V_2020_10)
                 .supportsAction(Action.HANDSHAKING)
-                .withCapabilities()
+                .withCapabilities(AlpineBitsCapability.HANDSHAKING)
                 .using(new HandshakingMiddleware(new DefaultContextSerializer(AlpineBitsVersion.V_2020_10)))
                 .and()
                 .supportsAction(Action.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_FREE_ROOMS)
