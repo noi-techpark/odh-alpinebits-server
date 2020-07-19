@@ -4,14 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package it.bz.opendatahub.alpinebitsserver.application.common;
+package it.bz.opendatahub.alpinebitsserver.application.common.environment;
 
-import it.bz.opendatahub.alpinebitsserver.application.common.environment.FilePropertySource;
-import it.bz.opendatahub.alpinebitsserver.application.common.environment.ProcessPropertySource;
-import it.bz.opendatahub.alpinebitsserver.application.common.environment.PropertyProvider;
-import it.bz.opendatahub.alpinebitsserver.application.common.environment.PropertySource;
-import it.bz.opendatahub.alpinebitsserver.application.common.environment.SystemPropertySource;
-import it.bz.opendatahub.alpinebitsserver.application.common.environment.TestPropertySource;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
