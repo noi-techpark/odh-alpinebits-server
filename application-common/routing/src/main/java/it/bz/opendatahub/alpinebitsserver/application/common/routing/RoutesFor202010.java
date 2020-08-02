@@ -14,6 +14,8 @@ import it.bz.opendatahub.alpinebits.routing.DefaultRouter;
 import it.bz.opendatahub.alpinebits.routing.RoutingBuilder;
 import it.bz.opendatahub.alpinebits.routing.constants.Action;
 import it.bz.opendatahub.alpinebitsserver.odh.freerooms.HotelInvCountNotifPushMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2020_10.InventoryPullMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2020_10.InventoryPushMiddlewareBuilder;
 
 /**
  * Route definitions for AlpineBits 2020-10.
@@ -38,6 +40,25 @@ public final class RoutesFor202010 {
                 .supportsAction(Action.HANDSHAKING)
                 .withCapabilities(AlpineBitsCapability.HANDSHAKING)
                 .using(new HandshakingMiddleware(new DefaultContextSerializer(AlpineBitsVersion.V_2020_10)))
+                .and()
+                .supportsAction(Action.INVENTORY_BASIC_PULL)
+                .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_INFO_INVENTORY)
+                .using(InventoryPullMiddlewareBuilder.buildInventoryPullMiddleware())
+                .and()
+                .supportsAction(Action.INVENTORY_HOTEL_INFO_PULL)
+                .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_INFO_INFO)
+                .using(InventoryPullMiddlewareBuilder.buildInventoryPullMiddleware())
+                .and()
+                .supportsAction(Action.INVENTORY_BASIC_PUSH)
+                .withCapabilities(
+                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY,
+                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY_USE_ROOMS
+                )
+                .using(InventoryPushMiddlewareBuilder.buildInventoryPushMiddleware())
+                .and()
+                .supportsAction(Action.INVENTORY_HOTEL_INFO_PUSH)
+                .withCapabilities(AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INFO)
+                .using(InventoryPushMiddlewareBuilder.buildInventoryPushMiddleware())
                 .and()
                 .supportsAction(Action.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_FREE_ROOMS)
                 .withCapabilities(
