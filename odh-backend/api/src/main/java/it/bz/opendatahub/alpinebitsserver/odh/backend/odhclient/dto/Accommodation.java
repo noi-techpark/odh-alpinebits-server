@@ -43,6 +43,15 @@ public class Accommodation {
     @JsonProperty("TrustYouState")
     private Integer trustYouState;
 
+    @JsonProperty("TrustYouScore")
+    private Float trustYouScore;
+
+    @JsonProperty("AccoTypeId")
+    private String accoTypeId;
+
+    @JsonProperty("AccoCategoryId")
+    private String accoCategoryId;
+
     @JsonProperty("Features")
     private List<Feature> features;
 
@@ -119,6 +128,30 @@ public class Accommodation {
         this.trustYouState = trustYouState;
     }
 
+    public Float getTrustYouScore() {
+        return trustYouScore;
+    }
+
+    public void setTrustYouScore(Float trustYouScore) {
+        this.trustYouScore = trustYouScore;
+    }
+
+    public String getAccoTypeId() {
+        return accoTypeId;
+    }
+
+    public void setAccoTypeId(String accoTypeId) {
+        this.accoTypeId = accoTypeId;
+    }
+
+    public String getAccoCategoryId() {
+        return accoCategoryId;
+    }
+
+    public void setAccoCategoryId(String accoCategoryId) {
+        this.accoCategoryId = accoCategoryId;
+    }
+
     public List<Feature> getFeatures() {
         return features;
     }
@@ -162,6 +195,9 @@ public class Accommodation {
                 ", trustYouId='" + trustYouId + '\'' +
                 ", trustYouActive=" + trustYouActive +
                 ", trustYouState=" + trustYouState +
+                ", trustYouScore=" + trustYouScore +
+                ", accoTypeId=" + accoTypeId +
+                ", accoCategoryId=" + accoCategoryId +
                 ", features=" + features +
                 ", accoDetailMap=" + accoDetailMap +
                 ", imageGalleries=" + imageGalleries +

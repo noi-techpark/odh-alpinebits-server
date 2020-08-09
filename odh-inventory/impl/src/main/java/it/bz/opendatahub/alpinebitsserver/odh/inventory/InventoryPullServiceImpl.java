@@ -7,7 +7,6 @@
 package it.bz.opendatahub.alpinebitsserver.odh.inventory;
 
 import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
-import it.bz.opendatahub.alpinebits.xml.schema.ota.HotelInfoType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents.HotelDescriptiveContent;
@@ -16,8 +15,10 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accommodatio
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccommodationRoom;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.AffiliationInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelCodeExtractor;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.InventoryPullMapper;
 
 import javax.ws.rs.core.Response;
@@ -85,20 +86,14 @@ public class InventoryPullServiceImpl implements InventoryPullService {
             // Set hotel name
             hotelDescriptiveContent.setHotelName(accommodation.getShortname());
 
+            // Add HotelInfo if appropriate
+            HotelInfoTypeBuilder.extractHotelInfoType(accommodation).ifPresent(hotelDescriptiveContent::setHotelInfo);
+
+            // Add AffiliationInfo if appropriate
+            AffiliationInfoTypeBuilder.extractHotelInfoType(accommodation).ifPresent(hotelDescriptiveContent::setAffiliationInfo);
+
             // Add ContactInfos if appropriate
             ContactInfosTypeBuilder.extractContactInfosType(accommodation).ifPresent(hotelDescriptiveContent::setContactInfos);
-
-            // Add some hotel info
-
-            HotelInfoType.Position position = new HotelInfoType.Position();
-            position.setAltitude(accommodation.getAltitude() != null ? accommodation.getAltitude().toString() : "");
-            position.setLatitude(accommodation.getLatitude() != null ? accommodation.getLatitude().toString() : "");
-            position.setLongitude(accommodation.getLongitude() != null ? accommodation.getLongitude().toString() : "");
-
-            HotelInfoType hotelInfoType = new HotelInfoType();
-            hotelInfoType.setPosition(position);
-
-            hotelDescriptiveContent.setHotelInfo(hotelInfoType);
 
             otaHotelDescriptiveInfoRS.setSuccess(new SuccessType());
             otaHotelDescriptiveInfoRS.setVersion(BigDecimal.valueOf(8.000));
