@@ -83,7 +83,7 @@ public final class ContactInfosTypeAdapter {
     }
 
     private static List<URL> extractURLs(ContactInfoRootType contactInfoRootType) {
-        return contactInfoRootType.getAddresses() != null
+        return contactInfoRootType.getURLs() != null
                 ? contactInfoRootType.getURLs().getURLS()
                 : Collections.emptyList();
     }
