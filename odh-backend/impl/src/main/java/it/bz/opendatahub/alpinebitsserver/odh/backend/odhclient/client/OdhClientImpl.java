@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.ApiKeyResponse;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2020_10.serialization.OtaModule202010;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
@@ -138,6 +139,9 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
 
         // Add module for better JAXB support
         om.registerModule(new JaxbAnnotationModule());
+
+        // Add serialization module for AlpineBits 2020-10 (JAXBElement serializations)
+        om.registerModule(new OtaModule202010());
 
         JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
         provider.setMapper(om);
