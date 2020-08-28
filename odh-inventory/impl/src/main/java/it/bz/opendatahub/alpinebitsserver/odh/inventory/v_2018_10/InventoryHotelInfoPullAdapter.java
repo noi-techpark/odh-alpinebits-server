@@ -13,8 +13,11 @@ import it.bz.opendatahub.alpinebits.middleware.MiddlewareChain;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfoRootType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.URLsType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.URLsType.URL;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This middleware removes elements and attributes that are not allowed in AlpineBits 2018-10
@@ -66,12 +69,8 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
             contactInfoRootType.setPhones(null);
             contactInfoRootType.setRemoval(null);
 
-            extractURLsType(contactInfoRootType).ifPresent(url -> {
-                url.setDefaultInd(null);
-                url.setType(null);
-            });
+            removeUnsupportedURLs(contactInfoRootType);
         });
-
     }
 
     private Optional<ContactInfoRootType> extractContactInfoRootType(OTAHotelDescriptiveInfoRS ota) {
@@ -85,13 +84,28 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
         return Optional.empty();
     }
 
-    private Optional<URLsType.URL> extractURLsType(ContactInfoRootType contactInfoRootType) {
-        if (contactInfoRootType.getURLs() != null
-                && !contactInfoRootType.getURLs().getURLS().isEmpty()
-        ) {
-            return Optional.of(contactInfoRootType.getURLs().getURLS().get(0));
+    private void removeUnsupportedURLs(ContactInfoRootType contactInfoRootType) {
+        if (contactInfoRootType.getURLs() == null) {
+            return;
         }
-        return Optional.empty();
+
+        List<URL> urls = contactInfoRootType.getURLs().getURLS().stream()
+                .filter(url -> url.getID() != null)
+                .map(url -> {
+                    URL result = new URL();
+                    result.setID(url.getID());
+                    result.setValue(url.getValue());
+                    return result;
+                })
+                .collect(Collectors.toList());
+
+        if (urls.isEmpty()) {
+            contactInfoRootType.setURLs(null);
+        } else {
+            URLsType urLsType = new URLsType();
+            urLsType.getURLS().addAll(urls);
+            contactInfoRootType.setURLs(urLsType);
+        }
     }
 
 }
