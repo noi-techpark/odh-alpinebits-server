@@ -46,6 +46,7 @@ public final class InventoryPullMiddlewareBuilder {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2017_10),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2017_10),
+                new InventoryHotelInfoPullAdapter(),
                 new AuthenticatedInventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
                         OTA_INVENTORY_PULL_RESPONSE

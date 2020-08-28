@@ -57,6 +57,12 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
 
         OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = ctx.getOrThrow(OTA_INVENTORY_PULL_RESPONSE);
 
+        // Set AreaID to null (AreaID is allowed in AlpineBits 2020-10)
+        if (otaHotelDescriptiveInfoRS.getHotelDescriptiveContents() != null
+                && !otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().isEmpty()) {
+            otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).setAreaID(null);
+        }
+
         extractContactInfoRootType(otaHotelDescriptiveInfoRS).ifPresent(contactInfoRootType -> {
             // Remove all elements / attributes except "URLs" element and "Location" attribute
             contactInfoRootType.setAddresses(null);
