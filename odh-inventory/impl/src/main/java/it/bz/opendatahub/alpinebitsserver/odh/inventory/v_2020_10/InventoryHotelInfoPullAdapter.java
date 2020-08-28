@@ -6,6 +6,8 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2020_10;
 
+import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsAction;
+import it.bz.opendatahub.alpinebits.common.context.RequestContextKey;
 import it.bz.opendatahub.alpinebits.middleware.Context;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
@@ -45,8 +47,12 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
 
         OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = ctx.getOrThrow(OTA_INVENTORY_PULL_RESPONSE);
 
-        // Remove FacilityInfo all together, because is not supported in AlpineBits 2020-10 Inventory/HotelInfo anymore
-        if (hasFacilityInfoType(otaHotelDescriptiveInfoRS)) {
+        String alpineBitsAction = ctx.get(RequestContextKey.REQUEST_ACTION).orElse(null);
+
+        // Remove FacilityInfo for Inventory/HotelInfo all together, because is not supported in
+        // AlpineBits 2020-10 Inventory/HotelInfo anymore
+        if (AlpineBitsAction.INVENTORY_HOTEL_INFO_PULL.equals(alpineBitsAction)
+                && hasFacilityInfoType(otaHotelDescriptiveInfoRS)) {
             otaHotelDescriptiveInfoRS
                     .getHotelDescriptiveContents()
                     .getHotelDescriptiveContents()
