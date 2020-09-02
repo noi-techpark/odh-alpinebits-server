@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>alpinebitsserver-odh-root</artifactId>
-        <version>0.7.0</version>
+        <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>ROOT</artifactId>
-    <version>0.7.0</version>
+    <version>2.0.0</version>
 
     <packaging>war</packaging>
     <name>AlpineBits Server WAR with Open Data Hub (ODH) backend</name>
@@ -42,7 +42,6 @@
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-servlet-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

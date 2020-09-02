@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -49,7 +48,7 @@ public class AlpineBitsResource {
     private String odhUrl;
 
     @PostConstruct
-    public void initMiddleware() throws JAXBException {
+    public void initMiddleware() {
         this.middleware = ComposingMiddlewareBuilder.compose(Arrays.asList(
                 new StatisticsMiddleware(),
                 new ContentTypeHintMiddleware(),

@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-freerooms</artifactId>
-        <version>0.7.0</version>
+        <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-freerooms-impl</artifactId>
-    <version>0.7.0</version>
+    <version>2.0.0</version>
 
     <name>AlpineBits FreeRooms action with ODH backend impl</name>
 
@@ -32,27 +32,14 @@
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-common-utils</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-api</artifactId>
-            <version>${odh-alpinebits.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>it.bz.opendatahub.alpinebits</groupId>
-            <artifactId>alpinebits-mapping-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-validation-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-xml-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

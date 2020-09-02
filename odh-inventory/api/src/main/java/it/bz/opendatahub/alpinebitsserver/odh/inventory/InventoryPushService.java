@@ -6,7 +6,7 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory;
 
-import it.bz.opendatahub.alpinebits.mapping.entity.GenericResponse;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRS;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 
 /**
@@ -17,19 +17,19 @@ public interface InventoryPushService {
     /**
      * Write a Inventory/Basic information.
      *
-     * @param pushWrapper this element contains the FreeRooms information
+     * @param pushWrapper this element contains the Inventory information
      *                    that should be written to ODH
-     * @return a {@link GenericResponse} containing the response
+     * @return a {@link OTAHotelDescriptiveContentNotifRS} containing the response
      */
-    GenericResponse writeBasic(PushWrapper pushWrapper);
+    OTAHotelDescriptiveContentNotifRS writeBasic(PushWrapper pushWrapper);
 
     /**
      * Write a Inventory/Basic information.
      *
-     * @param pushWrapper this element contains the FreeRooms information
+     * @param pushWrapper this element contains the Inventory information
      *                    that should be written to ODH
-     * @return a {@link GenericResponse} containing the response
+     * @return a {@link OTAHotelDescriptiveContentNotifRS} containing the response
      */
-    GenericResponse writeHotelInfo(PushWrapper pushWrapper);
+    OTAHotelDescriptiveContentNotifRS writeHotelInfo(PushWrapper pushWrapper);
 
 }

@@ -23,6 +23,9 @@ public class Feature {
     @JsonProperty("Name")
     private String name;
 
+    @JsonProperty("OtaCodes")
+    private String otaCodes;
+
     @JsonProperty("RoomAmenityCodes")
     private List<Integer> roomAmenityCodes;
 
@@ -42,6 +45,14 @@ public class Feature {
         this.name = name;
     }
 
+    public String getOtaCodes() {
+        return otaCodes;
+    }
+
+    public void setOtaCodes(String otaCodes) {
+        this.otaCodes = otaCodes;
+    }
+
     public List<Integer> getRoomAmenityCodes() {
         return roomAmenityCodes;
     }
@@ -55,6 +66,7 @@ public class Feature {
         return "Feature{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", otaCodes='" + otaCodes + '\'' +
                 ", roomAmenityCodes=" + roomAmenityCodes +
                 '}';
     }

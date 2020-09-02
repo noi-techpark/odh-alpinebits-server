@@ -11,8 +11,6 @@ import it.bz.opendatahub.alpinebits.routing.DefaultRouter;
 import it.bz.opendatahub.alpinebits.routing.RoutingBuilder;
 import it.bz.opendatahub.alpinebits.routing.middleware.RoutingMiddleware;
 
-import javax.xml.bind.JAXBException;
-
 /**
  * This class provides methods to build routing middlewares.
  */
@@ -28,12 +26,11 @@ public final class RoutingMiddlewareProvider {
      *
      * @return a routing middleware supporting the AlpineBits
      * Housekeeping and Inventory actions
-     * @throws JAXBException if there was an error while building
-     *                       the necessary XML parts
      */
-    public static Middleware buildRoutingMiddleware() throws JAXBException {
+    public static Middleware buildRoutingMiddleware() {
         DefaultRouter.Builder builder = new DefaultRouter.Builder();
-        RoutingBuilder.FinalBuilder fb = RoutesFor201810.routes(builder);
+        RoutingBuilder.FinalBuilder fb = RoutesFor202010.routes(builder);
+        fb = RoutesFor201810.routes(fb.and());
         fb = RoutesFor201710.routes(fb.and());
         return new RoutingMiddleware(fb.buildRouter());
     }
