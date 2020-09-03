@@ -6,19 +6,37 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory.common;
 
-import it.bz.opendatahub.alpinebits.mapping.entity.inventory.GuestRoom;
-import it.bz.opendatahub.alpinebits.mapping.entity.inventory.HotelDescriptiveContent;
-import it.bz.opendatahub.alpinebits.mapping.entity.inventory.ImageItem;
-import it.bz.opendatahub.alpinebits.mapping.entity.inventory.TextItemDescription;
-import it.bz.opendatahub.alpinebits.mapping.entity.inventory.TypeRoom;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccomodationRoom;
+import it.bz.opendatahub.alpinebits.common.constants.OTACodeGuestRoomInfo;
+import it.bz.opendatahub.alpinebits.common.constants.OTACodeInformationType;
+import it.bz.opendatahub.alpinebits.common.constants.OTACodePictureCategoryCode;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.FacilityInfoType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.FacilityInfoType.GuestRooms;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.FacilityInfoType.GuestRooms.GuestRoom;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.FacilityInfoType.GuestRooms.GuestRoom.Amenities;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.FacilityInfoType.GuestRooms.GuestRoom.Amenities.Amenity;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.FacilityInfoType.GuestRooms.GuestRoom.TypeRoom;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.ImageDescriptionType.ImageFormat;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.ImageItemsType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.ImageItemsType.ImageItem;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.MultimediaDescriptionType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.MultimediaDescriptionsType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents.HotelDescriptiveContent;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.TextDescriptionType.Description;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.TextItemsType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.TextItemsType.TextItem;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccommodationRoom;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -29,34 +47,27 @@ public class InventoryPullMapper {
     private static final Logger LOG = LoggerFactory.getLogger(InventoryPullMapper.class);
 
     /**
-     * Map a list of {@link AccomodationRoom} elements to a
-     * {@link HotelDescriptiveContent} element for the Inventory HotelInfo.
+     * Map a list of {@link AccommodationRoom} elements to a
+     * {@link OTAHotelDescriptiveInfoRS} element for the Inventory Basic
+     * pull action.
      *
-     * @param rooms Map this list to a HotelDescriptiveContent element.
-     * @return The mapped HotelDescriptiveContent element.
+     * @param rooms Map this list to a OTAHotelDescriptiveInfoRS element.
+     * @return The mapped OTAHotelDescriptiveInfoRS element.
      */
-    public HotelDescriptiveContent mapToHotelDescriptiveContentForBasic(List<AccomodationRoom> rooms) {
+    public OTAHotelDescriptiveInfoRS mapToHotelDescriptiveInfoForBasic(List<AccommodationRoom> rooms) {
         List<GuestRoom> guestRooms = rooms
                 .stream()
                 .map(room -> {
                     // Compute guest room description used as room category
                     // description for AlpineBits GuestRooms
-                    GuestRoom guestRoomDescription = new GuestRoom();
-                    guestRoomDescription.setCode(room.getRoomcode());
-                    guestRoomDescription.setMinOccupancy(room.getRoommin());
-                    guestRoomDescription.setMaxOccupancy(room.getRoommax());
-                    guestRoomDescription.setTypeRoom(this.buildTypeRoom(room));
-                    guestRoomDescription.setLongNames(this.buildLongname(room));
-                    guestRoomDescription.setDescriptions(this.buildDescriptions(room));
-                    guestRoomDescription.setPictures(this.buildPictures(room));
-                    guestRoomDescription.setRoomAmenityCodes(this.buildRoomAmenityCodes(room));
+                    GuestRoom guestRoom = buildDescriptionGuestRoom(room);
 
                     // Compute list of real rooms
                     List<GuestRoom> realRooms = new ArrayList<>();
                     if (room.getRoomNumbers() != null) {
                         // Room numbers are available
                         for (String roomNumber : room.getRoomNumbers()) {
-                            GuestRoom realRoom = this.buildGuestRoom(room, roomNumber);
+                            GuestRoom realRoom = this.buildRealGuestRoom(room, roomNumber);
                             realRooms.add(realRoom);
                         }
                     } else {
@@ -67,16 +78,17 @@ public class InventoryPullMapper {
                         LOG.warn("No room numbers found for room with ID {}. Falling back to counter", room.getId());
 
                         for (int i = 0; i < room.getRoomQuantity(); i++) {
-                            String roomNumber = guestRoomDescription.getCode() + "-" + i;
-                            GuestRoom realRoom = this.buildGuestRoom(room, roomNumber);
+                            String roomNumber = guestRoom.getCode() + "-" + i;
+                            GuestRoom realRoom = this.buildRealGuestRoom(room, roomNumber);
                             realRooms.add(realRoom);
                         }
                     }
-                    realRooms.sort(Comparator.comparing(o -> o.getTypeRoom().getRoomId()));
+                    // Sort by RoomID (if such a value exists)
+                    realRooms.sort(Comparator.comparing(o -> o.getTypeRooms().isEmpty() ? "" : o.getTypeRooms().get(0).getRoomID()));
 
                     // Concatenate room category information and all real rooms
                     List<GuestRoom> allRooms = new ArrayList<>();
-                    allRooms.add(guestRoomDescription);
+                    allRooms.add(guestRoom);
                     allRooms.addAll(realRooms);
 
                     return allRooms;
@@ -84,114 +96,208 @@ public class InventoryPullMapper {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
-        HotelDescriptiveContent hotelDescriptiveContent = new HotelDescriptiveContent();
-        hotelDescriptiveContent.setGuestRooms(guestRooms);
-
-        return hotelDescriptiveContent;
+        return buildOtaHotelDescriptiveInfo(guestRooms);
     }
 
     /**
-     * Map a list of {@link AccomodationRoom} elements to a
-     * {@link HotelDescriptiveContent} element for the Inventory HotelInfo.
+     * Map a list of {@link AccommodationRoom} elements to a
+     * {@link OTAHotelDescriptiveInfoRS} element for the Inventory HotelInfo
+     * pull action.
      *
-     * @param rooms Map this list to a HotelDescriptiveContent element.
-     * @return The mapped HotelDescriptiveContent element.
+     * @param rooms Map this list to a OTAHotelDescriptiveInfoRS element.
+     * @return The mapped OTAHotelDescriptiveInfoRS element.
      */
-    public HotelDescriptiveContent mapToHotelDescriptiveContentForHotelInfo(List<AccomodationRoom> rooms) {
+    public OTAHotelDescriptiveInfoRS mapToHotelDescriptiveInfoForHotelInfo(List<AccommodationRoom> rooms) {
         List<GuestRoom> guestRooms = rooms
                 .stream()
                 .map(room -> {
                     GuestRoom guestRoom = new GuestRoom();
                     guestRoom.setCode(room.getRoomcode());
-                    guestRoom.setPictures(this.buildPictures(room));
+
+                    MultimediaDescriptionsType multimediaDescriptionsType = new MultimediaDescriptionsType();
+                    buildPictures(room).ifPresent(multimediaDescriptionsType.getMultimediaDescriptions()::add);
+
+                    guestRoom.setMultimediaDescriptions(multimediaDescriptionsType);
                     return guestRoom;
                 })
                 .collect(Collectors.toList());
 
-        HotelDescriptiveContent hotelDescriptiveContent = new HotelDescriptiveContent();
-        hotelDescriptiveContent.setGuestRooms(guestRooms);
-
-        return hotelDescriptiveContent;
+        return buildOtaHotelDescriptiveInfo(guestRooms);
     }
 
-    private GuestRoom buildGuestRoom(AccomodationRoom room, String roomId) {
+    private OTAHotelDescriptiveInfoRS buildOtaHotelDescriptiveInfo(List<GuestRoom> guestRooms) {
+        GuestRooms guestRooms1 = new GuestRooms();
+        guestRooms1.getGuestRooms().addAll(guestRooms);
+
+        FacilityInfoType facilityInfoType = new FacilityInfoType();
+        facilityInfoType.setGuestRooms(guestRooms1);
+
+        HotelDescriptiveContent hotelDescriptiveContentType = new HotelDescriptiveContent();
+        hotelDescriptiveContentType.setFacilityInfo(facilityInfoType);
+
+        HotelDescriptiveContents hotelDescriptiveContents = new HotelDescriptiveContents();
+        hotelDescriptiveContents.getHotelDescriptiveContents().add(hotelDescriptiveContentType);
+
+        OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = new OTAHotelDescriptiveInfoRS();
+        otaHotelDescriptiveInfoRS.setHotelDescriptiveContents(hotelDescriptiveContents);
+        return otaHotelDescriptiveInfoRS;
+    }
+
+    private GuestRoom buildDescriptionGuestRoom(AccommodationRoom room) {
         GuestRoom guestRoom = new GuestRoom();
         guestRoom.setCode(room.getRoomcode());
-        TypeRoom typeRoom = new TypeRoom();
-        typeRoom.setRoomId(roomId);
-        guestRoom.setTypeRoom(typeRoom);
+        guestRoom.setMinOccupancy(toBigInt(room.getRoommin()));
+        guestRoom.setMaxOccupancy(toBigInt(room.getRoommax()));
+        guestRoom.getTypeRooms().add(buildTypeRoom(room));
+        guestRoom.setMultimediaDescriptions(buildMultimediaDescriptions(room));
+        guestRoom.setAmenities(buildAmenities(room));
         return guestRoom;
     }
 
-    private TypeRoom buildTypeRoom(AccomodationRoom room) {
+    private GuestRoom buildRealGuestRoom(AccommodationRoom room, String roomId) {
+        GuestRoom guestRoom = new GuestRoom();
+        guestRoom.setCode(room.getRoomcode());
         TypeRoom typeRoom = new TypeRoom();
-        typeRoom.setStandardOccupancy(room.getRoomstd());
+        typeRoom.setRoomID(roomId);
+        guestRoom.getTypeRooms().add(typeRoom);
+        return guestRoom;
+    }
+
+    private TypeRoom buildTypeRoom(AccommodationRoom room) {
+        TypeRoom typeRoom = new TypeRoom();
+        typeRoom.setStandardOccupancy(toBigInt(room.getRoomstd()));
 
         // Use ODH RoomClassificationCode if set,
         // otherwise use default value
         if (room.getRoomClassificationCode() != null) {
-            typeRoom.setRoomClassificationCode(room.getRoomClassificationCode());
+            typeRoom.setRoomClassificationCode(room.getRoomClassificationCode().toString());
         } else {
-            typeRoom.setRoomClassificationCode(42);
+            typeRoom.setRoomClassificationCode(OTACodeGuestRoomInfo.ROOM.getCode());
         }
 
         return typeRoom;
     }
 
-    private List<Integer> buildRoomAmenityCodes(AccomodationRoom room) {
-        return room.getFeatures()
+    private MultimediaDescriptionsType buildMultimediaDescriptions(AccommodationRoom room) {
+        MultimediaDescriptionsType multimediaDescriptionsType = new MultimediaDescriptionsType();
+
+        buildLongNames(room).ifPresent(multimediaDescriptionsType.getMultimediaDescriptions()::add);
+        buildDescriptions(room).ifPresent(multimediaDescriptionsType.getMultimediaDescriptions()::add);
+        buildPictures(room).ifPresent(multimediaDescriptionsType.getMultimediaDescriptions()::add);
+
+        return multimediaDescriptionsType;
+    }
+
+
+    private Amenities buildAmenities(AccommodationRoom room) {
+        List<Amenity> amenitiesWithCode = room.getFeatures()
                 .stream()
-                .map(feature -> feature.getRoomAmenityCodes() != null ? feature.getRoomAmenityCodes() : new ArrayList<Integer>())
+                .filter(feature -> feature.getRoomAmenityCodes() != null)
+                .map(Feature::getRoomAmenityCodes)
                 .flatMap(List::stream)
-                .sorted(Comparator.comparingInt(Integer::intValue))
                 .distinct()
-                .collect(Collectors.toList());
-    }
-
-    private List<TextItemDescription> buildLongname(AccomodationRoom room) {
-        return room.getAccoRoomDetailMap().values()
-                .stream()
-                .map(value -> {
-                    TextItemDescription textItemDescription = new TextItemDescription();
-                    textItemDescription.setLanguage(value.getLanguage());
-                    textItemDescription.setTextFormat("PlainText");
-                    textItemDescription.setValue(value.getName());
-                    return textItemDescription;
+                .sorted(Comparator.comparingInt(Integer::intValue))
+                .map(roomAmenityCode -> {
+                    Amenity amenity = new Amenity();
+                    amenity.setRoomAmenityCode(roomAmenityCode.toString());
+                    return amenity;
                 })
                 .collect(Collectors.toList());
+
+        Amenities amenities = new Amenities();
+        amenities.getAmenities().addAll(amenitiesWithCode);
+        return amenities;
     }
 
-    private List<TextItemDescription> buildDescriptions(AccomodationRoom room) {
-        return room.getAccoRoomDetailMap().values()
+    private Optional<MultimediaDescriptionType> buildLongNames(AccommodationRoom room) {
+        if (room.getAccoRoomDetailMap().isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Description> descriptions = room.getAccoRoomDetailMap().values()
                 .stream()
                 .map(value -> {
-                    TextItemDescription textItemDescription = new TextItemDescription();
-                    textItemDescription.setLanguage(value.getLanguage());
-                    textItemDescription.setTextFormat("PlainText");
-                    textItemDescription.setValue(value.getLongdesc());
-                    return textItemDescription;
+                    Description description = new Description();
+                    description.setLanguage(value.getLanguage());
+                    description.setTextFormat("PlainText");
+                    description.setValue(value.getName());
+                    return description;
                 })
                 .collect(Collectors.toList());
+        TextItem textItem = new TextItem();
+        textItem.getDescriptions().addAll(descriptions);
+
+        TextItemsType textItemsType = new TextItemsType();
+        textItemsType.getTextItems().add(textItem);
+
+        MultimediaDescriptionType multimediaDescriptionType = new MultimediaDescriptionType();
+        multimediaDescriptionType.setTextItems(textItemsType);
+        multimediaDescriptionType.setInfoCode(OTACodeInformationType.LONG_NAME.getCode());
+        return Optional.of(multimediaDescriptionType);
     }
 
-    private List<ImageItem> buildPictures(AccomodationRoom room) {
-        return room.getImageGalleryEntries()
+    private Optional<MultimediaDescriptionType> buildDescriptions(AccommodationRoom room) {
+        if (room.getAccoRoomDetailMap().isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<Description> descriptions = room.getAccoRoomDetailMap().values()
+                .stream()
+                .map(value -> {
+                    Description description = new Description();
+                    description.setLanguage(value.getLanguage());
+                    description.setTextFormat("PlainText");
+                    description.setValue(value.getLongdesc());
+                    return description;
+                })
+                .collect(Collectors.toList());
+        TextItem textItem = new TextItem();
+        textItem.getDescriptions().addAll(descriptions);
+
+        TextItemsType textItemsType = new TextItemsType();
+        textItemsType.getTextItems().add(textItem);
+
+        MultimediaDescriptionType multimediaDescriptionType = new MultimediaDescriptionType();
+        multimediaDescriptionType.setTextItems(textItemsType);
+        multimediaDescriptionType.setInfoCode(OTACodeInformationType.DESCRIPTION.getCode());
+        return Optional.of(multimediaDescriptionType);
+    }
+
+
+    private Optional<MultimediaDescriptionType> buildPictures(AccommodationRoom room) {
+        if (room.getImageGalleryEntries().isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<ImageItem> imageItems = room.getImageGalleryEntries()
                 .stream()
                 .map(imageGallery -> {
                     ImageItem imageItem = new ImageItem();
 
                     // See OTA PIC 20 -> "Miscellaneous"
-                    imageItem.setCategory(20);
-                    imageItem.setCopyrightNotice(imageGallery.getCopyRight());
+                    imageItem.setCategory(OTACodePictureCategoryCode.MISCELLANEOUS.getCode());
 
-                    // The data provider of ODH don't deliver image descriptions reliably,
-                    // so the descriptions are kept empty. This may change in the future
-                    imageItem.setDescriptions(null);
-                    imageItem.setUrl(imageGallery.getImageUrl());
+                    ImageFormat imageFormat = new ImageFormat();
+                    imageFormat.setCopyrightNotice(imageGallery.getCopyRight());
+                    imageFormat.setURL(imageGallery.getImageUrl());
+
+                    imageItem.getImageFormats().add(imageFormat);
 
                     return imageItem;
                 })
                 .collect(Collectors.toList());
+
+        ImageItemsType imageItemsType = new ImageItemsType();
+        imageItemsType.getImageItems().addAll(imageItems);
+
+        MultimediaDescriptionType multimediaDescriptionType = new MultimediaDescriptionType();
+        multimediaDescriptionType.setImageItems(imageItemsType);
+        multimediaDescriptionType.setInfoCode(OTACodeInformationType.PICTURES.getCode());
+        return Optional.of(multimediaDescriptionType);
+    }
+
+    private BigInteger toBigInt(Integer value) {
+        return value != null ? BigInteger.valueOf(value) : null;
     }
 
 }

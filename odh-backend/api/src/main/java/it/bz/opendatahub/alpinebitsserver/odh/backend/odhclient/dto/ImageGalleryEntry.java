@@ -9,6 +9,8 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 /**
  * DTO for Open Data Hub "AccommodationRoom" ImageGallery element.
  */
@@ -21,8 +23,11 @@ public class ImageGalleryEntry {
     @JsonProperty("CopyRight")
     private String copyRight;
 
-    @JsonProperty("Descriptions")
-    private Object descriptions;
+    @JsonProperty("License")
+    private String license;
+
+    @JsonProperty("ImageDesc")
+    private Map<String, String> imageDescriptions;
 
     public String getImageUrl() {
         return imageUrl;
@@ -40,12 +45,20 @@ public class ImageGalleryEntry {
         this.copyRight = copyRight;
     }
 
-    public Object getDescriptions() {
-        return descriptions;
+    public String getLicense() {
+        return license;
     }
 
-    public void setDescriptions(Object descriptions) {
-        this.descriptions = descriptions;
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public Map<String, String> getImageDescriptions() {
+        return imageDescriptions;
+    }
+
+    public void setImageDescriptions(Map<String, String> imageDescriptions) {
+        this.imageDescriptions = imageDescriptions;
     }
 
     @Override
@@ -53,7 +66,8 @@ public class ImageGalleryEntry {
         return "ImageGalleryEntry{" +
                 "imageUrl='" + imageUrl + '\'' +
                 ", copyRight='" + copyRight + '\'' +
-                ", descriptions=" + descriptions +
+                ", license='" + license + '\'' +
+                ", imageDescriptions=" + imageDescriptions +
                 '}';
     }
 }

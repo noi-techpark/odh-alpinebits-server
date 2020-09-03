@@ -13,11 +13,9 @@ import it.bz.opendatahub.alpinebits.handshaking.middleware.HandshakingMiddleware
 import it.bz.opendatahub.alpinebits.routing.DefaultRouter;
 import it.bz.opendatahub.alpinebits.routing.RoutingBuilder;
 import it.bz.opendatahub.alpinebits.routing.constants.Action;
-import it.bz.opendatahub.alpinebitsserver.odh.freerooms.v_2018_10.FreeRoomsPushMiddlewareBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.freerooms.HotelAvailNotifPushMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2018_10.InventoryPullMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2018_10.InventoryPushMiddlewareBuilder;
-
-import javax.xml.bind.JAXBException;
 
 /**
  * Route definitions for AlpineBits 2018-10.
@@ -33,13 +31,14 @@ public final class RoutesFor201810 {
      *
      * @param builder The routes will be added to this builder.
      * @return A {@link RoutingBuilder.FinalBuilder} that can be used for further route building.
-     * @throws JAXBException If there was an error creating any of the routes that rely on
-     *                       XML processing.
      */
-    public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) throws JAXBException {
+    public static RoutingBuilder.FinalBuilder routes(DefaultRouter.Builder builder) {
+        if (builder == null) {
+            throw new IllegalArgumentException("The builder must not be null");
+        }
         return builder.version(AlpineBitsVersion.V_2018_10)
                 .supportsAction(Action.HANDSHAKING)
-                .withCapabilities()
+                .withCapabilities(AlpineBitsCapability.HANDSHAKING)
                 .using(new HandshakingMiddleware(new DefaultContextSerializer(AlpineBitsVersion.V_2018_10)))
                 .and()
                 .supportsAction(Action.INVENTORY_BASIC_PULL)
@@ -66,7 +65,7 @@ public final class RoutesFor201810 {
                         AlpineBitsCapability.FREE_ROOMS_HOTEL_AVAIL_NOTIF,
                         AlpineBitsCapability.FREE_ROOMS_HOTEL_AVAIL_NOTIF_ACCEPT_ROOMS
                 )
-                .using(FreeRoomsPushMiddlewareBuilder.buildFreeRoomsPushMiddleware())
+                .using(HotelAvailNotifPushMiddlewareBuilder.buildFreeRoomsPushMiddleware(AlpineBitsVersion.V_2018_10))
                 .versionComplete();
     }
 }

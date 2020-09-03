@@ -6,7 +6,7 @@
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>alpinebitsserver-odh-root</artifactId>
-    <version>0.7.0</version>
+    <version>2.0.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits Server with ODH as backend</name>
@@ -29,7 +29,7 @@
     </repositories>
 
     <properties>
-        <odh-alpinebits.version>1.0.3</odh-alpinebits.version>
+        <odh-alpinebits.version>2.0.0</odh-alpinebits.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
 
@@ -170,47 +170,129 @@
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-environment</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-middleware-config</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-routing</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>0.7.0</version>
-            </dependency>
-            <dependency>
-                <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-                <artifactId>odh-inventory-api</artifactId>
-                <version>0.7.0</version>
-            </dependency>
-            <dependency>
-                <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-                <artifactId>odh-inventory-impl</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-api</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-impl</artifactId>
-                <version>0.7.0</version>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+                <artifactId>odh-inventory-api</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+                <artifactId>odh-inventory-impl</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+
+            <!-- AlpineBits library dependencies -->
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-common-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-common-utils</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-handshaking-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-handshaking-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-housekeeping-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-housekeeping-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-middleware-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-middleware-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-routing-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-routing-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-servlet-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-servlet-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-validation-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-validation-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-xml-api</artifactId>
+                <version>${odh-alpinebits.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.bz.opendatahub.alpinebits</groupId>
+                <artifactId>alpinebits-xml-impl</artifactId>
+                <version>${odh-alpinebits.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
