@@ -18,7 +18,7 @@ as a backend.
 - [Deployment](#deployment)
 - [Docker environment](#docker-environment)
 - [Information](#information)
-- [How to request data?](#How-to-request-data)
+- [How to request data?](#how-to-request-data)
 
 ## Getting started
 
