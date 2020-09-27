@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-backend</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-backend-api</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <name>ODH backend API</name>
 
