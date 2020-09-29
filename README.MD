@@ -18,7 +18,7 @@ as a backend.
 - [Deployment](#deployment)
 - [Docker environment](#docker-environment)
 - [Information](#information)
-- [How to request data?](#How-to-request-data)
+- [How to request data?](#how-to-request-data)
 
 ## Getting started
 
@@ -106,7 +106,7 @@ class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`.
 Assuming you are in the projects root folder, run the following command: 
 
 ```bash
-java -jar application-spring/target/application-spring-2.0.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
+java -jar application-spring/target/application-spring-2.0.1.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
 ```
 
 ## Docker environment
@@ -275,7 +275,7 @@ Connection: close
 body
 ----
 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><OTA_PingRS xmlns="http://www.opentravel.org/OTA/2003/05" Version="8.000"><Success></Success><Warnings><Warning Type="11" Status="ALPINEBITS_HANDSHAKE">{"versions":[{"version":"2018-10","actions":[{"action":"action_OTA_HotelDescriptiveContentNotif_Inventory","supports":["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]},{"action":"action_OTA_Ping"},{"action":"action_OTA_HotelDescriptiveInfo_Inventory"}]},{"version":"2017-10"}]}</Warning></Warnings><EchoData>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><OTA_PingRS xmlns="http://www.opentravel.org/OTA/2003/05" Version="8.000"><Success/><Warnings><Warning Type="11" Status="ALPINEBITS_HANDSHAKE">{"versions":[{"version":"2018-10","actions":[{"action":"action_OTA_HotelDescriptiveContentNotif_Inventory","supports":["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]},{"action":"action_OTA_Ping"},{"action":"action_OTA_HotelDescriptiveInfo_Inventory"}]},{"version":"2017-10"}]}</Warning></Warnings><EchoData>
     {
       "versions": [{
         "version": "2017-10"
