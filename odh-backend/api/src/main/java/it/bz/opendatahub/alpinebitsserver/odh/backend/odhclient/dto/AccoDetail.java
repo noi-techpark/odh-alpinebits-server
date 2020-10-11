@@ -57,6 +57,9 @@ public class AccoDetail {
     @JsonProperty("Shortdesc")
     private String shortdesc;
 
+    @JsonProperty("CountryCode")
+    private String countryCode;
+
     @JsonProperty("NameAddition")
     private String nameAddition;
 
@@ -172,6 +175,14 @@ public class AccoDetail {
         this.shortdesc = shortdesc;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
     public String getNameAddition() {
         return nameAddition;
     }
@@ -182,7 +193,7 @@ public class AccoDetail {
 
     @Override
     public String toString() {
-        return "Accommodation{" +
+        return "AccoDetail{" +
                 "fax='" + fax + '\'' +
                 ", zip='" + zip + '\'' +
                 ", city='" + city + '\'' +
@@ -197,6 +208,7 @@ public class AccoDetail {
                 ", longdesc='" + longdesc + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", shortdesc='" + shortdesc + '\'' +
+                ", countryCode='" + countryCode + '\'' +
                 ", nameAddition='" + nameAddition + '\'' +
                 '}';
     }
