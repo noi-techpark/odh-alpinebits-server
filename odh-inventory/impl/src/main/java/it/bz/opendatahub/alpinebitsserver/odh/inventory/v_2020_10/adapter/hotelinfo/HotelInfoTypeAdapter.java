@@ -30,9 +30,12 @@ public final class HotelInfoTypeAdapter {
     /**
      * Remove unsupported (sub) elements and attributes from the {@link HotelInfoType} element.
      *
-     * @param hotelInfoType This element needs to be cleaned up in order to be AlpineBits 2020-10 compatible.
+     * @param hotelInfoType                     This element needs to be cleaned up in order to be AlpineBits 2020-10 compatible.
+     * @param withExtendedHotelInfoServiceCodes If this parameter is set to <code>true</code>, then extended service codes are
+     *                                          included and <code>CodeDetail</code> and <code>ExistsCode</code> elements should
+     *                                          not be removed.
      */
-    public static void removeUnsupported(HotelInfoType hotelInfoType) {
+    public static void removeUnsupported(HotelInfoType hotelInfoType, boolean withExtendedHotelInfoServiceCodes) {
         if (hotelInfoType == null) {
             return;
         }
@@ -91,7 +94,7 @@ public final class HotelInfoTypeAdapter {
         }
 
         // Cleanup Services
-        extractServices(hotelInfoType).forEach(ServiceAdapter::removeUnsupported);
+        extractServices(hotelInfoType).forEach(service -> ServiceAdapter.removeUnsupported(service, withExtendedHotelInfoServiceCodes));
     }
 
     private static List<HotelCategory> extractHotelCategories(CategoryCodesType categoryCodesType) {

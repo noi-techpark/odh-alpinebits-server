@@ -35,6 +35,10 @@
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-servlet-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-validation-impl</artifactId>
         </dependency>
         <dependency>
@@ -66,6 +70,10 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-servlet-api</artifactId>
         </dependency>
     </dependencies>
 </project>
