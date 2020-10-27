@@ -10,6 +10,7 @@ import it.bz.opendatahub.alpinebits.xml.schema.ota.AddressesType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.AddressesType.Address;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfoRootType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.ContactInfosType;
+import it.bz.opendatahub.alpinebits.xml.schema.ota.CountryNameType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.EmailsType;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.EmailsType.Email;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.PhonesType;
@@ -90,6 +91,11 @@ public final class ContactInfosTypeBuilder {
                     }
                     if (isStringNonEmpty(accoDetail.getZip())) {
                         address.setPostalCode(accoDetail.getZip());
+                    }
+                    if (isStringNonEmpty(accoDetail.getCountryCode())) {
+                        CountryNameType countryNameType = new CountryNameType();
+                        countryNameType.setCode(accoDetail.getCountryCode());
+                        address.setCountryName(countryNameType);
                     }
 
                     return isAddressEmpty(address) ? null : address;

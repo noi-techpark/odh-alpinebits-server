@@ -33,10 +33,12 @@ public class InventoryPullServiceImpl implements InventoryPullService {
 
 
     private final OdhBackendService service;
+    private final boolean withExtendedHotelInfoServiceCodes;
     private final InventoryPullMapper inventoryPullMapper;
 
-    public InventoryPullServiceImpl(OdhBackendService service) {
+    public InventoryPullServiceImpl(OdhBackendService service, boolean withExtendedHotelInfoServiceCodes) {
         this.service = service;
+        this.withExtendedHotelInfoServiceCodes = withExtendedHotelInfoServiceCodes;
         this.inventoryPullMapper = new InventoryPullMapper();
     }
 
@@ -87,7 +89,7 @@ public class InventoryPullServiceImpl implements InventoryPullService {
             hotelDescriptiveContent.setHotelName(accommodation.getShortname());
 
             // Add HotelInfo if appropriate
-            HotelInfoTypeBuilder.extractHotelInfoType(accommodation).ifPresent(hotelDescriptiveContent::setHotelInfo);
+            HotelInfoTypeBuilder.extractHotelInfoType(accommodation, this.withExtendedHotelInfoServiceCodes).ifPresent(hotelDescriptiveContent::setHotelInfo);
 
             // Add AffiliationInfo if appropriate
             AffiliationInfoTypeBuilder.extractHotelInfoType(accommodation).ifPresent(hotelDescriptiveContent::setAffiliationInfo);

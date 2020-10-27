@@ -47,6 +47,11 @@ public final class AddressAdapter {
         if (address.getStateProv() != null) {
             address.getStateProv().setValue(null);
         }
+
+        // Remove unsupported elements and attributes from StateProv
+        if (address.getCountryName() != null) {
+            address.getCountryName().setValue(null);
+        }
     }
 
 }

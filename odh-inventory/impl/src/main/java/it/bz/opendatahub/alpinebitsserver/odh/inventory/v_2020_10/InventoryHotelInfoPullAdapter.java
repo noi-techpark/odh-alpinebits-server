@@ -38,6 +38,11 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
 
     private static final Key<OTAHotelDescriptiveInfoRS> OTA_INVENTORY_PULL_RESPONSE
             = Key.key("inventory pull response", OTAHotelDescriptiveInfoRS.class);
+    private final Key<String> withExtendedHotelInfoServiceCodesKey;
+
+    public InventoryHotelInfoPullAdapter(Key<String> withExtendedHotelInfoServiceCodesKey) {
+        this.withExtendedHotelInfoServiceCodesKey = withExtendedHotelInfoServiceCodesKey;
+    }
 
     @Override
     public void handleContext(Context ctx, MiddlewareChain chain) {
@@ -60,7 +65,10 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
                     .setFacilityInfo(null);
         }
 
-        OTAHotelDescriptiveInfoRSAdapter.removeUnsupported(otaHotelDescriptiveInfoRS);
+        boolean withExtendedHotelInfoServiceCodes = this.withExtendedHotelInfoServiceCodesKey != null
+                && ctx.contains(this.withExtendedHotelInfoServiceCodesKey);
+
+        OTAHotelDescriptiveInfoRSAdapter.removeUnsupported(otaHotelDescriptiveInfoRS, withExtendedHotelInfoServiceCodes);
     }
 
     private static boolean hasFacilityInfoType(OTAHotelDescriptiveInfoRS ota) {
