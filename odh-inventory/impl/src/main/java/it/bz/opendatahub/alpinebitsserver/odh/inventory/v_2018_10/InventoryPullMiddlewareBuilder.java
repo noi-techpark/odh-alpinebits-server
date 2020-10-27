@@ -61,7 +61,8 @@ public final class InventoryPullMiddlewareBuilder {
                 new InventoryHotelInfoPullAdapter(),
                 new InventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
-                        OTA_INVENTORY_PULL_RESPONSE
+                        OTA_INVENTORY_PULL_RESPONSE,
+                        null
                 )
         ));
     }

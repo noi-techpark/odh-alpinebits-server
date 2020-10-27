@@ -23,7 +23,7 @@ public final class OTAHotelDescriptiveInfoRSAdapter {
         // Empty
     }
 
-    public static void removeUnsupported(OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS) {
+    public static void removeUnsupported(OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS, boolean withExtendedHotelInfoServiceCodes) {
         if (otaHotelDescriptiveInfoRS == null) {
             throw new IllegalArgumentException("OTAHotelDescriptiveInfoRS must not be null");
         }
@@ -32,7 +32,7 @@ public final class OTAHotelDescriptiveInfoRSAdapter {
                 .extractHotelDescriptiveContent(otaHotelDescriptiveInfoRS)
                 .forEach(hotelDescriptiveContent -> {
                     // Remove unsupported elements and attributes from HotelInfo element
-                    HotelInfoTypeAdapter.removeUnsupported(hotelDescriptiveContent.getHotelInfo());
+                    HotelInfoTypeAdapter.removeUnsupported(hotelDescriptiveContent.getHotelInfo(), withExtendedHotelInfoServiceCodes);
 
                     // Remove unsupported elements and attributes from Policies element
                     PoliciesAdapter.removeUnsupported(hotelDescriptiveContent.getPolicies());

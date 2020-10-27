@@ -60,7 +60,8 @@ public final class InventoryPullMiddlewareBuilder {
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2017_10),
                 new InventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
-                        OTA_INVENTORY_PULL_RESPONSE
+                        OTA_INVENTORY_PULL_RESPONSE,
+                        null
                 )
         ));
     }

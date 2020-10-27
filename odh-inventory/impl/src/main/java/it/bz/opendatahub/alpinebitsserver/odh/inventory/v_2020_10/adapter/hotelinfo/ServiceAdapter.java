@@ -22,17 +22,21 @@ public final class ServiceAdapter {
         // Empty
     }
 
-    public static void removeUnsupported(Service service) {
+    public static void removeUnsupported(Service service, boolean withExtendedHotelInfoServiceCodes) {
         if (service == null) {
             return;
         }
 
+        // Don't remove CodeDetail and ExistsCode elements if the extended HotelInfo Service Codes are included
+        if (!withExtendedHotelInfoServiceCodes) {
+            service.setCodeDetail(null);
+            service.setExistsCode(null);
+        }
+
         service.setAvailableToAnyGuest(null);
         service.setBusinessServiceCode(null);
-        service.setCodeDetail(null);
         service.setContact(null);
         service.setDescriptiveText(null);
-        service.setExistsCode(null);
         service.setFeaturedInd(null);
         service.setID(null);
         service.setInvCode(null);

@@ -23,6 +23,9 @@ public class Feature {
     @JsonProperty("Name")
     private String name;
 
+    @JsonProperty("HgvId")
+    private String hgvId;
+
     @JsonProperty("OtaCodes")
     private String otaCodes;
 
@@ -43,6 +46,14 @@ public class Feature {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getHgvId() {
+        return hgvId;
+    }
+
+    public void setHgvId(String hgvId) {
+        this.hgvId = hgvId;
     }
 
     public String getOtaCodes() {
@@ -66,6 +77,7 @@ public class Feature {
         return "Feature{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", hgvId='" + hgvId + '\'' +
                 ", otaCodes='" + otaCodes + '\'' +
                 ", roomAmenityCodes=" + roomAmenityCodes +
                 '}';

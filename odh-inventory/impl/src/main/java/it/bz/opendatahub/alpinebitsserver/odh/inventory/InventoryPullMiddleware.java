@@ -26,13 +26,16 @@ public class InventoryPullMiddleware implements Middleware {
 
     private final Key<OTAHotelDescriptiveInfoRQ> requestKey;
     private final Key<OTAHotelDescriptiveInfoRS> responseKey;
+    private final Key<String> withExtendedHotelInfoServiceCodesKey;
 
     public InventoryPullMiddleware(
             Key<OTAHotelDescriptiveInfoRQ> requestKey,
-            Key<OTAHotelDescriptiveInfoRS> responseKey
+            Key<OTAHotelDescriptiveInfoRS> responseKey,
+            Key<String> withExtendedHotelInfoServiceCodesKey
     ) {
         this.requestKey = requestKey;
         this.responseKey = responseKey;
+        this.withExtendedHotelInfoServiceCodesKey = withExtendedHotelInfoServiceCodesKey;
     }
 
     @Override
@@ -50,7 +53,10 @@ public class InventoryPullMiddleware implements Middleware {
         OTAHotelDescriptiveInfoRQ otaHotelDescriptiveInfoRQ = ctx.getOrThrow(this.requestKey);
         OdhBackendService odhBackendService = ctx.getOrThrow(OdhBackendContextKey.ODH_BACKEND_SERVICE);
 
-        InventoryPullServiceImpl service = new InventoryPullServiceImpl(odhBackendService);
+        boolean withExtendedHotelInfoServiceCodesHeaderFound = this.withExtendedHotelInfoServiceCodesKey != null
+                && ctx.contains(this.withExtendedHotelInfoServiceCodesKey);
+
+        InventoryPullServiceImpl service = new InventoryPullServiceImpl(odhBackendService, withExtendedHotelInfoServiceCodesHeaderFound);
 
         // Call service for persistence
         if (AlpineBitsAction.INVENTORY_BASIC_PULL.equals(action)) {

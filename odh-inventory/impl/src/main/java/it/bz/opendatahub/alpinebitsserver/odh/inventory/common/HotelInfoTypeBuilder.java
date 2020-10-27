@@ -46,11 +46,14 @@ public final class HotelInfoTypeBuilder {
     /**
      * Try to extract a {@link HotelInfoType} from the given {@link Accommodation}.
      *
-     * @param accommodation The accommodation data is used to extract a HotelInfoType instance.
+     * @param accommodation                     The accommodation data is used to extract a HotelInfoType instance.
+     * @param withExtendedHotelInfoServiceCodes If this parameter is set to <code>true</code>, then extended service
+     *                                          codes are included as <code>CodeDetail</code> elements and
+     *                                          the <code>ExistsCode</code> element is set to "5".
      * @return An {@link Optional} wrapping the HotelInfoType if such an instance could be
      * extracted from the given accommodation, {@link Optional#empty()} otherwise.
      */
-    public static Optional<HotelInfoType> extractHotelInfoType(Accommodation accommodation) {
+    public static Optional<HotelInfoType> extractHotelInfoType(Accommodation accommodation, boolean withExtendedHotelInfoServiceCodes) {
         if (accommodation == null) {
             return Optional.empty();
         }
@@ -60,7 +63,7 @@ public final class HotelInfoTypeBuilder {
         extractCategoryCodes(accommodation).ifPresent(hotelInfoType::setCategoryCodes);
         extractDescriptions(accommodation).ifPresent(hotelInfoType::setDescriptions);
         extractPosition(accommodation).ifPresent(hotelInfoType::setPosition);
-        extractServices(accommodation).ifPresent(hotelInfoType::setServices);
+        extractServices(accommodation, withExtendedHotelInfoServiceCodes).ifPresent(hotelInfoType::setServices);
 
         // Check if any data could be extracted from Accommodation
         // If none was extracted, then the whole HotelInfoType should be empty
@@ -243,19 +246,37 @@ public final class HotelInfoTypeBuilder {
         return hasValue ? Optional.of(position) : Optional.empty();
     }
 
-    private static Optional<Services> extractServices(Accommodation accommodation) {
+    private static Optional<Services> extractServices(Accommodation accommodation, boolean withExtendedHotelInfoServiceCodes) {
         if (accommodation.getFeatures() == null) {
             return Optional.empty();
         }
 
         List<Service> serviceList = accommodation.getFeatures().stream()
-                .filter(feature -> feature.getOtaCodes() != null)
                 .map(feature -> {
-                    Service service = new Service();
-                    service.setCode(feature.getOtaCodes());
-                    service.setProximityCode("4");
-                    return service;
+
+                    if (!isStringEmpty(feature.getOtaCodes())) {
+                        Service service = new Service();
+                        service.setCode(feature.getOtaCodes());
+                        service.setProximityCode("4");
+                        return service;
+                    } else if (withExtendedHotelInfoServiceCodes) {
+                        Service service = new Service();
+                        service.setCode("1");
+                        service.setProximityCode("4");
+                        // Set ExistsCode to "5", which means "Substitute", see Option Type Code (OTC)
+                        service.setExistsCode("5");
+
+                        if (!isStringEmpty(feature.getHgvId())) {
+                            service.setCodeDetail("HGV_" + feature.getHgvId());
+                        } else {
+                            service.setCodeDetail("LTS_" + feature.getId());
+                            return service;
+                        }
+                        return service;
+                    }
+                    return null;
                 })
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         if (serviceList.isEmpty()) {

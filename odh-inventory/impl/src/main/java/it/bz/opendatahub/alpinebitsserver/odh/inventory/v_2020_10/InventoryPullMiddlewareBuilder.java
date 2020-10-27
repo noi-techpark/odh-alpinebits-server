@@ -38,7 +38,7 @@ public final class InventoryPullMiddlewareBuilder {
         // on the validity of the credentials provided with the AlpineBits request.
         return new AuthenticationBasedRoutingMiddleware(
                 buildInventoryPullMiddlewareWithAuthentication(),
-                buildInventoryPullMiddlewareWithNoAuthentication()
+                UnauthenticatedInventoryPullMiddlewareBuilder.buildInventoryPullMiddlewareWithNoAuthentication()
         );
     }
 
@@ -46,7 +46,7 @@ public final class InventoryPullMiddlewareBuilder {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2020_10),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2020_10),
-                new InventoryHotelInfoPullAdapter(),
+                new InventoryHotelInfoPullAdapter(null),
                 new AuthenticatedInventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
                         OTA_INVENTORY_PULL_RESPONSE
@@ -54,15 +54,4 @@ public final class InventoryPullMiddlewareBuilder {
         ));
     }
 
-    private static Middleware buildInventoryPullMiddlewareWithNoAuthentication() {
-        return ComposingMiddlewareBuilder.compose(Arrays.asList(
-                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2020_10),
-                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2020_10),
-                new InventoryHotelInfoPullAdapter(),
-                new InventoryPullMiddleware(
-                        OTA_INVENTORY_PULL_REQUEST,
-                        OTA_INVENTORY_PULL_RESPONSE
-                )
-        ));
-    }
 }
