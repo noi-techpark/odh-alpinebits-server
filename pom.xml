@@ -54,6 +54,7 @@
         <arquillian.version>1.4.0.Final</arquillian.version>
         <tomcat-embedded.version>9.0.38</tomcat-embedded.version>
         <rest-assured.version>3.1.1</rest-assured.version>
+        <mock-server.version>5.11.1</mock-server.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -329,6 +330,12 @@
                 <groupId>io.rest-assured</groupId>
                 <artifactId>xml-path</artifactId>
                 <version>${rest-assured.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mock-server</groupId>
+                <artifactId>mockserver-netty</artifactId>
+                <version>${mock-server.version}</version>
                 <scope>test</scope>
             </dependency>
 

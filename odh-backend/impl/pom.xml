@@ -51,13 +51,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.arquillian.testng</groupId>
-            <artifactId>arquillian-testng-container</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
+            <groupId>org.mock-server</groupId>
+            <artifactId>mockserver-netty</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

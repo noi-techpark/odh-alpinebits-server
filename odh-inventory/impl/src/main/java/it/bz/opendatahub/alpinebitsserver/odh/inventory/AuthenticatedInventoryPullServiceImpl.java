@@ -6,17 +6,13 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory;
 
-import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
-import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents;
-import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents.HotelDescriptiveContent;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.SuccessType;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ErrorOTAHotelDescriptiveInfoRSBuilder;
 
-import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * This service uses the ODH tourism data to provide a response to
@@ -32,46 +28,28 @@ public class AuthenticatedInventoryPullServiceImpl {
 
     public OTAHotelDescriptiveInfoRS readBasic(String hotelCode) {
         try {
-            List<OTAHotelDescriptiveInfoRS> result = this.service.fetchInventoryBasic(hotelCode);
-
-            OTAHotelDescriptiveInfoRS response = result.isEmpty()
-                    ? this.getMinimumOTAHotelDescriptiveInfoRS(hotelCode)
-                    : result.get(0);
-
-            response.setSuccess(new SuccessType());
-            response.setVersion(BigDecimal.valueOf(8.000));
-            return response;
+            return this.service.fetchInventoryBasic(hotelCode)
+                    .map(this::addSuccess)
+                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
         } catch (OdhBackendException e) {
-            throw new AlpineBitsException("ODH backend client error", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e);
+            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
         }
     }
 
     public OTAHotelDescriptiveInfoRS readHotelInfo(String hotelCode) {
         try {
-            List<OTAHotelDescriptiveInfoRS> result = this.service.fetchInventoryHotelInfo(hotelCode);
-
-            OTAHotelDescriptiveInfoRS response = result.isEmpty()
-                    ? this.getMinimumOTAHotelDescriptiveInfoRS(hotelCode)
-                    : result.get(0);
-
-            response.setSuccess(new SuccessType());
-            response.setVersion(BigDecimal.valueOf(8.000));
-            return response;
+            return this.service.fetchInventoryHotelInfo(hotelCode)
+                    .map(this::addSuccess)
+                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
         } catch (OdhBackendException e) {
-            throw new AlpineBitsException("ODH backend client error", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e);
+            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
         }
     }
 
-    private OTAHotelDescriptiveInfoRS getMinimumOTAHotelDescriptiveInfoRS(String hotelCode) {
-        HotelDescriptiveContent hotelDescriptiveContent = new HotelDescriptiveContent();
-        hotelDescriptiveContent.setHotelCode(hotelCode);
-
-        HotelDescriptiveContents hotelDescriptiveContents = new HotelDescriptiveContents();
-        hotelDescriptiveContents.getHotelDescriptiveContents().add(hotelDescriptiveContent);
-
-        OTAHotelDescriptiveInfoRS ota = new OTAHotelDescriptiveInfoRS();
-        ota.setHotelDescriptiveContents(hotelDescriptiveContents);
-
+    private OTAHotelDescriptiveInfoRS addSuccess(OTAHotelDescriptiveInfoRS ota) {
+        ota.setSuccess(new SuccessType());
+        ota.setVersion(BigDecimal.valueOf(8.000));
         return ota;
     }
+
 }

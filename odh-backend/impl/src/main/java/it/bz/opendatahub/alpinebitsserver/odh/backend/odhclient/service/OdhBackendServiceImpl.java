@@ -15,15 +15,14 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 
 import javax.ws.rs.HttpMethod;
-import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
-import java.util.Collections;
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
  * Implements {@link OdhBackendService}.
@@ -44,72 +43,88 @@ public class OdhBackendServiceImpl implements OdhBackendService {
     }
 
     @Override
-    public List<OTAHotelDescriptiveInfoRS> fetchInventoryBasic(String hotelCode) throws OdhBackendException {
-        String path = "api/AlpineBits/InventoryBasic";
+    public Optional<OTAHotelDescriptiveInfoRS> fetchInventoryBasic(String hotelCode) {
+        String path = "AlpineBits/InventoryBasic";
 
         return this.fetchOTAHotelDescriptiveInfoRS(path, hotelCode);
     }
 
     @Override
-    public List<OTAHotelDescriptiveInfoRS> fetchInventoryHotelInfo(String hotelCode) throws OdhBackendException {
-        String path = "api/AlpineBits/InventoryHotelInfo";
+    public Optional<OTAHotelDescriptiveInfoRS> fetchInventoryHotelInfo(String hotelCode) {
+        String path = "AlpineBits/InventoryHotelInfo";
 
         return this.fetchOTAHotelDescriptiveInfoRS(path, hotelCode);
     }
 
     @Override
-    public List<AccommodationRoom> fetchAccommodationRooms(String accoId) throws OdhBackendException {
-        String path = "api/AccommodationRoom";
+    // Suppress warning because of catch-all
+    @SuppressWarnings("IllegalCatch")
+    public Optional<List<AccommodationRoom>> fetchAccommodationRooms(String accoId) {
+        String path = "AccommodationRoom";
 
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("accoid", accoId);
         try {
-            return odhClient.fetch(path, HttpMethod.GET, queryParams, null, new GenericType<List<AccommodationRoom>>() {
-            });
-        } catch (ProcessingException | WebApplicationException e) {
-            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
+            List<AccommodationRoom> accommodationRooms = odhClient.fetch(
+                    path,
+                    HttpMethod.GET,
+                    queryParams,
+                    null,
+                    new GenericType<List<AccommodationRoom>>() {
+                    }
+            );
+            return Optional.of(accommodationRooms);
+        } catch (Exception e) {
+            return handleException(e);
         }
     }
 
     @Override
-    public Accommodation fetchAccommodation(String accoId) throws OdhBackendException {
-        String path = "api/Accommodation/" + accoId;
+    // Suppress warning because of catch-all
+    @SuppressWarnings("IllegalCatch")
+    public Optional<Accommodation> fetchAccommodation(String accoId) {
+        String path = "Accommodation/" + accoId;
 
         try {
-            return odhClient.fetch(path, HttpMethod.GET, null, null, Accommodation.class);
-        } catch (ProcessingException | WebApplicationException e) {
-            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
+            Accommodation accommodation = odhClient.fetch(path, HttpMethod.GET, null, null, Accommodation.class);
+            return Optional.of(accommodation);
+        } catch (Exception e) {
+            return handleException(e);
         }
     }
 
     @Override
-    public void pushFreeRooms(PushWrapper pushWrapper) throws OdhBackendException {
-        this.push("api/AlpineBits/FreeRooms", pushWrapper);
+    public void pushFreeRooms(PushWrapper pushWrapper) {
+        this.push("AlpineBits/FreeRooms", pushWrapper);
     }
 
     @Override
-    public void pushInventoryBasic(PushWrapper pushWrapper) throws OdhBackendException {
-        this.push("api/AlpineBits/InventoryBasic", pushWrapper);
+    public void pushInventoryBasic(PushWrapper pushWrapper) {
+        this.push("AlpineBits/InventoryBasic", pushWrapper);
     }
 
     @Override
-    public void pushInventoryHotelInfo(PushWrapper pushWrapper) throws OdhBackendException {
-        this.push("api/AlpineBits/InventoryHotelInfo", pushWrapper);
+    public void pushInventoryHotelInfo(PushWrapper pushWrapper) {
+        this.push("AlpineBits/InventoryHotelInfo", pushWrapper);
     }
 
-    private void push(String path, PushWrapper pushWrapper) throws OdhBackendException {
+    // Suppress warning because of catch-all
+    @SuppressWarnings("IllegalCatch")
+    private void push(String path, PushWrapper pushWrapper) {
         try {
             odhClient.fetch(path, HttpMethod.POST, null, Entity.json(pushWrapper), String.class);
-        } catch (ProcessingException | WebApplicationException e) {
-            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
+        } catch (Exception e) {
+            handleException(e);
         }
     }
 
-    private List<OTAHotelDescriptiveInfoRS> fetchOTAHotelDescriptiveInfoRS(String path, String hotelCode) throws OdhBackendException {
+    // Suppress warning because of catch-all
+    @SuppressWarnings("IllegalCatch")
+    private Optional<OTAHotelDescriptiveInfoRS> fetchOTAHotelDescriptiveInfoRS(String path, String hotelCode) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("accoid", hotelCode);
         try {
-            List<PullWrapper<OTAHotelDescriptiveInfoRS>> results = odhClient.fetch(
+            List<PullWrapper<OTAHotelDescriptiveInfoRS>> result = odhClient.fetch(
                     path,
                     HttpMethod.GET,
                     queryParams,
@@ -118,15 +133,24 @@ public class OdhBackendServiceImpl implements OdhBackendService {
                     }
             );
 
-            if (results.isEmpty()) {
-                return Collections.emptyList();
+            if (result == null || result.isEmpty()) {
+                return Optional.empty();
             }
 
-            return results.stream()
-                    .map(PullWrapper::getMessage)
-                    .collect(Collectors.toList());
-        } catch (ProcessingException | WebApplicationException e) {
-            throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
+            return Optional.of(result.get(0).getMessage());
+        } catch (Exception e) {
+            return handleException(e);
         }
     }
+
+    private <T> Optional<T> handleException(Exception e) {
+        if (e instanceof WebApplicationException) {
+            if (Response.Status.NOT_FOUND.equals(((WebApplicationException) e).getResponse().getStatusInfo())) {
+                return Optional.empty();
+            }
+            throw new OdhBackendException(e.getMessage(), e);
+        }
+        throw new OdhBackendException(ODH_ERROR_MESSAGE, e);
+    }
+
 }
