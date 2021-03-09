@@ -16,6 +16,7 @@ as a backend.
 - [Getting started](#getting-started)
 - [Running the tests](#running-the-tests)
 - [Deployment](#deployment)
+- [Configuration](#configuration)
 - [Docker environment](#docker-environment)
 - [Information](#information)
 - [How to request data?](#how-to-request-data)
@@ -84,7 +85,7 @@ quality. Run the following command:
 ```bash
 mvn clean verify sonar:sonar -P it,report
 ```
- 
+
 ## Deployment
 
 ### WAR
@@ -106,8 +107,32 @@ class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`.
 Assuming you are in the projects root folder, run the following command: 
 
 ```bash
-java -jar application-spring/target/application-spring-2.0.2.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
+java -jar application-spring/target/application-spring-2.1.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
 ```
+
+## Configuration
+
+The project relies on a set of configuration values. Default settings are provided to simplify your first steps:
+
+- `odh.url`: the URL of the ODH tourism data backend. Defaults to `https://api.tourism.testingmachine.eu/v1`.
+- `odh.auth.url`: the URL for authentication. Defaults to `https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token`
+- `odh.auth.client.id`: the authentication client ID. Please contact [NOI Techpark](https://noi.bz.it/en) for a client ID.
+- `odh.auth.client.secret`: the authentication client secret. Please contact [NOI Techpark](https://noi.bz.it/en) for a client secret.
+
+The following configuration value is used in Spring deployments only:
+- `alpinebits.path`: the AlpineBits endpoint path. Defaults to `/application/AlpineBits`
+
+The configuration values can be overwritten with a custom `application.properties` file in WAR and Spring deployments.
+
+The WAR deployment supports additionally a configuration by environment variables, where the configuration keys
+defined above need to be given in uppercase and their dots need to be replaced with underscores:
+
+- `odh.url` becomes `ODH_URL`
+- `odh.auth.url` becomes `ODH_AUTH_URL`
+- `odh.auth.client.id` becomes `ODH_AUTH_CLIENT_ID`
+- `odh.auth.client.secret` becomes `ODH_AUTH_CLIENT_SECRET`
+
+Spring deployments can be configured additionally by ordinary Spring facilities like environment or process settings.
 
 ## Docker environment
 
