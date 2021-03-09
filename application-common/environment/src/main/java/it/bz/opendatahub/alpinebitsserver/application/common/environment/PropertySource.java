@@ -18,6 +18,8 @@ public interface PropertySource {
      * is returned. Otherwise, the value associated with the <code>key</code>
      * is returned.
      *
+     * Some implementations may further extend the guarantees given by this interface.
+     *
      * @param key used to find the value
      * @return null if <code>key</code> is null or it wasn't found. The
      * value associated with <code>key</code> otherwise
