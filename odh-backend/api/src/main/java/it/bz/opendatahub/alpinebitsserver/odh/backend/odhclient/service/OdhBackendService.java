@@ -34,60 +34,64 @@ public interface OdhBackendService {
      * Fetch Inventory Basic {@link OTAHotelDescriptiveInfoRS} data from ODH for the given hotelCode.
      *
      * @param hotelCode Fetch the data for this hotel code.
-     * @return An {@link Optional} containing the list of OTAHotelDescriptiveInfoRS elements
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @return An {@link Optional} wrapping the OTAHotelDescriptiveInfoRS result for the given hotelCode,
+     * or an empty Optional if the given hotelCode was unknown.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    List<OTAHotelDescriptiveInfoRS> fetchInventoryBasic(String hotelCode) throws OdhBackendException;
+    Optional<OTAHotelDescriptiveInfoRS> fetchInventoryBasic(String hotelCode);
 
     /**
      * Fetch Inventory HotelInfo {@link OTAHotelDescriptiveInfoRS} data from ODH for the given hotelCode.
      *
      * @param hotelCode Fetch the data for this hotel code.
-     * @return An {@link Optional} containing the list of OTAHotelDescriptiveInfoRS elements
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @return An {@link Optional} wrapping the OTAHotelDescriptiveInfoRS result for the given hotelCode,
+     * or an empty Optional if the given hotelCode was unknown.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    List<OTAHotelDescriptiveInfoRS> fetchInventoryHotelInfo(String hotelCode) throws OdhBackendException;
+    Optional<OTAHotelDescriptiveInfoRS> fetchInventoryHotelInfo(String hotelCode);
 
     /**
      * Fetch entries from <code>AccommodationRoom</code> endpoint for the given room ID.
      *
-     * @param accoId fetch entries for this accommodation ID
-     * @return a list of {@link AccommodationRoom} entries fetched from the ODH Backend
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @param accoId Fetch entries for this accommodation ID.
+     * @return An {@link Optional} wrapping the list of {@link AccommodationRoom} entries fetched from
+     * the ODH Backend, or an empty Optional if the given accoId was unknown.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    List<AccommodationRoom> fetchAccommodationRooms(String accoId) throws OdhBackendException;
+    Optional<List<AccommodationRoom>> fetchAccommodationRooms(String accoId);
 
     /**
      * Fetch data for the accommodation with the given <code>accoid</code> and return
      * it as {@link Accommodation}.
      *
-     * @param accoId fetch entries for this accommodation ID
-     * @return an instance of {@link Accommodation} fetched from the backend
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @param accoId Fetch entries for this accommodation ID.
+     * @return {@link Optional} wrapping the instance of {@link Accommodation} fetched from the backend,
+     * or an empty Optional if the given accoId was unknown.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    Accommodation fetchAccommodation(String accoId) throws OdhBackendException;
+    Optional<Accommodation> fetchAccommodation(String accoId);
 
     /**
      * Push FreeRooms data to ODH.
      *
-     * @param pushWrapper contains the message and other useful information for the push
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @param pushWrapper Contains the message and other useful information for the push.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    void pushFreeRooms(PushWrapper pushWrapper) throws OdhBackendException;
+    void pushFreeRooms(PushWrapper pushWrapper);
 
     /**
      * Push Inventory/Basic data to ODH.
      *
-     * @param pushWrapper contains the message and other useful information for the push
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @param pushWrapper Contains the message and other useful information for the push.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    void pushInventoryBasic(PushWrapper pushWrapper) throws OdhBackendException;
+    void pushInventoryBasic(PushWrapper pushWrapper);
 
     /**
      * Push Inventory/HotelInfo data to ODH.
      *
-     * @param pushWrapper contains the message and other useful information for the push
-     * @throws OdhBackendException any exception is caught and wrapped inside an OdhBackendException
+     * @param pushWrapper Contains the message and other useful information for the push.
+     * @throws OdhBackendException On any exceptional circumstance in the ODH backend.
      */
-    void pushInventoryHotelInfo(PushWrapper pushWrapper) throws OdhBackendException;
+    void pushInventoryHotelInfo(PushWrapper pushWrapper);
 }

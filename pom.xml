@@ -6,7 +6,7 @@
 
     <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>alpinebitsserver-odh-root</artifactId>
-    <version>2.0.2</version>
+    <version>2.1.0</version>
 
     <packaging>pom</packaging>
     <name>AlpineBits Server with ODH as backend</name>
@@ -54,6 +54,7 @@
         <arquillian.version>1.4.0.Final</arquillian.version>
         <tomcat-embedded.version>9.0.38</tomcat-embedded.version>
         <rest-assured.version>3.1.1</rest-assured.version>
+        <mock-server.version>5.11.1</mock-server.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -170,47 +171,47 @@
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-environment</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-middleware-config</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>application-common-routing</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-api</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-backend-impl</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-api</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-freerooms-impl</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-api</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
                 <artifactId>odh-inventory-impl</artifactId>
-                <version>2.0.2</version>
+                <version>2.1.0</version>
             </dependency>
 
             <!-- AlpineBits library dependencies -->
@@ -329,6 +330,12 @@
                 <groupId>io.rest-assured</groupId>
                 <artifactId>xml-path</artifactId>
                 <version>${rest-assured.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mock-server</groupId>
+                <artifactId>mockserver-netty</artifactId>
+                <version>${mock-server.version}</version>
                 <scope>test</scope>
             </dependency>
 

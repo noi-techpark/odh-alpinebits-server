@@ -12,12 +12,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.ApiKeyResponse;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthProvider;
+import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.client.auth.AuthenticationException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.v_2020_10.serialization.OtaModule202010;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.ProcessingException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -26,7 +28,6 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import java.util.Map;
 
@@ -41,29 +42,24 @@ import java.util.Map;
  */
 public class OdhClientImpl implements AuthenticatedOdhClient {
 
-    // The Sonar warning "'PASSWORD' detected in this expression" can be ignored
-    @SuppressWarnings({"squid:S2068"})
-    private static final String PASSWORD_PARAM_NAME = "password";
-    private static final String USERNAME_PARAM_NAME = "username";
-    private static final String GRANT_TYPE_PARAM_NAME = "grant_type";
-
-    private static final String GRANT_TYPE = "password";
-
-    private static final String AUTHENTICATION_PATH = "token";
+    private static final Logger LOG = LoggerFactory.getLogger(OdhClientImpl.class);
 
     private final WebTarget webTarget;
 
     private String apiKey = "UNDEFINED";
     private boolean isAuthenticated;
 
-    public OdhClientImpl(String baseUrl, String username, String password) {
+    public OdhClientImpl(String baseUrl, AuthProvider<String> authProvider) {
         Client client = this.buildClient();
         this.webTarget = client.target(baseUrl);
 
         try {
-            this.apiKey = this.fetchApiKey(username, password);
+            this.apiKey = authProvider.authenticate();
             this.isAuthenticated = true;
-        } catch (ProcessingException | WebApplicationException e) {
+        } catch (AuthenticationException e) {
+            String message = "Authentication error - ODH client proceeds with no authentication. Reason: " + e.getMessage();
+            // Log stacktrace only when debug output is enabled. Otherwise don't log the stacktrace
+            LOG.warn(message, LOG.isDebugEnabled() ? e : null);
             this.isAuthenticated = false;
         }
     }
@@ -98,7 +94,11 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
      */
     @Override
     public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, GenericType<T> genericType) {
-        return this.fetchWithAutomaticAuthentication(path, method, queryParams, body).readEntity(genericType);
+        Response response = this.fetchWithAutomaticAuthentication(path, method, queryParams, body);
+        if (response.getStatus() >= 400) {
+            throw new WebApplicationException(response.getStatusInfo().toEnum());
+        }
+        return response.readEntity(genericType);
     }
 
     /**
@@ -125,7 +125,11 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
      */
     @Override
     public <T> T fetch(String path, String method, Map<String, String> queryParams, Entity<?> body, Class<T> resultClass) {
-        return this.fetchWithAutomaticAuthentication(path, method, queryParams, body).readEntity(resultClass);
+        Response response = this.fetchWithAutomaticAuthentication(path, method, queryParams, body);
+        if (response.getStatus() >= 400) {
+            throw new WebApplicationException(response.getStatusInfo().toEnum());
+        }
+        return response.readEntity(resultClass);
     }
 
     private Client buildClient() {
@@ -149,31 +153,6 @@ public class OdhClientImpl implements AuthenticatedOdhClient {
         ClientConfig config = new ClientConfig(provider);
 
         return ClientBuilder.newClient(config);
-    }
-
-    /**
-     * Fetch an ODH API key with <code>username</code> and <code>password</code> as credentials.
-     * <p>
-     * On success, this method returns an ODH API key that can be used for further authenticated
-     * ODH requests.
-     *
-     * @param username the username for ODH authentication
-     * @param password the password for ODH authentication
-     * @return an ODH API key that can be used for further authenticated ODH requests
-     */
-    private String fetchApiKey(String username, String password) {
-        MultivaluedHashMap<String, String> formData = new MultivaluedHashMap<>();
-        formData.add(GRANT_TYPE_PARAM_NAME, GRANT_TYPE);
-        formData.add(USERNAME_PARAM_NAME, username);
-        formData.add(PASSWORD_PARAM_NAME, password);
-
-        WebTarget apiKeyTarget = this.webTarget.path(AUTHENTICATION_PATH);
-
-        Invocation.Builder request = apiKeyTarget.request(MediaType.APPLICATION_JSON);
-
-        return request
-                .post(Entity.form(formData), ApiKeyResponse.class)
-                .getAccessToken();
     }
 
     /**
