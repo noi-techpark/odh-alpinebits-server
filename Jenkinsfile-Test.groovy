@@ -27,7 +27,7 @@ pipeline {
                 sh 'sed -i -e "s%\\(odh.url\\s*=\\).*\\$%\\1${ODH_URL}%" application-war/src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(odh.auth.url\\s*=\\).*\\$%\\1${ODH_AUTH_URL}%" application-war/src/main/resources/application.properties'
                 sh 'sed -i -e "s%\\(odh.auth.client.id\\s*=\\).*\\$%\\1${ODH_AUTH_CLIENT_ID}%" application-war/src/main/resources/application.properties'
-                sh 'sed -i -e "s%\\(odh.auth.client.secret\\s*=\\).*\\$%\\1${ODH_AUTH_CLIENT_SECRET}%" application-war/src/main/resources/application.properties'                
+                sh 'sed -i -e "s!\\(odh.auth.client.secret\\s*=\\).*\\$!\\1${ODH_AUTH_CLIENT_SECRET}!" application-war/src/main/resources/application.properties'                
             }
         }
         stage('Test') {
