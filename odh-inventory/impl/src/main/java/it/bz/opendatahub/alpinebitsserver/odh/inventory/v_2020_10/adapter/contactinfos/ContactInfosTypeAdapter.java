@@ -51,7 +51,12 @@ public final class ContactInfosTypeAdapter {
             extractEmails(contactInfoRootType).forEach(EmailAdapter::removeUnsupported);
 
             // Cleanup of Phone elements
-            extractPhones(contactInfoRootType).forEach(PhoneAdapter::removeUnsupported);
+            List<Phone> phones = extractPhones(contactInfoRootType);
+            phones.forEach(PhoneAdapter::removeUnsupported);
+            phones.forEach(phone -> {
+                String phoneNumberWithoutBlanks = phone.getPhoneNumber().replace(" ", "");
+                phone.setPhoneNumber(phoneNumberWithoutBlanks);
+            });
 
             // Cleanup of URL elements
             extractURLs(contactInfoRootType).forEach(URLAdapter::removeUnsupported);
