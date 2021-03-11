@@ -76,6 +76,10 @@ public final class InventoryHotelInfoPullAdapter implements Middleware {
             contactInfoRootType.setRemoval(null);
 
             removeUnsupportedURLs(contactInfoRootType);
+            // A ContactInfos element must have URLs to be valid
+            if (contactInfoRootType.getURLs() == null) {
+                otaHotelDescriptiveInfoRS.getHotelDescriptiveContents().getHotelDescriptiveContents().get(0).setContactInfos(null);
+            }
         });
     }
 
