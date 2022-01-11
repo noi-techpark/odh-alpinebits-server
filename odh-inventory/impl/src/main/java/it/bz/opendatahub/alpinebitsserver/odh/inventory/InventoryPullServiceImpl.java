@@ -6,7 +6,6 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.inventory;
 
-import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.HotelDescriptiveContents.HotelDescriptiveContent;
@@ -17,13 +16,15 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBac
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.AffiliationInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
+import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ErrorOTAHotelDescriptiveInfoRSBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelCodeExtractor;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.InventoryPullMapper;
 
-import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * This service uses the ODH tourism data to provide a response to
@@ -43,11 +44,32 @@ public class InventoryPullServiceImpl implements InventoryPullService {
     }
 
     public OTAHotelDescriptiveInfoRS readBasic(OTAHotelDescriptiveInfoRQ otaHotelDescriptiveInfoRQ) {
+        String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
+
         try {
-            String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
+            return this.service.fetchAccommodationRooms(hotelCode)
+                    .map(mapHotelBasic(hotelCode))
+                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
+        } catch (OdhBackendException e) {
+            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
+        }
+    }
 
-            List<AccommodationRoom> accommodationRooms = this.service.fetchAccommodationRooms(hotelCode);
+    public OTAHotelDescriptiveInfoRS readHotelInfo(OTAHotelDescriptiveInfoRQ otaHotelDescriptiveInfoRQ) {
+        String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
 
+        try {
+            // Fetch room info
+            return this.service.fetchAccommodationRooms(hotelCode)
+                    .map(mapHotelInfo(hotelCode))
+                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
+        } catch (OdhBackendException e) {
+            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
+        }
+    }
+
+    private Function<List<AccommodationRoom>, OTAHotelDescriptiveInfoRS> mapHotelBasic(String hotelCode) {
+        return accommodationRooms -> {
             // Map to HotelDescriptiveContent
             OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = inventoryPullMapper.mapToHotelDescriptiveInfoForBasic(accommodationRooms);
 
@@ -55,27 +77,22 @@ public class InventoryPullServiceImpl implements InventoryPullService {
             hotelDescriptiveContent.setHotelCode(hotelCode);
 
             // Fetch accommodation info
-            Accommodation accommodation = this.service.fetchAccommodation(hotelCode);
+            Optional<Accommodation> accommodationOptional = this.service.fetchAccommodation(hotelCode);
 
-            // Set hotel name
-            hotelDescriptiveContent.setHotelName(accommodation.getShortname());
+            accommodationOptional.ifPresent(accommodation ->
+                    // Set hotel name
+                    hotelDescriptiveContent.setHotelName(accommodation.getShortname())
+            );
 
             otaHotelDescriptiveInfoRS.setSuccess(new SuccessType());
             otaHotelDescriptiveInfoRS.setVersion(BigDecimal.valueOf(8.000));
 
             return otaHotelDescriptiveInfoRS;
-        } catch (OdhBackendException e) {
-            throw new AlpineBitsException("ODH backend client error", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e);
-        }
+        };
     }
 
-    public OTAHotelDescriptiveInfoRS readHotelInfo(OTAHotelDescriptiveInfoRQ otaHotelDescriptiveInfoRQ) {
-        try {
-            String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
-
-            // Fetch room info
-            List<AccommodationRoom> accommodationRooms = this.service.fetchAccommodationRooms(hotelCode);
-
+    private Function<List<AccommodationRoom>, OTAHotelDescriptiveInfoRS> mapHotelInfo(String hotelCode) {
+        return accommodationRooms -> {
             // Map to HotelDescriptiveContent
             OTAHotelDescriptiveInfoRS otaHotelDescriptiveInfoRS = inventoryPullMapper.mapToHotelDescriptiveInfoForHotelInfo(accommodationRooms);
 
@@ -83,27 +100,33 @@ public class InventoryPullServiceImpl implements InventoryPullService {
             hotelDescriptiveContent.setHotelCode(hotelCode);
 
             // Fetch accommodation info
-            Accommodation accommodation = this.service.fetchAccommodation(hotelCode);
+            Optional<Accommodation> accommodationOptional = this.service.fetchAccommodation(hotelCode);
 
-            // Set hotel name
-            hotelDescriptiveContent.setHotelName(accommodation.getShortname());
+            accommodationOptional.ifPresent(accommodation -> {
+                // Set hotel name
+                hotelDescriptiveContent.setHotelName(accommodation.getShortname());
 
-            // Add HotelInfo if appropriate
-            HotelInfoTypeBuilder.extractHotelInfoType(accommodation, this.withExtendedHotelInfoServiceCodes).ifPresent(hotelDescriptiveContent::setHotelInfo);
+                // Add HotelInfo if appropriate
+                HotelInfoTypeBuilder
+                        .extractHotelInfoType(accommodation, this.withExtendedHotelInfoServiceCodes)
+                        .ifPresent(hotelDescriptiveContent::setHotelInfo);
 
-            // Add AffiliationInfo if appropriate
-            AffiliationInfoTypeBuilder.extractHotelInfoType(accommodation).ifPresent(hotelDescriptiveContent::setAffiliationInfo);
+                // Add AffiliationInfo if appropriate
+                AffiliationInfoTypeBuilder
+                        .extractHotelInfoType(accommodation)
+                        .ifPresent(hotelDescriptiveContent::setAffiliationInfo);
 
-            // Add ContactInfos if appropriate
-            ContactInfosTypeBuilder.extractContactInfosType(accommodation).ifPresent(hotelDescriptiveContent::setContactInfos);
+                // Add ContactInfos if appropriate
+                ContactInfosTypeBuilder
+                        .extractContactInfosType(accommodation)
+                        .ifPresent(hotelDescriptiveContent::setContactInfos);
+            });
 
             otaHotelDescriptiveInfoRS.setSuccess(new SuccessType());
             otaHotelDescriptiveInfoRS.setVersion(BigDecimal.valueOf(8.000));
 
             return otaHotelDescriptiveInfoRS;
-        } catch (OdhBackendException e) {
-            throw new AlpineBitsException("ODH backend client error", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e);
-        }
+        };
     }
 
 }

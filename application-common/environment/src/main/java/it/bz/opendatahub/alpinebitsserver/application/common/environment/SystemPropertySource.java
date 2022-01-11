@@ -12,12 +12,35 @@ package it.bz.opendatahub.alpinebitsserver.application.common.environment;
  */
 public class SystemPropertySource implements PropertySource {
 
+    /**
+     * Try to get the value for the associated key from the system environment.
+     * <p>
+     * Note, that if the key is not found, than a second attempt to find a value
+     * will be done with an altered key: the key is transformed to its uppercase form
+     * and all dots inside the key are replaced with underscores. This should resemble
+     * common practice an mimic the behaviour of Spring.
+     * <p>
+     * For example the key "some.key" will be transformed to "SOME_FORM" and a resolution
+     * with that key is attempted.
+     *
+     * @param key Used to find a value in the ENV.
+     * @return A value for the given key or its uppercase and dot-cleaned version. If
+     * no value is found, <code>null</code> is returned. <code>null</code> is also
+     * returned when the key is <code>null</code>.
+     */
     @Override
     public String getValue(String key) {
         if (key == null) {
             return null;
         }
-        return System.getenv(key);
+
+        String value = System.getenv(key);
+        if (value != null) {
+            return value;
+        }
+
+        String upperCaseAndDotReplaceKey = key.toUpperCase().replace(".", "_");
+        return System.getenv(upperCaseAndDotReplaceKey);
     }
 
 }
