@@ -9,8 +9,11 @@ package it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception;
 /**
  * General backend exception.
  */
-public class OdhBackendException extends Exception {
+public class OdhBackendException extends RuntimeException {
 
+    public OdhBackendException(String message) {
+        super(message);
+    }
 
     public OdhBackendException(String message, Throwable cause) {
         super(message, cause);

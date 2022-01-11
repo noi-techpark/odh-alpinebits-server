@@ -47,6 +47,15 @@ public class AlpineBitsResource {
     @Value("${odh.url}")
     private String odhUrl;
 
+    @Value("${odh.auth.url}")
+    private String odhAuthUrl;
+
+    @Value("${odh.auth.client.id}")
+    private String odhAuthClientId;
+
+    @Value("${odh.auth.client.secret}")
+    private String odhAuthClientSecret;
+
     @PostConstruct
     public void initMiddleware() {
         this.middleware = ComposingMiddlewareBuilder.compose(Arrays.asList(
@@ -56,7 +65,7 @@ public class AlpineBitsResource {
                 new BasicAuthenticationMiddleware(),
                 new GzipUnsupportedMiddleware(),
                 new MultipartFormExtractorMiddleware(),
-                new OdhBackendServiceProvidingMiddleware(this.odhUrl),
+                new OdhBackendServiceProvidingMiddleware(this.odhUrl, this.odhAuthUrl, this.odhAuthClientId, this.odhAuthClientSecret),
                 RoutingMiddlewareProvider.buildRoutingMiddleware()
         ));
     }

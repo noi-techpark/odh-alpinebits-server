@@ -19,6 +19,7 @@ import it.bz.opendatahub.alpinebits.servlet.middleware.MultipartFormDataParserMi
 import it.bz.opendatahub.alpinebits.servlet.middleware.StatisticsMiddleware;
 import it.bz.opendatahub.alpinebitsserver.application.common.environment.FilePropertySource;
 import it.bz.opendatahub.alpinebitsserver.application.common.environment.PropertyProvider;
+import it.bz.opendatahub.alpinebitsserver.application.common.environment.SystemPropertySource;
 import it.bz.opendatahub.alpinebitsserver.application.common.routing.RoutingMiddlewareProvider;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.middleware.OdhBackendServiceProvidingMiddleware;
 
@@ -38,10 +39,15 @@ import java.util.Arrays;
  */
 public class ConfiguringMiddleware implements Middleware {
 
-    private Middleware middleware;
+    private final Middleware middleware;
 
     public ConfiguringMiddleware() {
-        String odhUrl = this.getOdhUrl();
+        PropertyProvider propertyProvider = getPropertyProvider();
+
+        String odhUrl = propertyProvider.getValue("odh.url");
+        String odhAuthUrl = propertyProvider.getValue("odh.auth.url");
+        String odhAuthClientId = propertyProvider.getValue("odh.auth.client.id");
+        String odhAuthClientSecret = propertyProvider.getValue("odh.auth.client.secret");
 
         this.middleware = ComposingMiddlewareBuilder.compose(Arrays.asList(
                 new StatisticsMiddleware(),
@@ -50,7 +56,7 @@ public class ConfiguringMiddleware implements Middleware {
                 new BasicAuthenticationMiddleware(),
                 new GzipUnsupportedMiddleware(),
                 new MultipartFormDataParserMiddleware(),
-                new OdhBackendServiceProvidingMiddleware(odhUrl),
+                new OdhBackendServiceProvidingMiddleware(odhUrl, odhAuthUrl, odhAuthClientId, odhAuthClientSecret),
                 RoutingMiddlewareProvider.buildRoutingMiddleware()
         ));
     }
@@ -60,11 +66,11 @@ public class ConfiguringMiddleware implements Middleware {
         this.middleware.handleContext(ctx, chain);
     }
 
-    private String getOdhUrl() {
-        PropertyProvider propertyProvider = new PropertyProvider.Builder()
+    private PropertyProvider getPropertyProvider() {
+        return new PropertyProvider.Builder()
                 .withFilePropertySource(FilePropertySource.fromDefaultFile())
+                .withSystemPropertySource(new SystemPropertySource())
                 .build();
-        return propertyProvider.getValue("odh.url");
     }
 
 }
