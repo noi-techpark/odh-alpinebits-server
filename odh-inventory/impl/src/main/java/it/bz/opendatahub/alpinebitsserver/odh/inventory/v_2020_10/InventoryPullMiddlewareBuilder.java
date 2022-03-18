@@ -8,10 +8,12 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2020_10;
 
 import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsVersion;
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
+import it.bz.opendatahub.alpinebits.common.utils.response.ResponseOutcomeBuilder;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.AuthenticatedInventoryPullMiddleware;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.AuthenticationBasedRoutingMiddleware;
@@ -24,6 +26,7 @@ import java.util.Arrays;
  */
 public final class InventoryPullMiddlewareBuilder {
 
+    private static final String ALPINE_BITS_VERSION = AlpineBitsVersion.V_2020_10;
     private static final Key<OTAHotelDescriptiveInfoRQ> OTA_INVENTORY_PULL_REQUEST
             = Key.key("inventory pull request", OTAHotelDescriptiveInfoRQ.class);
     private static final Key<OTAHotelDescriptiveInfoRS> OTA_INVENTORY_PULL_RESPONSE
@@ -44,8 +47,9 @@ public final class InventoryPullMiddlewareBuilder {
 
     private static Middleware buildInventoryPullMiddlewareWithAuthentication() {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
-                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2020_10),
-                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2020_10),
+                new ActionExceptionHandler<>(ALPINE_BITS_VERSION, OTA_INVENTORY_PULL_RESPONSE, ResponseOutcomeBuilder::forOTAHotelDescriptiveInfoRS),
+                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, ALPINE_BITS_VERSION),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, ALPINE_BITS_VERSION),
                 new InventoryHotelInfoPullAdapter(null),
                 new AuthenticatedInventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,

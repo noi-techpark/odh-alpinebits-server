@@ -8,6 +8,7 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2017_10;
 
 import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsVersion;
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
+import it.bz.opendatahub.alpinebits.common.utils.response.ResponseOutcomeBuilder;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.validation.Validator;
@@ -18,6 +19,7 @@ import it.bz.opendatahub.alpinebits.validation.middleware.ValidationMiddleware;
 import it.bz.opendatahub.alpinebits.validation.schema.v_2017_10.inventory.OTAHotelDescriptiveContentNotifRQValidator;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPushMiddleware;
 
@@ -28,9 +30,9 @@ import java.util.Arrays;
  */
 public final class InventoryPushMiddlewareBuilder {
 
+    private static final String ALPINE_BITS_VERSION = AlpineBitsVersion.V_2017_10;
     private static final Key<OTAHotelDescriptiveContentNotifRQ> OTA_INVENTORY_PUSH_REQUEST
             = Key.key("inventory push request", OTAHotelDescriptiveContentNotifRQ.class);
-
     private static final Key<OTAHotelDescriptiveContentNotifRS> OTA_INVENTORY_PUSH_RESPONSE
             = Key.key("inventory push request", OTAHotelDescriptiveContentNotifRS.class);
 
@@ -40,8 +42,9 @@ public final class InventoryPushMiddlewareBuilder {
 
     public static Middleware buildInventoryPushMiddleware() {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
-                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PUSH_REQUEST, AlpineBitsVersion.V_2017_10),
-                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PUSH_RESPONSE, AlpineBitsVersion.V_2017_10),
+                new ActionExceptionHandler<>(ALPINE_BITS_VERSION, OTA_INVENTORY_PUSH_RESPONSE, ResponseOutcomeBuilder::forOTAHotelDescriptiveContentNotifRS),
+                XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PUSH_REQUEST, ALPINE_BITS_VERSION),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PUSH_RESPONSE, ALPINE_BITS_VERSION),
                 buildValidationMiddleware(),
                 new InventoryPushMiddleware(
                         OTA_INVENTORY_PUSH_REQUEST,

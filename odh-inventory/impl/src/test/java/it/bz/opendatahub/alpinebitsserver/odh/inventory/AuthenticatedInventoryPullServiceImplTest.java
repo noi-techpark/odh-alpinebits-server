@@ -22,15 +22,13 @@ import static org.testng.Assert.assertNotNull;
  */
 public class AuthenticatedInventoryPullServiceImplTest {
 
-    @Test
-    public void testReadBasic_ShouldReturnOTAHotelDescriptiveInfoRSWithError_OnOdhBackendClientException() throws OdhBackendException {
+    @Test(expectedExceptions = OdhBackendException.class)
+    public void testReadBasic_ShouldThrow_OnOdhBackendClientException() throws OdhBackendException {
         OdhBackendService service = Mockito.mock(OdhBackendService.class);
         Mockito.when(service.fetchInventoryBasic(any())).thenThrow(OdhBackendException.class);
 
         AuthenticatedInventoryPullServiceImpl inventoryPullService = new AuthenticatedInventoryPullServiceImpl(service);
-        OTAHotelDescriptiveInfoRS ota = inventoryPullService.readBasic("123");
-
-        assertNotNull(ota.getErrors());
+        inventoryPullService.readBasic("123");
     }
 
     @Test
@@ -57,15 +55,13 @@ public class AuthenticatedInventoryPullServiceImplTest {
         assertNotNull(otaHotelDescriptiveInfoRS.getVersion());
     }
 
-    @Test
-    public void testReadHotelInfo_ShouldReturnOTAHotelDescriptiveInfoRSWithError_OnOdhBackendClientException() throws OdhBackendException {
+    @Test(expectedExceptions = OdhBackendException.class)
+    public void testReadHotelInfo_ShouldThrow_OnOdhBackendClientException() throws OdhBackendException {
         OdhBackendService service = Mockito.mock(OdhBackendService.class);
         Mockito.when(service.fetchInventoryHotelInfo(any())).thenThrow(OdhBackendException.class);
 
         AuthenticatedInventoryPullServiceImpl inventoryPullService = new AuthenticatedInventoryPullServiceImpl(service);
-        OTAHotelDescriptiveInfoRS ota = inventoryPullService.readHotelInfo("123");
-
-        assertNotNull(ota.getErrors());
+        inventoryPullService.readHotelInfo("123");
     }
 
     @Test

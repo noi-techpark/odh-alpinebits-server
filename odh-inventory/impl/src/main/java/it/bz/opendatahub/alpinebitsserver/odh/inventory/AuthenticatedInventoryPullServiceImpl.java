@@ -8,7 +8,6 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory;
 
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.SuccessType;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ErrorOTAHotelDescriptiveInfoRSBuilder;
 
@@ -27,23 +26,15 @@ public class AuthenticatedInventoryPullServiceImpl {
     }
 
     public OTAHotelDescriptiveInfoRS readBasic(String hotelCode) {
-        try {
-            return this.service.fetchInventoryBasic(hotelCode)
-                    .map(this::addSuccess)
-                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
-        } catch (OdhBackendException e) {
-            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
-        }
+        return this.service.fetchInventoryBasic(hotelCode)
+                .map(this::addSuccess)
+                .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
     }
 
     public OTAHotelDescriptiveInfoRS readHotelInfo(String hotelCode) {
-        try {
-            return this.service.fetchInventoryHotelInfo(hotelCode)
-                    .map(this::addSuccess)
-                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
-        } catch (OdhBackendException e) {
-            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
-        }
+        return this.service.fetchInventoryHotelInfo(hotelCode)
+                .map(this::addSuccess)
+                .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
     }
 
     private OTAHotelDescriptiveInfoRS addSuccess(OTAHotelDescriptiveInfoRS ota) {

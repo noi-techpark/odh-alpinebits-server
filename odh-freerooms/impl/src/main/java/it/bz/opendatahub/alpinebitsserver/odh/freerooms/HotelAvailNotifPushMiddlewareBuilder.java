@@ -7,6 +7,7 @@
 package it.bz.opendatahub.alpinebitsserver.odh.freerooms;
 
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
+import it.bz.opendatahub.alpinebits.common.utils.response.ResponseOutcomeBuilder;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.validation.Validator;
@@ -15,15 +16,11 @@ import it.bz.opendatahub.alpinebits.validation.context.freerooms.HotelAvailNotif
 import it.bz.opendatahub.alpinebits.validation.context.freerooms.HotelAvailNotifContextProvider;
 import it.bz.opendatahub.alpinebits.validation.middleware.ValidationMiddleware;
 import it.bz.opendatahub.alpinebits.validation.schema.v_2017_10.freerooms.OTAHotelAvailNotifRQValidator;
-import it.bz.opendatahub.alpinebits.xml.JAXBObjectToXmlConverter;
-import it.bz.opendatahub.alpinebits.xml.ObjectToXmlConverter;
-import it.bz.opendatahub.alpinebits.xml.XmlValidationSchemaProvider;
-import it.bz.opendatahub.alpinebits.xml.middleware.XmlResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 
-import javax.xml.validation.Schema;
 import java.util.Arrays;
 
 /**
@@ -42,8 +39,9 @@ public final class HotelAvailNotifPushMiddlewareBuilder {
 
     public static Middleware buildFreeRoomsPushMiddleware(String alpineBitsVersion) {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
+                new ActionExceptionHandler<>(alpineBitsVersion, OTA_FREE_ROOMS_PUSH_RESPONSE, ResponseOutcomeBuilder::forOTAHotelAvailNotifRS),
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_FREE_ROOMS_PUSH_REQUEST, alpineBitsVersion),
-                buildObjectToXmlConvertingMiddleware(alpineBitsVersion),
+                XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_FREE_ROOMS_PUSH_RESPONSE, alpineBitsVersion),
                 buildValidationMiddleware(),
                 new HotelAvailNotifPushMiddleware(
                         OTA_FREE_ROOMS_PUSH_REQUEST,
@@ -56,15 +54,6 @@ public final class HotelAvailNotifPushMiddlewareBuilder {
         Validator<OTAHotelAvailNotifRQ, HotelAvailNotifContext> validator = new OTAHotelAvailNotifRQValidator();
         ValidationContextProvider<HotelAvailNotifContext> validationContextProvider = new HotelAvailNotifContextProvider();
         return new ValidationMiddleware<>(OTA_FREE_ROOMS_PUSH_REQUEST, validator, validationContextProvider);
-    }
-
-    private static Middleware buildObjectToXmlConvertingMiddleware(String alpineBitsVersion) {
-        Schema schema = XmlValidationSchemaProvider.buildXsdSchemaForAlpineBitsVersion(alpineBitsVersion);
-        ObjectToXmlConverter converter = new JAXBObjectToXmlConverter.Builder()
-                .schema(schema)
-                .prettyPrint(true)
-                .build();
-        return new XmlResponseMappingMiddleware<>(converter, OTA_FREE_ROOMS_PUSH_RESPONSE);
     }
 
 }

@@ -19,6 +19,10 @@
     <dependencies>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
+            <artifactId>alpinebits-common-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-xml-impl</artifactId>
         </dependency>
 

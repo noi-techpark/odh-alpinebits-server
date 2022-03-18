@@ -12,7 +12,6 @@ import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS.Hot
 import it.bz.opendatahub.alpinebits.xml.schema.ota.SuccessType;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.Accommodation;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.AccommodationRoom;
-import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.exception.OdhBackendException;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.AffiliationInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
@@ -32,7 +31,6 @@ import java.util.function.Function;
  */
 public class InventoryPullServiceImpl implements InventoryPullService {
 
-
     private final OdhBackendService service;
     private final boolean withExtendedHotelInfoServiceCodes;
     private final InventoryPullMapper inventoryPullMapper;
@@ -46,26 +44,18 @@ public class InventoryPullServiceImpl implements InventoryPullService {
     public OTAHotelDescriptiveInfoRS readBasic(OTAHotelDescriptiveInfoRQ otaHotelDescriptiveInfoRQ) {
         String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
 
-        try {
-            return this.service.fetchAccommodationRooms(hotelCode)
-                    .map(mapHotelBasic(hotelCode))
-                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
-        } catch (OdhBackendException e) {
-            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
-        }
+        return this.service.fetchAccommodationRooms(hotelCode)
+                .map(mapHotelBasic(hotelCode))
+                .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
     }
 
     public OTAHotelDescriptiveInfoRS readHotelInfo(OTAHotelDescriptiveInfoRQ otaHotelDescriptiveInfoRQ) {
         String hotelCode = HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelDescriptiveInfoRQ);
 
-        try {
-            // Fetch room info
-            return this.service.fetchAccommodationRooms(hotelCode)
-                    .map(mapHotelInfo(hotelCode))
-                    .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
-        } catch (OdhBackendException e) {
-            return ErrorOTAHotelDescriptiveInfoRSBuilder.undeterminedError(hotelCode, e.getMessage());
-        }
+        // Fetch room info
+        return this.service.fetchAccommodationRooms(hotelCode)
+                .map(mapHotelInfo(hotelCode))
+                .orElse(ErrorOTAHotelDescriptiveInfoRSBuilder.noDataFound(hotelCode));
     }
 
     private Function<List<AccommodationRoom>, OTAHotelDescriptiveInfoRS> mapHotelBasic(String hotelCode) {
