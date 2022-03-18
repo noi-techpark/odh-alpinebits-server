@@ -107,7 +107,7 @@ class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`.
 Assuming you are in the projects root folder, run the following command: 
 
 ```bash
-java -jar application-spring/target/application-spring-2.1.0.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
+java -jar application-spring/target/application-spring-2.2.0-SNAPSHOT.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
 ```
 
 ## Configuration
