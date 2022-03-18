@@ -49,11 +49,13 @@ public class RoutesFor202010Test {
         assertTrue(router.getCapabilitiesForVersion(ALPINEBITS_VERSION).isPresent());
         Set<String> capabilities = router.getCapabilitiesForVersion(ALPINEBITS_VERSION).get();
 
-        assertEquals(capabilities.size(), 9);
+        assertEquals(capabilities.size(), 12);
         assertTrue(capabilities.contains(AlpineBitsCapability.HANDSHAKING));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_CATEGORIES));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_ROOMS));
+        assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_OUT_OF_ORDER));
+        assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_OUT_OF_MARKET));
     }
 
 
