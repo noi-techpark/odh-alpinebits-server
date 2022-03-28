@@ -19,6 +19,8 @@ import it.bz.opendatahub.alpinebits.validation.schema.v_2017_10.freerooms.OTAHot
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRS;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeMissingChecker;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 
 import java.util.Arrays;
@@ -42,6 +44,12 @@ public final class HotelAvailNotifPushMiddlewareBuilder {
                 new ActionExceptionHandler<>(alpineBitsVersion, OTA_FREE_ROOMS_PUSH_RESPONSE, ResponseOutcomeBuilder::forOTAHotelAvailNotifRS),
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_FREE_ROOMS_PUSH_REQUEST, alpineBitsVersion),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_FREE_ROOMS_PUSH_RESPONSE, alpineBitsVersion),
+                new HotelCodeMissingChecker<>(
+                        OTA_FREE_ROOMS_PUSH_REQUEST,
+                        OTA_FREE_ROOMS_PUSH_RESPONSE,
+                        HotelCodeExtractor::hasHotelCode,
+                        ResponseOutcomeBuilder::forOTAHotelAvailNotifRS
+                ),
                 buildValidationMiddleware(),
                 new HotelAvailNotifPushMiddleware(
                         OTA_FREE_ROOMS_PUSH_REQUEST,

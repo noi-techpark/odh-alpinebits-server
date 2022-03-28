@@ -20,8 +20,10 @@ import it.bz.opendatahub.alpinebits.validation.schema.v_2020_10.inventory.OTAHot
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNotifRS;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeMissingChecker;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPushMiddleware;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 
 import java.util.Arrays;
 
@@ -45,6 +47,12 @@ public final class InventoryPushMiddlewareBuilder {
                 new ActionExceptionHandler<>(ALPINE_BITS_VERSION, OTA_INVENTORY_PUSH_RESPONSE, ResponseOutcomeBuilder::forOTAHotelDescriptiveContentNotifRS),
                 XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PUSH_REQUEST, ALPINE_BITS_VERSION),
                 XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PUSH_RESPONSE, ALPINE_BITS_VERSION),
+                new HotelCodeMissingChecker<>(
+                        OTA_INVENTORY_PUSH_REQUEST,
+                        OTA_INVENTORY_PUSH_RESPONSE,
+                        HotelCodeExtractor::hasHotelCode,
+                        ResponseOutcomeBuilder::forOTAHotelDescriptiveContentNotifRS
+                ),
                 buildValidationMiddleware(),
                 new InventoryPushMiddleware(
                         OTA_INVENTORY_PUSH_REQUEST,
@@ -58,6 +66,5 @@ public final class InventoryPushMiddlewareBuilder {
         ValidationContextProvider<InventoryContext> validationContextProvider = new InventoryContextProvider();
         return new ValidationMiddleware<>(OTA_INVENTORY_PUSH_REQUEST, validator, validationContextProvider);
     }
-
 
 }

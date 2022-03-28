@@ -18,7 +18,7 @@ import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveContentNot
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.OdhBackendContextKey;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.dto.PushWrapper;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
-import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelCodeExtractor;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 
 /**
  * A simple {@link Middleware} to handle FreeRooms push requests.

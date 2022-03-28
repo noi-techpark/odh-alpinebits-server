@@ -22,8 +22,10 @@ import it.bz.opendatahub.alpinebits.xml.middleware.XmlResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeMissingChecker;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPullMiddleware;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 
 import javax.xml.validation.Schema;
 import java.util.Arrays;
@@ -75,6 +77,12 @@ public final class UnauthenticatedInventoryPullMiddlewareBuilder {
                 new ActionExceptionHandler<>(ALPINE_BITS_VERSION, OTA_INVENTORY_PULL_RESPONSE, ResponseOutcomeBuilder::forOTAHotelDescriptiveInfoRS),
                 new HeaderExtractingMiddleware(WITH_EXTENDED_HOTELINFO_SERVICE_CODES_HEADER, WITH_EXTENDED_HOTELINFO_SERVICE_CODES_KEY),
                 XML_SWITCH_MIDDLEWARE,
+                new HotelCodeMissingChecker<>(
+                        OTA_INVENTORY_PULL_REQUEST,
+                        OTA_INVENTORY_PULL_RESPONSE,
+                        HotelCodeExtractor::hasHotelCode,
+                        ResponseOutcomeBuilder::forOTAHotelDescriptiveInfoRS
+                ),
                 new InventoryHotelInfoPullAdapter(WITH_EXTENDED_HOTELINFO_SERVICE_CODES_KEY),
                 new InventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
@@ -98,4 +106,5 @@ public final class UnauthenticatedInventoryPullMiddlewareBuilder {
                 .build();
         return new XmlResponseMappingMiddleware<>(converter, key);
     }
+
 }

@@ -16,7 +16,7 @@ import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBacke
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.AffiliationInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ContactInfosTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.ErrorOTAHotelDescriptiveInfoRSBuilder;
-import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelCodeExtractor;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.HotelInfoTypeBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.common.InventoryPullMapper;
 
