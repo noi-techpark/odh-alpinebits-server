@@ -56,6 +56,7 @@ public class RoutesFor202010Test {
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_ROOMS));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_OUT_OF_ORDER));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_OUT_OF_MARKET));
+        assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_CLOSING_SEASONS));
     }
 
 
