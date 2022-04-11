@@ -6,11 +6,11 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.freerooms;
 
-import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelInvCountNotifRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelInvCountNotifRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 
 /**
@@ -32,16 +32,6 @@ public class HotelInvCountNotifPushMiddleware extends AbstractFreeRoomsPushMiddl
     }
 
     protected String getHotelCodeOrThrowOnEmpty(OTAHotelInvCountNotifRQ otaHotelInvCountNotifRQ) {
-        if (otaHotelInvCountNotifRQ == null) {
-            throw new AlpineBitsException("Element OTAHotelInvCountNotifRQ is required", 400);
-        }
-        if (otaHotelInvCountNotifRQ.getInventories() == null) {
-            throw new AlpineBitsException("Element Inventories is required", 400);
-        }
-        if (otaHotelInvCountNotifRQ.getInventories().getHotelCode() == null) {
-            throw new AlpineBitsException("Attribute HotelCode is required", 400);
-        }
-
-        return otaHotelInvCountNotifRQ.getInventories().getHotelCode();
+        return HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelInvCountNotifRQ);
     }
 }

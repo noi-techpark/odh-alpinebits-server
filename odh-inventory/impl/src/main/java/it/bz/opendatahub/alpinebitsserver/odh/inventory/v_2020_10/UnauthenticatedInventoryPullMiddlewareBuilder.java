@@ -8,6 +8,7 @@ package it.bz.opendatahub.alpinebitsserver.odh.inventory.v_2020_10;
 
 import it.bz.opendatahub.alpinebits.common.constants.AlpineBitsVersion;
 import it.bz.opendatahub.alpinebits.common.utils.middleware.ComposingMiddlewareBuilder;
+import it.bz.opendatahub.alpinebits.common.utils.response.ResponseOutcomeBuilder;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.servlet.middleware.HeaderExtractingMiddleware;
@@ -20,8 +21,11 @@ import it.bz.opendatahub.alpinebits.xml.middleware.XmlRequestMappingMiddleware;
 import it.bz.opendatahub.alpinebits.xml.middleware.XmlResponseMappingMiddleware;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelDescriptiveInfoRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.ActionExceptionHandler;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeMissingChecker;
 import it.bz.opendatahub.alpinebitsserver.application.common.utils.XmlMiddlewareBuilder;
 import it.bz.opendatahub.alpinebitsserver.odh.inventory.InventoryPullMiddleware;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 
 import javax.xml.validation.Schema;
 import java.util.Arrays;
@@ -30,6 +34,8 @@ import java.util.Arrays;
  * Utility class to build a {@link InventoryPullMiddleware} for unauthenticated requests.
  */
 public final class UnauthenticatedInventoryPullMiddlewareBuilder {
+
+    private static final String ALPINE_BITS_VERSION = AlpineBitsVersion.V_2020_10;
 
     private static final String WITH_EXTENDED_SERVICE_CODES_XSD = "alpinebits-2020-10-with-extended-hotelinfo-service-codes.xsd";
 
@@ -42,9 +48,9 @@ public final class UnauthenticatedInventoryPullMiddlewareBuilder {
             = Key.key("inventory pull response", OTAHotelDescriptiveInfoRS.class);
 
     private static final Middleware REGULAR_XML_TO_OBJECT_MIDDLEWARE =
-            XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, AlpineBitsVersion.V_2020_10);
+            XmlMiddlewareBuilder.buildXmlToObjectConvertingMiddleware(OTA_INVENTORY_PULL_REQUEST, ALPINE_BITS_VERSION);
     private static final Middleware REGULAR_OBJECT_TO_XML_MIDDLEWARE =
-            XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, AlpineBitsVersion.V_2020_10);
+            XmlMiddlewareBuilder.buildObjectToXmlConvertingMiddleware(OTA_INVENTORY_PULL_RESPONSE, ALPINE_BITS_VERSION);
 
     private static final Middleware LOOSE_XML_TO_OBJECT_MIDDLEWARE =
             buildXmlToObjectConvertingMiddlewareWithSchema(OTA_INVENTORY_PULL_REQUEST, WITH_EXTENDED_SERVICE_CODES_XSD);
@@ -68,8 +74,15 @@ public final class UnauthenticatedInventoryPullMiddlewareBuilder {
 
     public static Middleware buildInventoryPullMiddlewareWithNoAuthentication() {
         return ComposingMiddlewareBuilder.compose(Arrays.asList(
+                new ActionExceptionHandler<>(ALPINE_BITS_VERSION, OTA_INVENTORY_PULL_RESPONSE, ResponseOutcomeBuilder::forOTAHotelDescriptiveInfoRS),
                 new HeaderExtractingMiddleware(WITH_EXTENDED_HOTELINFO_SERVICE_CODES_HEADER, WITH_EXTENDED_HOTELINFO_SERVICE_CODES_KEY),
                 XML_SWITCH_MIDDLEWARE,
+                new HotelCodeMissingChecker<>(
+                        OTA_INVENTORY_PULL_REQUEST,
+                        OTA_INVENTORY_PULL_RESPONSE,
+                        HotelCodeExtractor::hasHotelCode,
+                        ResponseOutcomeBuilder::forOTAHotelDescriptiveInfoRS
+                ),
                 new InventoryHotelInfoPullAdapter(WITH_EXTENDED_HOTELINFO_SERVICE_CODES_KEY),
                 new InventoryPullMiddleware(
                         OTA_INVENTORY_PULL_REQUEST,
@@ -93,4 +106,5 @@ public final class UnauthenticatedInventoryPullMiddlewareBuilder {
                 .build();
         return new XmlResponseMappingMiddleware<>(converter, key);
     }
+
 }
