@@ -6,11 +6,11 @@
 
 package it.bz.opendatahub.alpinebitsserver.odh.freerooms;
 
-import it.bz.opendatahub.alpinebits.common.exception.AlpineBitsException;
 import it.bz.opendatahub.alpinebits.middleware.Key;
 import it.bz.opendatahub.alpinebits.middleware.Middleware;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRQ;
 import it.bz.opendatahub.alpinebits.xml.schema.ota.OTAHotelAvailNotifRS;
+import it.bz.opendatahub.alpinebitsserver.application.common.utils.HotelCodeExtractor;
 import it.bz.opendatahub.alpinebitsserver.odh.backend.odhclient.service.OdhBackendService;
 
 /**
@@ -32,16 +32,6 @@ public class HotelAvailNotifPushMiddleware extends AbstractFreeRoomsPushMiddlewa
     }
 
     protected String getHotelCodeOrThrowOnEmpty(OTAHotelAvailNotifRQ otaHotelAvailNotifRQ) {
-        if (otaHotelAvailNotifRQ == null) {
-            throw new AlpineBitsException("Element OTAHotelAvailNotifRQ is required", 400);
-        }
-        if (otaHotelAvailNotifRQ.getAvailStatusMessages() == null) {
-            throw new AlpineBitsException("Element AvailStatusMessages is required", 400);
-        }
-        if (otaHotelAvailNotifRQ.getAvailStatusMessages().getHotelCode() == null) {
-            throw new AlpineBitsException("Attribute HotelCode is required", 400);
-        }
-
-        return otaHotelAvailNotifRQ.getAvailStatusMessages().getHotelCode();
+        return HotelCodeExtractor.getHotelCodeOrThrowIfNotExistent(otaHotelAvailNotifRQ);
     }
 }

@@ -64,7 +64,10 @@ public final class RoutesFor202010 {
                 .withCapabilities(
                         AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF,
                         AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_ROOMS,
-                        AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_CATEGORIES
+                        AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_CATEGORIES,
+                        AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_OUT_OF_ORDER,
+                        AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_OUT_OF_MARKET,
+                        AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_CLOSING_SEASONS
                 )
                 .using(HotelInvCountNotifPushMiddlewareBuilder.buildFreeRoomsPushMiddleware(AlpineBitsVersion.V_2020_10))
                 .versionComplete();
