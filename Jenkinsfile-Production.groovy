@@ -7,13 +7,19 @@ pipeline {
     }
 
     environment {
-        ODH_URL = "https://tourism.opendatahub.bz.it"
+        ODH_URL = "https://tourism.api.opendatahub.bz.it/v1"
+        ODH_AUTH_URL = "https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token"
+        ODH_AUTH_CLIENT_ID = credentials('odh-authserver-tourism-api-prod-clientid')
+        ODH_AUTH_CLIENT_SECRET = credentials('odh-authserver-tourism-api-prod-clientsecret')
     }
 
     stages {
         stage('Configure') {
             steps {
                 sh 'sed -i -e "s%\\(odh.url\\s*=\\).*\\$%\\1${ODH_URL}%" application-war/src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(odh.auth.url\\s*=\\).*\\$%\\1${ODH_AUTH_URL}%" application-war/src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(odh.auth.client.id\\s*=\\).*\\$%\\1${ODH_AUTH_CLIENT_ID}%" application-war/src/main/resources/application.properties'
+                sh 'sed -i -e "s%\\(odh.auth.client.secret\\s*=\\).*\\$%\\1${ODH_AUTH_CLIENT_SECRET}%" application-war/src/main/resources/application.properties'
             }
         }
         stage('Test') {
