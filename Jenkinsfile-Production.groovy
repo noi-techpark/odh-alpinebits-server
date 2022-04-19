@@ -9,7 +9,7 @@ pipeline {
     environment {
         ODH_URL = "https://tourism.api.opendatahub.bz.it/v1"
         ODH_AUTH_URL = "https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token"
-        ODH_AUTH_CLIENT_ID = credentials('odh-authserver-tourism-api-prod-clientid')
+        ODH_AUTH_CLIENT_ID = "odh-api-core-alpinebits"
         ODH_AUTH_CLIENT_SECRET = credentials('odh-authserver-tourism-api-prod-clientsecret')
     }
 
