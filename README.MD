@@ -144,46 +144,44 @@ These Docker containers are the same as used by the continuous integration serve
 
 Install [Docker](https://docs.docker.com/install/) (with Docker Compose) locally on your machine.
 
-### Start and stop the containers
+### Start the containers
 
-Before start working you have to start the Docker containers:
+Copy the file `.env.example` to `.env` and adjust the configuration parameters.
 
-```
-docker-compose up --build --detach
-```
-
-After finished working you can stop the Docker containers:
-
-```
-docker-compose stop
-```
-
-### Running commands inside the container
-
-When the containers are running, you can execute any command inside the environment. Just replace the dots `...` in the following example with the command you wish to execute:
+Then you can start the application using the following command:
 
 ```bash
-docker-compose exec java /bin/bash -c "..."
+docker-compose up
+```
+
+The service will be available at localhost and your specified server port.
+
+### Execude commands
+
+To execute the test you can run the following command:
+
+```bash
+docker-compose run --rm app mvn clean test
 ```
 
 Some examples are:
 
 ```bash
-docker-compose exec java /bin/bash -c "mvn clean install"
+docker-compose run --rm app mvn clean install
 
 # or
 
-docker-compose exec java /bin/bash -c "mvn clean verify"
+docker-compose run --rm app mvn clean verify
 
 # or
 
-docker-compose exec java /bin/bash -c "mvn clean verify -P it"
+docker-compose run --rm app mvn clean verify -P it
 ```
 
 To check the code quality, you can run the following command and then visit the results at [http://localhost:9000/](http://localhost:9000/):
 
 ```bash
-docker-compose exec java /bin/bash -c "mvn clean verify sonar:sonar -Dsonar.host.url=http://sonar:9000 -P it,report"
+docker-compose run --rm app mvn clean verify sonar:sonar -Dsonar.host.url=http://sonar:9000 -P it,report
 ```
 
 To server the example run the following command and then visit the website at [http://localhost:8080/examples-housekeeping/index.html](http://localhost:8080/examples-housekeeping/index.html):
