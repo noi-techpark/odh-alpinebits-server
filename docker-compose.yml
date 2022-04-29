@@ -8,7 +8,6 @@ services:
       target: dev
     volumes:
        - ./:/code
-    working_dir: /code
     tty: true
     environment:
       ODH_URL: ${ODH_URL}
