@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-inventory</artifactId>
-        <version>2.2.1</version>
+        <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-inventory-api</artifactId>
-    <version>2.2.1</version>
+    <version>3.0.0</version>
 
     <name>AlpineBits Inventory action with ODH backend API</name>
 
