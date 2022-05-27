@@ -1,32 +1,27 @@
 ![Logo of the project](https://raw.githubusercontent.com/idm-suedtirol/odh-alpinebits/master/alpine_bits_rgb.png)
 
-# Open Data Hub - AlpineBits Server
+# Open Data Hub - AlpineBits server
 
-[Open data hub (ODH)](https://opendatahub.io/) is a platform that integrates
-open source projects into a practical solution.
+This repository provides an [AlpineBits](https://www.alpinebits.org/) server implementation that uses the [Open Data Hub (ODH)](https://opendatahub.bz.it/) as backend.
 
-[AlpineBits](https://www.alpinebits.org/) is an open standard to exchange
-touristic data.
+- AlpineBits is an open standard to exchange touristic data.
+- Open Data Hub is a platform that integrates open source projects into a practical solution.
 
-This repository provides an AlpineBits server that uses the ODH tourism data
-as a backend.
+The server implementation in this repository depends on the [AlpineBits library](https://github.com/noi-techpark/odh-alpinebits).
 
 ## Table of Contents
 
 - [Getting started](#getting-started)
-- [Running the tests](#running-the-tests)
-- [Deployment](#deployment)
-- [Configuration](#configuration)
-- [Docker environment](#docker-environment)
+  - [Prerequisites](#prerequisites)
+  - [Source code](#source-code)
+  - [Execute without Docker](#execute-without-docker)
+  - [Execute with Docker](#execute-with-docker)
 - [Information](#information)
 - [How to request data?](#how-to-request-data)
 
 ## Getting started
 
-These instructions will get you a copy of the project up and running
-on your local machine for development and testing purposes. Take a look
-at the [Deployment](#deployment) section for notes on how to deploy
-the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Take a look at the [Deployment](#deployment) section for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
@@ -35,14 +30,9 @@ To build the project, the following prerequisites must be met:
 - Java JDK 1.8 or higher (e.g. [OpenJDK](https://openjdk.java.net/))
 - [Maven](https://maven.apache.org/) 3.x
 
-For a ready to use Docker environment with all prerequisites already installed and prepared, you can check out the [Docker environment](#docker-environment) section.
+If you want to run the application using [Docker](https://www.docker.com/), the environment is already set up with all dependencies for you. You only have to install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) and follow the instruction in the [dedicated section](#execute-with-docker).
 
-> Hint: this project relies on the [AlpineBits library](https://github.com/noi-techpark/odh-alpinebits).
-We are currently in the process of releasing that library to the Maven central repository.
-Until then, you have to build the necessary AlpineBits library on your own. Please take a
-look at the corresponding [README.me](https://github.com/noi-techpark/odh-alpinebits/blob/master/README.MD) file.
-
-### Installing
+### Source code
 
 Get a copy of the repository, e.g. by cloning it from the following location:
 
@@ -56,140 +46,46 @@ Change directory:
 cd odh-alpinebits-server/
 ```
 
+### Execute without Docker
+
+Copy the file `application-spring/src/main/resources/application.properties` to `application-spring/src/main/resources/application-local.properties` and adjust the variables that get their values from environment variables. You can take a look at the `.env.example` for some help.
+
 Build the project:
 
 ```bash
-mvn clean install
+mvn -Dspring.profiles.active=local clean install
 ```
 
-## Running the tests
-
-The code in this repository provides unit and integration tests.
-
-The unit tests can be run with the following command:
+Run the project:
 
 ```bash
-mvn clean verify
+mvn -Dspring.profiles.active=local spring-boot:run
 ```
 
-To run the unit and integration tests, use the following command, activating the
-maven `it` profile:
+The service will be available at localhost and your specified server port.
+
+To execute the tests you can run the following command:
 
 ```bash
-mvn clean verify -P it
+mvn clean test
 ```
 
-You can also integrate [sonarqube](https://www.sonarqube.org/) to check the code
-quality. Run the following command:
+### Execute with Docker
+
+Copy the file `.env.example` to `.env` and adjust the configuration parameters.
+
+Then you can start the application using the following command:
 
 ```bash
-mvn clean verify sonar:sonar -P it,report
+docker-compose up
 ```
 
-## Deployment
+The service will be available at localhost and your specified server port.
 
-### WAR
-
-The project provides an AlpineBits server in module `application-war`. If you want,
-to use it, the following additional prerequisites must be met:
-
-- Servlet Container >= 3.1 (e.g. [Tomcat 8.5](https://tomcat.apache.org/download-80.cgi))
-
-The generated WAR file can be deployed to the servlet container.
-
-### Spring
-
-The project provides an AlpineBits server as Spring application in module
-`application-spring`. The generated JAR file is a complete AlpineBits Server with no
-further dependencies. To start it, just run the JAR file with the correct main
-class `it.bz.opendatahub.alpinebitsserver.application.spring.Application`.
-RoutesFor202010Test
-Assuming you are in the projects root folder, run the following command: 
+To execute the test you can run the following command:
 
 ```bash
-java -jar application-spring/target/application-spring-2.2.1.jar it.bz.opendatahub.alpinebitsserver.application.spring.Application 
-```
-
-## Configuration
-
-The project relies on a set of configuration values. Default settings are provided to simplify your first steps:
-
-- `odh.url`: the URL of the ODH tourism data backend. Defaults to `https://api.tourism.testingmachine.eu/v1`.
-- `odh.auth.url`: the URL for authentication. Defaults to `https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token`
-- `odh.auth.client.id`: the authentication client ID. Please contact [NOI Techpark](https://noi.bz.it/en) for a client ID.
-- `odh.auth.client.secret`: the authentication client secret. Please contact [NOI Techpark](https://noi.bz.it/en) for a client secret.
-
-The following configuration value is used in Spring deployments only:
-- `alpinebits.path`: the AlpineBits endpoint path. Defaults to `/application/AlpineBits`
-
-The configuration values can be overwritten with a custom `application.properties` file in WAR and Spring deployments.
-
-The WAR deployment supports additionally a configuration by environment variables, where the configuration keys
-defined above need to be given in uppercase and their dots need to be replaced with underscores:
-
-- `odh.url` becomes `ODH_URL`
-- `odh.auth.url` becomes `ODH_AUTH_URL`
-- `odh.auth.client.id` becomes `ODH_AUTH_CLIENT_ID`
-- `odh.auth.client.secret` becomes `ODH_AUTH_CLIENT_SECRET`
-
-Spring deployments can be configured additionally by ordinary Spring facilities like environment or process settings.
-
-## Docker environment
-
-For the project a Docker environment is already prepared and ready to use with all necessary prerequisites.
-
-These Docker containers are the same as used by the continuous integration servers.
-
-### Installation
-
-Install [Docker](https://docs.docker.com/install/) (with Docker Compose) locally on your machine.
-
-### Start and stop the containers
-
-Before start working you have to start the Docker containers:
-
-```
-docker-compose up --build --detach
-```
-
-After finished working you can stop the Docker containers:
-
-```
-docker-compose stop
-```
-
-### Running commands inside the container
-
-When the containers are running, you can execute any command inside the environment. Just replace the dots `...` in the following example with the command you wish to execute:
-
-```bash
-docker-compose exec java /bin/bash -c "..."
-```
-
-Some examples are:
-
-```bash
-docker-compose exec java /bin/bash -c "mvn clean install"
-
-# or
-
-docker-compose exec java /bin/bash -c "mvn clean verify"
-
-# or
-
-docker-compose exec java /bin/bash -c "mvn clean verify -P it"
-```
-
-To check the code quality, you can run the following command and then visit the results at [http://localhost:9000/](http://localhost:9000/):
-
-```bash
-docker-compose exec java /bin/bash -c "mvn clean verify sonar:sonar -Dsonar.host.url=http://sonar:9000 -P it,report"
-```
-
-To server the example run the following command and then visit the website at [http://localhost:8080/examples-housekeeping/index.html](http://localhost:8080/examples-housekeeping/index.html):
-
-```bash
-docker-compose exec java /bin/bash -c "cd examples/housekeeping && mvn cargo:run"
+docker-compose run --rm app mvn clean test
 ```
 
 ## Information
@@ -201,18 +97,19 @@ For support, please contact [Christian Gapp](https://github.com/gappc) or
 
 ### Contributing
 
-If you'd like to contribute, please fork the repository and use a feature
-branch. Pull requests are warmly welcome.
+If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
+
+### Documentation
+
+More documentation can be found at [https://opendatahub.readthedocs.io/en/latest/index.html](https://opendatahub.readthedocs.io/en/latest/index.html).
 
 ### Versioning
 
-This project uses [SemVer](https://semver.org/) for versioning. For the versions available,
-see the [tags on this repository](https://github.com/noi-techpark/odh-alpinebits-server/tags). 
+This project uses [SemVer](https://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/noi-techpark/odh-alpinebits-server/tags). 
 
 ### License
 
-The code in this project is licensed under the Mozilla Public License 2.0 license.
-See the LICENSE file for more information.
+The code in this project is licensed under the Mozilla Public License 2.0 license. See the [LICENSE](./LICENSE) file for more information.
 
 ### Authors
 
@@ -224,7 +121,7 @@ See the LICENSE file for more information.
 
 ## How to request data?
 
-You can use the [AlpineBits Protocol Test Client](https://alpinebits.testingmachine.eu/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
+You can use the [AlpineBits Protocol Test Client](https://development.alpinebits.org/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
 
 In the test client you have to specify the request settings:
 
@@ -232,7 +129,7 @@ In the test client you have to specify the request settings:
 end point (URL): https://alpinebits.opendatahub.bz.it/AlpineBits
 user name: someuser
 password: somesecret
-X-AlpineBits-ClientProtocolVersion: 2018-10
+X-AlpineBits-ClientProtocolVersion: 2020-10
 X-AlpineBits-ClientID (optional): development.alpinebits.org-test-client
 action: OTA_Ping:Handshaking (since 2018-10)
 request (optional): handshaking.xml
@@ -247,38 +144,49 @@ The *action* setting requires you to upload an XML file. You can create a plain 
 
     <EchoData>
     {
-      "versions": [{
-        "version": "2017-10"
-      },
-      {
-        "version": "2018-10",
-        "actions": [
-          {
-            "action": "action_OTA_Ping"
-          },{
-            "action": "action_OTA_HotelDescriptiveInfo_Inventory",
-            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
-          },{
-            "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
-            "supports": ["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]
-          },{
-            "action": "action_OTA_HotelRatePlan_BaseRates",
-            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
-          },{
-            "action": "action_OTA_HotelRatePlanNotif_RatePlans",
-            "supports": [
-              "OTA_HotelRatePlanNotif_accept_overlay",
-              "OTA_HotelRatePlanNotif_accept_Supplements",
-              "OTA_HotelRatePlanNotif_accept_RatePlan_BookingRule",
-              "OTA_HotelRatePlanNotif_accept_FreeNightsOffers",
-              "OTA_HotelRatePlanNotif_accept_FamilyOffers"
-            ]
-          }
-        ]
-      }]
+      "versions": [
+        {
+          "version": "2017-10"
+        },
+        {
+          "version": "2018-10",
+          "actions": [
+            {
+              "action": "action_OTA_Ping"
+            },
+            {
+              "action": "action_OTA_HotelDescriptiveInfo_Inventory",
+              "supports": [
+                "OTA_HotelRatePlan_BaseRates_deltas"
+              ]
+            },
+            {
+              "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
+              "supports": [
+                "OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"
+              ]
+            },
+            {
+              "action": "action_OTA_HotelRatePlan_BaseRates",
+              "supports": [
+                "OTA_HotelRatePlan_BaseRates_deltas"
+              ]
+            },
+            {
+              "action": "action_OTA_HotelRatePlanNotif_RatePlans",
+              "supports": [
+                "OTA_HotelRatePlanNotif_accept_overlay",
+                "OTA_HotelRatePlanNotif_accept_Supplements",
+                "OTA_HotelRatePlanNotif_accept_RatePlan_BookingRule",
+                "OTA_HotelRatePlanNotif_accept_FreeNightsOffers",
+                "OTA_HotelRatePlanNotif_accept_FamilyOffers"
+              ]
+            }
+          ]
+        }
+      ]
     }
     </EchoData>
-
 </OTA_PingRQ>
 ```
 
@@ -300,38 +208,81 @@ Connection: close
 body
 ----
 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><OTA_PingRS xmlns="http://www.opentravel.org/OTA/2003/05" Version="8.000"><Success/><Warnings><Warning Type="11" Status="ALPINEBITS_HANDSHAKE">{"versions":[{"version":"2018-10","actions":[{"action":"action_OTA_HotelDescriptiveContentNotif_Inventory","supports":["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]},{"action":"action_OTA_Ping"},{"action":"action_OTA_HotelDescriptiveInfo_Inventory"}]},{"version":"2017-10"}]}</Warning></Warnings><EchoData>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OTA_PingRS xmlns="http://www.opentravel.org/OTA/2003/05" Version="8.000">
+    <Success/>
+    <Warnings>
+        <Warning Type="11" Status="ALPINEBITS_HANDSHAKE">
+        {
+          "versions": [
+            {
+              "version": "2018-10",
+              "actions": [
+                {
+                  "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
+                  "supports": [
+                    "OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"
+                  ]
+                },
+                {
+                  "action": "action_OTA_Ping"
+                },
+                {
+                  "action": "action_OTA_HotelDescriptiveInfo_Inventory"
+                }
+              ]
+            },
+            {
+              "version": "2017-10"
+            }
+          ]
+        }    
+        </Warning>
+    </Warnings>
+    <EchoData>
     {
-      "versions": [{
-        "version": "2017-10"
-      },
-      {
-        "version": "2018-10",
-        "actions": [
-          {
-            "action": "action_OTA_Ping"
-          },{
-            "action": "action_OTA_HotelDescriptiveInfo_Inventory",
-            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
-          },{
-            "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
-            "supports": ["OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"]
-          },{
-            "action": "action_OTA_HotelRatePlan_BaseRates",
-            "supports": ["OTA_HotelRatePlan_BaseRates_deltas"]
-          },{
-            "action": "action_OTA_HotelRatePlanNotif_RatePlans",
-            "supports": [
-              "OTA_HotelRatePlanNotif_accept_overlay",
-              "OTA_HotelRatePlanNotif_accept_Supplements",
-              "OTA_HotelRatePlanNotif_accept_RatePlan_BookingRule",
-              "OTA_HotelRatePlanNotif_accept_FreeNightsOffers",
-              "OTA_HotelRatePlanNotif_accept_FamilyOffers"
-            ]
-          }
-        ]
-      }]
+      "versions": [
+        {
+          "version": "2017-10"
+        },
+        {
+          "version": "2018-10",
+          "actions": [
+            {
+              "action": "action_OTA_Ping"
+            },
+            {
+              "action": "action_OTA_HotelDescriptiveInfo_Inventory",
+              "supports": [
+                "OTA_HotelRatePlan_BaseRates_deltas"
+              ]
+            },
+            {
+              "action": "action_OTA_HotelDescriptiveContentNotif_Inventory",
+              "supports": [
+                "OTA_HotelDescriptiveContentNotif_Inventory_use_rooms"
+              ]
+            },
+            {
+              "action": "action_OTA_HotelRatePlan_BaseRates",
+              "supports": [
+                "OTA_HotelRatePlan_BaseRates_deltas"
+              ]
+            },
+            {
+              "action": "action_OTA_HotelRatePlanNotif_RatePlans",
+              "supports": [
+                "OTA_HotelRatePlanNotif_accept_overlay",
+                "OTA_HotelRatePlanNotif_accept_Supplements",
+                "OTA_HotelRatePlanNotif_accept_RatePlan_BookingRule",
+                "OTA_HotelRatePlanNotif_accept_FreeNightsOffers",
+                "OTA_HotelRatePlanNotif_accept_FamilyOffers"
+              ]
+            }
+          ]
+        }
+      ]
     }
-    </EchoData></OTA_PingRS>
+    </EchoData>
+</OTA_PingRS>
 ```
-

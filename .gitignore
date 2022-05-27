@@ -1,6 +1,19 @@
+# General
+.DS_Store
+
+# Editors
 .idea
-target
-
+*.iws
 *.iml
+*.ipr
+.vscode
 
+# Project
+/.env
+/src/main/resources/application-local.properties
+/.mvn
+.settings
+.project
+.classpath
+target
 pom.xml.versionsBackup
