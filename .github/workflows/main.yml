@@ -50,8 +50,8 @@ jobs:
           X_ALPINEBITS_PATH: "/application/AlpineBits"
           X_ODH_URL: "https://api.tourism.testingmachine.eu/v1"
           X_ODH_AUTH_URL: "https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token"
-          X_ODH_AUTH_CLIENT_ID: "odh-api-core"
-          X_ODH_AUTH_CLIENT_SECRET: ${{ secrets.TEST_ODH_AUTH_CLIENT_SECRET }}
+          X_ODH_AUTH_CLIENT_ID: ${{ secrets.ODH_AUTH_CLIENT_ID_TEST }}
+          X_ODH_AUTH_CLIENT_SECRET: ${{ secrets.ODH_AUTH_CLIENT_SECRET_TEST }}
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
         with:
@@ -90,8 +90,8 @@ jobs:
           X_ALPINEBITS_PATH: "/application/AlpineBits"
           X_ODH_URL: "https://tourism.opendatahub.bz.it/v1"
           X_ODH_AUTH_URL: "https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token"
-          X_ODH_AUTH_CLIENT_ID: "odh-api-core"
-          X_ODH_AUTH_CLIENT_SECRET: ${{ secrets.PROD_ODH_AUTH_CLIENT_SECRET }}
+          X_ODH_AUTH_CLIENT_ID: ${{ secrets.ODH_AUTH_CLIENT_ID_PROD }}
+          X_ODH_AUTH_CLIENT_SECRET: ${{ secrets.ODH_AUTH_CLIENT_SECRET_PROD }}
       - name: Build and push images
         uses: noi-techpark/github-actions/docker-build-and-push@v2
         with:
