@@ -41,12 +41,8 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_SERVER_PORT: 1001
+          X_SERVER_PORT: 1015
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
-          X_S3_REGION: "eu-west-1"
-          X_S3_BUCKET_NAME: "test-odh-alpinebits-server"
-          X_S3_ACCESS_KEY: ${{ secrets.TEST_AWS_S3_ACCESS_KEY_ID }}
-          X_S3_SECRET_KEY: ${{ secrets.TEST_AWS_S3_ACCESS_KEY_SECRET }}
           X_ALPINEBITS_PATH: "/application/AlpineBits"
           X_ODH_URL: "https://api.tourism.testingmachine.eu/v1"
           X_ODH_AUTH_URL: "https://auth.opendatahub.testingmachine.eu/auth/realms/noi/protocol/openid-connect/token"
@@ -81,12 +77,8 @@ jobs:
           X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
           X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
-          X_SERVER_PORT: 1002
+          X_SERVER_PORT: 1015
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
-          X_S3_REGION: "eu-west-1"
-          X_S3_BUCKET_NAME: "prod-odh-alpinebits-server"
-          X_S3_ACCESS_KEY: ${{ secrets.PROD_AWS_S3_ACCESS_KEY_ID }}
-          X_S3_SECRET_KEY: ${{ secrets.PROD_AWS_S3_ACCESS_KEY_SECRET }}
           X_ALPINEBITS_PATH: "/application/AlpineBits"
           X_ODH_URL: "https://tourism.opendatahub.bz.it/v1"
           X_ODH_AUTH_URL: "https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token"
