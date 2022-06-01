@@ -5,7 +5,8 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>alpinebitsserver-odh-root</artifactId>
-        <version>2.2.1</version>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

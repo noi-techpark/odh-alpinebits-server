@@ -5,39 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
-        <relativePath/>
+        <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
+        <artifactId>alpinebitsserver-odh-root</artifactId>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
     <artifactId>application-spring</artifactId>
-    <version>2.2.1</version>
+    <version>3.0.0</version>
 
     <packaging>jar</packaging>
     <name>Standalone Spring application, providing an AlpineBits Server with Open Data Hub (ODH) backend</name>
 
-    <repositories>
-        <repository>
-            <id>maven-repo.opendatahub.bz.it</id>
-            <url>http://it.bz.opendatahub.s3-website-eu-west-1.amazonaws.com/release</url>
-        </repository>
-    </repositories>
-
     <properties>
-        <odh-alpinebits.version>2.1.1</odh-alpinebits.version>
-        <odh-alpinebits-server.version>2.2.1</odh-alpinebits-server.version>
-
         <janino.version>3.0.12</janino.version>
-        <jersey.version>2.30</jersey.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <log4j2.version>2.16.0</log4j2.version>
-
-        <checkstyle-maven.version>3.1.1</checkstyle-maven.version>
-        <checkstyle.version>8.29</checkstyle.version>
-
-        <testng.version>6.14.3</testng.version>
     </properties>
 
     <dependencies>
@@ -50,109 +31,35 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
             <artifactId>application-common-routing</artifactId>
-            <version>${odh-alpinebits-server.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
             <artifactId>odh-backend-impl</artifactId>
-            <version>${odh-alpinebits-server.version}</version>
         </dependency>
         <dependency>
             <groupId>it.bz.opendatahub.alpinebits</groupId>
             <artifactId>alpinebits-servlet-impl</artifactId>
-            <version>${odh-alpinebits.version}</version>
         </dependency>
 
-        <!-- The following to dependencies is necessary for Jersey to work in Spring -->
-        <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+        <!-- janino is used for logging evaluation (see logback.xml) -->
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
             <version>${janino.version}</version>
         </dependency>
-
-        <!-- testing -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <!-- Check code style -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${checkstyle-maven.version}</version>
-                    <executions>
-                        <execution>
-                            <id>verify-style</id>
-                            <phase>validate</phase>
-                            <configuration>
-                                <configLocation>checkstyle.xml</configLocation>
-                                <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
-                                <consoleOutput>true</consoleOutput>
-                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                                <!--check only src directory, ignore generated sources-->
-                                <sourceDirectories>
-                                    <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-                                </sourceDirectories>
-                            </configuration>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
-                            <artifactId>build-tools</artifactId>
-                            <version>2.2.1</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

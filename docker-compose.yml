@@ -1,18 +1,22 @@
-version: "3"
+version: "3.4"
+
 services:
-  java:
+  app:
     build:
       context: .
-      dockerfile: docker/dockerfile-java
+      dockerfile: infrastructure/docker/Dockerfile
+      target: dev
     volumes:
        - ./:/code
     working_dir: /code
-    command: tail -f /dev/null
+    command: ["sh", "-c", "mvn install -DskipTests && mvn spring-boot:run -pl application-spring"]
     tty: true
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      ALPINEBITS_PATH: ${ALPINEBITS_PATH}
+      ODH_URL: ${ODH_URL}
+      ODH_AUTH_URL: ${ODH_AUTH_URL}
+      ODH_AUTH_CLIENT_ID: ${ODH_AUTH_CLIENT_ID}
+      ODH_AUTH_CLIENT_SECRET: ${ODH_AUTH_CLIENT_SECRET}
     ports:
-      - "8080:8080"
-  sonar:
-    image: sonarqube
-    ports:
-      - "9000:9000"
-      - "9092:9092"
+      - "${SERVER_PORT}:${SERVER_PORT}"
