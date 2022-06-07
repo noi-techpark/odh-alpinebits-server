@@ -79,7 +79,7 @@ jobs:
           X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
           X_SERVER_PORT: 1015
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
-          X_ALPINEBITS_PATH: "/application/AlpineBits"
+          X_ALPINEBITS_PATH: "/AlpineBits"
           X_ODH_URL: "https://tourism.opendatahub.bz.it/v1"
           X_ODH_AUTH_URL: "https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token"
           X_ODH_AUTH_CLIENT_ID: ${{ secrets.ODH_AUTH_CLIENT_ID_PROD }}
