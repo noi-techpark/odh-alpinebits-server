@@ -7,12 +7,12 @@
     <parent>
         <groupId>it.bz.opendatahub.alpinebitsserver.odh</groupId>
         <artifactId>odh-freerooms</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>odh-freerooms-api</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 
     <name>AlpineBits FreeRooms action with ODH backend API</name>
 
