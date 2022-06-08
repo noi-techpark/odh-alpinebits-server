@@ -11,11 +11,11 @@ services:
       ODH_AUTH_URL: ${ODH_AUTH_URL}
       ODH_AUTH_CLIENT_ID: ${ODH_AUTH_CLIENT_ID}
       ODH_AUTH_CLIENT_SECRET: ${ODH_AUTH_CLIENT_SECRET}
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT}/actuator/health"]
-#      interval: 20s
-#      timeout: 10s
-#      retries: 5
-#      start_period: 30s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT}/actuator/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
