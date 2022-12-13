@@ -81,7 +81,7 @@ jobs:
           X_LOG_APPLICATION_NAME: ${{ env.PROJECT_NAME }}
           X_ALPINEBITS_PATH: "/AlpineBits"
           X_ODH_URL: "https://tourism.api.opendatahub.bz.it/v1"
-          X_ODH_AUTH_URL: "https://auth.opendatahub.bz.it/auth/realms/noi/protocol/openid-connect/token"
+          X_ODH_AUTH_URL: "https://auth.opendatahub.com/auth/realms/noi/protocol/openid-connect/token"
           X_ODH_AUTH_CLIENT_ID: ${{ secrets.ODH_AUTH_CLIENT_ID_PROD }}
           X_ODH_AUTH_CLIENT_SECRET: ${{ secrets.ODH_AUTH_CLIENT_SECRET_PROD }}
       - name: Build and push images
