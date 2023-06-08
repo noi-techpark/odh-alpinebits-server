@@ -8,6 +8,8 @@ SPDX-License-Identifier: CC0-1.0
 
 # Open Data Hub - AlpineBits server
 
+![REUSE Compliance](https://github.com/noi-techpark/odh-alpinebits-server/actions/workflows/reuse.yml/badge.svg)
+
 This repository provides an [AlpineBits](https://www.alpinebits.org/) server implementation that uses the [Open Data Hub (ODH)](https://opendatahub.bz.it/) as backend.
 
 - AlpineBits is an open standard to exchange touristic data.
