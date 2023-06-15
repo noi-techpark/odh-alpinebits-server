@@ -10,7 +10,7 @@ SPDX-License-Identifier: CC0-1.0
 
 ![REUSE Compliance](https://github.com/noi-techpark/odh-alpinebits-server/actions/workflows/reuse.yml/badge.svg)
 
-This repository provides an [AlpineBits](https://www.alpinebits.org/) server implementation that uses the [Open Data Hub (ODH)](https://opendatahub.bz.it/) as backend.
+This repository provides an [AlpineBits](https://www.alpinebits.org/) server implementation that uses the [Open Data Hub (ODH)](https://opendatahub.com/) as backend.
 
 - AlpineBits is an open standard to exchange touristic data.
 - Open Data Hub is a platform that integrates open source projects into a practical solution.
@@ -144,12 +144,12 @@ pre-commit install
 
 ## How to request data?
 
-You can use the [AlpineBits Protocol Test Client](https://development.alpinebits.org/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
+You can use the [AlpineBits Protocol Test Client](https://development.alpinebits.org/#/client) to request data from the [Open Data Hub](https://opendatahub.com/) using the AlpineBits Open Standard.
 
 In the test client you have to specify the request settings:
 
 ```
-end point (URL): https://alpinebits.opendatahub.bz.it/AlpineBits
+end point (URL): https://alpinebits.opendatahub.com/AlpineBits
 user name: someuser
 password: somesecret
 X-AlpineBits-ClientProtocolVersion: 2020-10
