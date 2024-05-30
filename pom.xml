@@ -46,7 +46,7 @@ SPDX-License-Identifier: CC0-1.0
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
-        <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <checkstyle-maven.version>3.1.1</checkstyle-maven.version>
@@ -60,7 +60,8 @@ SPDX-License-Identifier: CC0-1.0
         <gitflow-maven-plugin.version>1.10.0</gitflow-maven-plugin.version>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 
-        <testng.version>6.14.3</testng.version>
+        <testng.version>7.5.1</testng.version>
+        <arquillian.version>1.8.0.Final</arquillian.version>
         <rest-assured.version>3.1.1</rest-assured.version>
         <mock-server.version>5.11.1</mock-server.version>
 
@@ -320,7 +321,7 @@ SPDX-License-Identifier: CC0-1.0
             <dependency>
                 <groupId>org.jboss.arquillian.testng</groupId>
                 <artifactId>arquillian-testng-container</artifactId>
-                <version>1.4.0.Final</version>
+                <version>${arquillian.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -412,7 +413,6 @@ SPDX-License-Identifier: CC0-1.0
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
-                        <parallel>true</parallel>
                         <skipTests>${skipTests}</skipTests>
                         <!--
                             ISSUE: org.apache.maven.surefire.booter.SurefireBooterForkException: The forked
