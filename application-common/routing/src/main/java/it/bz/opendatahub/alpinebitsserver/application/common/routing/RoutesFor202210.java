@@ -56,7 +56,8 @@ public final class RoutesFor202210 {
                 .supportsAction(Action.INVENTORY_BASIC_PUSH)
                 .withCapabilities(
                         AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY,
-                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY_USE_ROOMS
+                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_INVENTORY_USE_ROOMS,
+                        AlpineBitsCapability.INVENTORY_HOTEL_DESCRIPTIVE_CONTENT_NOTIF_OCCUPANCY_CHILDREN
                 )
                 .using(InventoryPushMiddlewareBuilder.buildInventoryPushMiddleware())
                 .and()

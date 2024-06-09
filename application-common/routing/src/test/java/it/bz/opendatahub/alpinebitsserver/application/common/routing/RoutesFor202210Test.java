@@ -53,7 +53,7 @@ public class RoutesFor202210Test {
         assertTrue(router.getCapabilitiesForVersion(ALPINEBITS_VERSION).isPresent());
         Set<String> capabilities = router.getCapabilitiesForVersion(ALPINEBITS_VERSION).get();
 
-        assertEquals(capabilities.size(), 13);
+        assertEquals(capabilities.size(), 14);
         assertTrue(capabilities.contains(AlpineBitsCapability.HANDSHAKING));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF));
         assertTrue(capabilities.contains(AlpineBitsCapability.FREE_ROOMS_HOTEL_INV_COUNT_NOTIF_ACCEPT_CATEGORIES));
