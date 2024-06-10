@@ -18,6 +18,7 @@ import javax.xml.bind.JAXBElement;
 /**
  * Custom Jackson serializer / deserializer module for ODH support.
  */
+// TODO: rename package?
 public class OtaModule202010 extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
