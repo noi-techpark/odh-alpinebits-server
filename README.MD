@@ -1,8 +1,16 @@
+<!--
+SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 ![Logo of the project](https://raw.githubusercontent.com/idm-suedtirol/odh-alpinebits/master/alpine_bits_rgb.png)
 
 # Open Data Hub - AlpineBits server
 
-This repository provides an [AlpineBits](https://www.alpinebits.org/) server implementation that uses the [Open Data Hub (ODH)](https://opendatahub.bz.it/) as backend.
+[![REUSE Compliance](https://github.com/noi-techpark/odh-alpinebits-server/actions/workflows/reuse.yml/badge.svg)](https://github.com/noi-techpark/odh-docs/wiki/REUSE#badges)
+
+This repository provides an [AlpineBits](https://www.alpinebits.org/) server implementation that uses the [Open Data Hub (ODH)](https://opendatahub.com/) as backend.
 
 - AlpineBits is an open standard to exchange touristic data.
 - Open Data Hub is a platform that integrates open source projects into a practical solution.
@@ -111,6 +119,21 @@ This project uses [SemVer](https://semver.org/) for versioning. For the versions
 
 The code in this project is licensed under the Mozilla Public License 2.0 license. See the [LICENSE](./LICENSE) file for more information.
 
+### REUSE
+
+This project is [REUSE](https://reuse.software) compliant, more information about the usage of REUSE in NOI Techpark repositories can be found [here](https://github.com/noi-techpark/odh-docs/wiki/Guidelines-for-developers-and-licenses#guidelines-for-contributors-and-new-developers).
+
+Since the CI for this project checks for REUSE compliance you might find it useful to use a pre-commit hook checking for REUSE compliance locally. The [pre-commit-config](.pre-commit-config.yaml) file in the repository root is already configured to check for REUSE compliance with help of the [pre-commit](https://pre-commit.com) tool.
+
+Install the tool by running:
+```bash
+pip install pre-commit
+```
+Then install the pre-commit hook via the config file by running:
+```bash
+pre-commit install
+```
+
 ### Authors
 
 * **Christian Gapp** - *Initial work* - [gappc](https://github.com/gappc)
@@ -121,12 +144,12 @@ The code in this project is licensed under the Mozilla Public License 2.0 licens
 
 ## How to request data?
 
-You can use the [AlpineBits Protocol Test Client](https://development.alpinebits.org/#/client) to request data from the [Open Data Hub](https://opendatahub.bz.it/) using the AlpineBits Open Standard.
+You can use the [AlpineBits Protocol Test Client](https://development.alpinebits.org/#/client) to request data from the [Open Data Hub](https://opendatahub.com/) using the AlpineBits Open Standard.
 
 In the test client you have to specify the request settings:
 
 ```
-end point (URL): https://alpinebits.opendatahub.bz.it/AlpineBits
+end point (URL): https://alpinebits.opendatahub.com/AlpineBits
 user name: someuser
 password: somesecret
 X-AlpineBits-ClientProtocolVersion: 2020-10

@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: MPL-2.0
+
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -29,7 +33,8 @@ public final class RoutingMiddlewareProvider {
      */
     public static Middleware buildRoutingMiddleware() {
         DefaultRouter.Builder builder = new DefaultRouter.Builder();
-        RoutingBuilder.FinalBuilder fb = RoutesFor202010.routes(builder);
+        RoutingBuilder.FinalBuilder fb = RoutesFor202210.routes(builder);
+        fb = RoutesFor202010.routes(fb.and());
         fb = RoutesFor201810.routes(fb.and());
         fb = RoutesFor201710.routes(fb.and());
         return new RoutingMiddleware(fb.buildRouter());

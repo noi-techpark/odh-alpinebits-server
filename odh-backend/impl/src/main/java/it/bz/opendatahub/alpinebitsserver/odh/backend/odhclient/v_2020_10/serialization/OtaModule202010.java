@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
+//
+// SPDX-License-Identifier: MPL-2.0
+
 /*
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,6 +18,7 @@ import javax.xml.bind.JAXBElement;
 /**
  * Custom Jackson serializer / deserializer module for ODH support.
  */
+// TODO: rename package?
 public class OtaModule202010 extends SimpleModule {
 
     private static final long serialVersionUID = 1L;
