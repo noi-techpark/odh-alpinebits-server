@@ -68,6 +68,8 @@ public class OdhBackendServiceImpl implements OdhBackendService {
 
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("accoid", accoId);
+        queryParams.put("idsource", "a0r_id");
+
         try {
             List<AccommodationRoom> accommodationRooms = odhClient.fetch(
                     path,
@@ -88,9 +90,12 @@ public class OdhBackendServiceImpl implements OdhBackendService {
     @SuppressWarnings("IllegalCatch")
     public Optional<Accommodation> fetchAccommodation(String accoId) {
         String path = "Accommodation/" + accoId;
+        
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("idsource", "a0r_id");
 
         try {
-            Accommodation accommodation = odhClient.fetch(path, HttpMethod.GET, null, null, Accommodation.class);
+            Accommodation accommodation = odhClient.fetch(path, HttpMethod.GET, queryParams, null, Accommodation.class);
             return Optional.of(accommodation);
         } catch (Exception e) {
             return handleException(e);
