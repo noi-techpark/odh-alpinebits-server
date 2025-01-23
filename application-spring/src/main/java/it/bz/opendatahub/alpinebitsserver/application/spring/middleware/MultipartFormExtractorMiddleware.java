@@ -35,7 +35,10 @@ public class MultipartFormExtractorMiddleware implements Middleware {
             HttpServletRequest httpServletRequest = ctx.getOrThrow(ServletContextKey.SERVLET_REQUEST);
 
             Part actionPart = httpServletRequest.getPart("action");
-            String action = IOUtils.toString(actionPart.getInputStream());
+            if (actionPart == null) {
+                throw new AlpineBitsException("No \"action\" parameter provided", 400);
+            }
+            String action = IOUtils.toString(actionPart.getInputStream(), StandardCharsets.UTF_8);
             ctx.put(RequestContextKey.REQUEST_ACTION, action);
 
             Part requestPart = httpServletRequest.getPart("request");
